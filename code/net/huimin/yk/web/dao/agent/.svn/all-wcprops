@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/76/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/agent
+END
+AccountRecordMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/8/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/agent/AccountRecordMapper.java
+END
+AgentApplicationMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/8/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/agent/AgentApplicationMapper.java
+END
+StoreAgentMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/567/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/agent/StoreAgentMapper.java
+END
+StoreMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/agent/StoreMapper.java
+END
+AgentUserMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/544/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/agent/AgentUserMapper.java
+END

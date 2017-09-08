@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.houses.HousesTypeMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.houses.HousesType" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="house_typename" property="houseTypename" jdbcType="VARCHAR" />
+    <result column="house_typecontent" property="houseTypecontent" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="house_area" property="houseArea" jdbcType="INTEGER" />
+    <result column="house_price" property="housePrice" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, project_id, house_typename, house_typecontent, create_time, update_time, house_area, 
+    house_price
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_houses_type
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_houses_type
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.houses.HousesType" >
+    insert into t_houses_type (id, project_id, house_typename, 
+      house_typecontent, create_time, update_time, 
+      house_area, house_price)
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{houseTypename,jdbcType=VARCHAR}, 
+      #{houseTypecontent,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{houseArea,jdbcType=INTEGER}, #{housePrice,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.houses.HousesType" >
+    insert into t_houses_type
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="houseTypename != null" >
+        house_typename,
+      </if>
+      <if test="houseTypecontent != null" >
+        house_typecontent,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="houseArea != null" >
+        house_area,
+      </if>
+      <if test="housePrice != null" >
+        house_price,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="houseTypename != null" >
+        #{houseTypename,jdbcType=VARCHAR},
+      </if>
+      <if test="houseTypecontent != null" >
+        #{houseTypecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="houseArea != null" >
+        #{houseArea,jdbcType=INTEGER},
+      </if>
+      <if test="housePrice != null" >
+        #{housePrice,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.houses.HousesType" >
+    update t_houses_type
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="houseTypename != null" >
+        house_typename = #{houseTypename,jdbcType=VARCHAR},
+      </if>
+      <if test="houseTypecontent != null" >
+        house_typecontent = #{houseTypecontent,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="houseArea != null" >
+        house_area = #{houseArea,jdbcType=INTEGER},
+      </if>
+      <if test="housePrice != null" >
+        house_price = #{housePrice,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.houses.HousesType" >
+    update t_houses_type
+    set project_id = #{projectId,jdbcType=INTEGER},
+      house_typename = #{houseTypename,jdbcType=VARCHAR},
+      house_typecontent = #{houseTypecontent,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      house_area = #{houseArea,jdbcType=INTEGER},
+      house_price = #{housePrice,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

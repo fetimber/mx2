@@ -1,0 +1,421 @@
+package net.huimin.yk.web.services.houses.impl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import net.huimin.common.cnst.Const;
+import net.huimin.common.helper.Judge;
+import net.huimin.common.helper.MD5Util;
+import net.huimin.common.page.PageBean;
+import net.huimin.yk.web.dao.agent.AgentUserMapper;
+import net.huimin.yk.web.dao.common.FilesMapper;
+import net.huimin.yk.web.dao.customer.CustomerApplicationMapper;
+import net.huimin.yk.web.dao.customer.CustomerLevelMapper;
+import net.huimin.yk.web.dao.customer.CustomerRuleMapper;
+import net.huimin.yk.web.dao.houses.HousesConfigMapper;
+import net.huimin.yk.web.dao.houses.HousesProjectMapper;
+import net.huimin.yk.web.dao.system.SysUserMapper;
+import net.huimin.yk.web.model.agent.AgentUser;
+import net.huimin.yk.web.model.common.Files;
+import net.huimin.yk.web.model.customer.CustomerApplication;
+import net.huimin.yk.web.model.customer.CustomerRule;
+import net.huimin.yk.web.model.houses.HousesConfig;
+import net.huimin.yk.web.model.houses.HousesProject;
+import net.huimin.yk.web.model.system.SysUser;
+import net.huimin.yk.web.model.tool.HousesForCustomer;
+import net.huimin.yk.web.services.houses.HousesService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+public class HousesServiceImpl implements HousesService,Const{
+
+	@Autowired
+	private HousesProjectMapper housesProjectMapper;
+	
+	@Autowired
+	private HousesConfigMapper housesConfigMapper;
+	
+	@Autowired
+	private FilesMapper filesMapper;
+	
+	@Autowired
+	private SysUserMapper sysUserMapper;
+	
+	@Autowired
+	private CustomerRuleMapper customerRuleMapper;
+	
+	@Autowired
+	private AgentUserMapper agentUserMapper;
+	
+	@Autowired
+	private CustomerLevelMapper customerLevelMapper;
+	
+	@Autowired
+	private CustomerApplicationMapper customerApplicationMapper;
+	
+
+	public void queryHousesForPage(PageBean page, HousesProject project) {
+		Map<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("_page", page);
+		parameters.put("project", project);
+		 
+		try{
+			
+			this.queryPage(parameters, page);
+		}
+		catch (Exception ex){
+			
+			ex.printStackTrace();
+			
+		}
+	}
+	
+	public void queryHousesForPage(PageBean page, HousesProject project,
+			int agentId) {
+		try{
+		   Map<String, Object> parameters = new HashMap<String, Object>();
+		   parameters.put("_page", page);
+		   parameters.put("project", project);
+		   parameters.put("agentId", agentId);
+	
+		   this.queryCustomerPage(parameters, page);
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void queryPage(Map<String, Object> parameters, PageBean page) {
+		Integer count = this.housesProjectMapper
+				.queryCountByConditions(parameters);
+		List<HousesProject> projects = this.housesProjectMapper
+				.queryHousesByConditions(parameters);
+
+		PageBean.Counter(page, count, null, projects);
+	}
+	
+	private void queryCustomerPage(Map<String, Object> parameters, PageBean page) {
+		int agentId = Integer.parseInt(parameters.get("agentId").toString());
+		try{
+			
+		
+		Integer count = this.housesProjectMapper
+				.queryCountByConditions(parameters);
+		List<HousesForCustomer> housesForCustomers = new ArrayList<HousesForCustomer>();
+		List<HousesProject> projects = this.housesProjectMapper
+				.queryHousesByConditions(parameters);
+		for(HousesProject project : projects){
+			HousesForCustomer housesForCustomer = new HousesForCustomer();
+			housesForCustomer.setId(project.getId());
+			housesForCustomer.setProjectName(project.getProjectName());
+			
+			CustomerApplication record = new CustomerApplication();
+			record.setAgentId(agentId);
+			record.setHouseId(project.getId());
+			housesForCustomer.setCustomers(this.customerApplicationMapper.selectByConditions(record));
+			housesForCustomers.add(housesForCustomer);
+			PageBean.Counter(page, count, null, housesForCustomers);
+		}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	public List<HousesConfig> queryHouseConfigByPid(Integer pid) {
+		List<HousesConfig> configs = this.housesConfigMapper.selectByPid(pid);
+		for(HousesConfig config : configs){
+			Files file = new Files();
+			file.setReferId(config.getId());
+			file.setFileType(Const.HOUSE_PT_FILE);
+			config.setFiles(this.filesMapper.selectByConditions(file));
+		}
+		return configs;
+	}
+    
+	public List<Files> queryHouseImgs(Integer pid) {
+		List<Files> imgsList = new ArrayList<Files>();
+		
+		/**首先查询列表页图片*/
+		Files file1 = new Files();
+		file1.setFileType(1);
+		file1.setReferId(pid);
+		imgsList.addAll(this.filesMapper.selectByConditions(file1));
+		
+		/**根据pid查询楼盘配套信息*/
+		List<HousesConfig> configs = this.queryHouseConfigByPid(pid);
+		
+		for(HousesConfig config : configs){
+			imgsList.addAll(config.getFiles());
+		}
+
+		return imgsList;
+	}
+	
+
+	public SysUser agentInfo(SysUser user) {
+		return sysUserMapper.selectUserByName(user);
+	}
+	
+	public AgentUser queryAgentUser(AgentUser agentUser){
+		return this.agentUserMapper.selectByConditions(agentUser);
+	}
+
+	@Transactional(rollbackFor=Exception.class)
+	public Map<String, Object> register(AgentUser agentUser, SysUser sysUser , Integer accountId) throws Exception{
+		Map<String,Object> reMap = new HashMap<String,Object>();
+		
+		/**判断用户名是否已经存在*/
+		try{
+		   SysUser user2 = new SysUser();
+		   user2.setLoginName(sysUser.getLoginName());
+		   SysUser user3 = this.sysUserMapper.selectUserByName(user2);
+		   if(user3 == null){
+			   /**判断手机号码是否存在*/
+			   AgentUser agentUser2 = new AgentUser();
+			   agentUser2.setPhoneDecimal(agentUser.getPhoneDecimal());
+			   agentUser2 = this.agentUserMapper.selectByConditions(agentUser2);
+			   if(null == agentUser2){
+				   /**判断微信号是否存在*/
+				   AgentUser agentUser3 = new AgentUser();
+				   agentUser3.setWechatId(agentUser.getWechatId());
+				   agentUser3 = this.agentUserMapper.selectByConditions(agentUser3);
+				   if(null == agentUser3){
+					   /** 插入用户表*/
+						  sysUser.setPwdCode(MD5Util.string2MD5(sysUser.getPwdCode()));
+						  this.sysUserMapper.insert(sysUser);
+						  
+						  /** 插入经纪人表*/
+						  agentUser.setUserId(sysUser.getId());
+						  agentUser.setAccountId(accountId);
+						  agentUser.setCustomerCount(new BigDecimal(0));
+						  agentUser.setReferCount(new BigDecimal(0));
+						  agentUser.setRealNameValidate(0);
+						  this.agentUserMapper.insert(agentUser);	
+						  
+						  reMap.put("Status", OPERAT_SUCCESS);
+						  reMap.put("userId", sysUser.getId());
+						  reMap.put("agentId", agentUser.getId());
+				   }
+				   else{
+					   reMap.put("Status", ACCOUNT_OPEN_ERROR_4);
+				   }
+			   }
+			   else{
+				   reMap.put("Status", ACCOUNT_OPEN_ERROR_3);
+			   }
+			   
+			   
+			  
+		   }
+		   else{
+			  reMap.put("Status", ACCOUNT_OPEN_ERROR_1);
+		   }
+		}
+		catch (Exception e) {
+			e.printStackTrace();		
+			reMap.put("Status", ACCOUNT_OPEN_ERROR_2);
+			throw new Exception(e);
+		}
+		
+		
+		return reMap;
+	}
+
+	public List<CustomerRule> selectAllRule(CustomerRule record) {
+		return customerRuleMapper.selectAllRule(record);
+	}
+
+	public List<HousesProject> selectAllProjectByConditions(
+			HousesProject project) {
+		return housesProjectMapper.selectAllByConditions(project);
+	}
+    
+	@Transactional(rollbackFor=Exception.class)
+	public int recommend(int agentId, JSONArray custArray) throws Exception{
+		int reCode = 1 ;
+		try{
+			/**根据id查询经纪人信息*/
+			AgentUser record = agentUserMapper.selectByPrimaryKey(agentId);
+			AgentUser newRecord = new AgentUser();
+			/**循环插入推荐信息*/
+			int count = 0;
+			boolean isChecked = true;
+			
+			//customerApplicationMapper.selectByConditions(record)
+			
+			/**首先校验*/
+			for(int i = 0 ; i < custArray.size(); i++){
+				CustomerApplication temp = new CustomerApplication();
+				JSONObject custInfo = custArray.getJSONObject(i);
+				//temp.setHouseId(custInfo.getInt("hid"));
+				temp.setCustomerDecimal(custInfo.getString("cusPhone"));
+				List<CustomerApplication> nows = customerApplicationMapper.selectByConditions(temp);
+				/**如果手机号码已经推荐 则结束循环 返回false*/
+				if(null!=nows && !nows.isEmpty()){
+					isChecked = false;
+					break;
+				}
+			}
+			
+			if(!isChecked){
+				return 2;
+			}
+			
+			
+			for(int i = 0 ; i < custArray.size(); i++){
+				CustomerApplication application = new CustomerApplication();
+				JSONObject custInfo = custArray.getJSONObject(i);
+				application.setHouseId(custInfo.getInt("hid"));
+				application.setAreaId(custInfo.getInt("area"));
+				application.setCustomerName(custInfo.getString("cusName"));
+				application.setCustomerDecimal(custInfo.getString("cusPhone"));
+				application.setCustomerStatus(CUSTTOMER_STATUS_ONE);
+				application.setHousePrice(new BigDecimal(custInfo.getString("hPrice")));
+				application.setAgentId(agentId);
+				application.setReferTime(new Date());
+				application.setFollowTime(new Date());
+				application.setRemark(custInfo.getString("cusRemark"));
+				application.setReferArea(custInfo.getInt("refer_area"));
+				application.setSelfSend(custInfo.getInt("self_send"));
+				application.setSelfLook(custInfo.getInt("self_look"));
+				customerApplicationMapper.insertSelective(application);
+				count++;
+				
+			}
+			
+			/**增加客户总数*/
+			BigDecimal total = new BigDecimal(count).add(record.getCustomerCount());
+			newRecord.setId(record.getId());
+			newRecord.setCustomerCount(total);
+			agentUserMapper.updateByPrimaryKeySelective(newRecord);
+			
+			reCode = 0;
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new Exception(e);
+		}
+		return reCode;
+	}
+
+	public CustomerApplication selectCustomer(Integer id) {
+		return customerApplicationMapper.selectByPrimaryKey(id);
+	}
+
+	public List<Files> queryMainHouseImgs() {
+		return filesMapper.selectMain();
+	}
+
+	public HousesProject selectHouseById(Integer id) {
+		return housesProjectMapper.selectByPrimaryKey(id);
+	}
+
+	@Transactional
+	public boolean saveProject(HousesProject project, List<Integer> bigPictures, List<Integer> smallPictures) {
+		boolean rslt = false;
+		project.setUpdateTime(new Date());
+		if(Judge.isNull(project.getId())){
+			project.setCreateTime(new Date());
+			rslt = this.housesProjectMapper.insertSelective(project) == 1;
+		} else {
+			rslt = this.housesProjectMapper.updateByPrimaryKeySelective(project) == 1;
+		}
+		if(rslt){
+			if(Judge.isNotNull(project.getId())){
+				if(Judge.isNotEmpty(bigPictures)){
+					Map<String,Object> param = new HashMap<String, Object>();
+					param.put("ref_id", project.getId());
+					param.put("type_id", Const.HOUSE_BIG_FILE);
+					//解除关联
+					this.filesMapper.deleteRefId(param);
+
+					if(Judge.isNotEmpty(bigPictures)){
+						param.put("id", bigPictures);
+						this.filesMapper.updateRefId(param);
+					}
+				}
+				
+				if(Judge.isNotEmpty(smallPictures)){
+					Map<String,Object> param = new HashMap<String, Object>();
+					param.put("ref_id", project.getId());
+					param.put("type_id", Const.HOUSE_SMALL_FILE);
+					//解除关联
+					this.filesMapper.deleteRefId(param);
+
+					if(Judge.isNotEmpty(smallPictures)){
+						param.put("id", smallPictures);
+						this.filesMapper.updateRefId(param);
+					}
+				}
+			}
+		}
+		return rslt;
+	}
+
+	public boolean deleteProject(Integer id) {
+		return this.housesProjectMapper.updateDeleteStatus(id) == 1;
+	}
+
+	public boolean deleteConfig(Integer id) {
+	return this.housesConfigMapper.deleteByPrimaryKey(id) == 1;
+	}
+
+	public HousesConfig queryHouseConfigById(Integer id) {
+		return this.housesConfigMapper.selectByPrimaryKey(id);
+	}
+
+	@Transactional
+	public boolean saveOrUpdateHouseConfig(HousesConfig config, List<Integer> pictures) {
+		boolean rslt = false;
+		if(Judge.isNull(config.getCreateTime())){
+			config.setCreateTime(new Date());
+		}
+		config.setUpdateTime(new Date());
+		if(Judge.isNotNull(config.getId())){
+			rslt = this.housesConfigMapper.updateByPrimaryKeySelective(config) == 1;
+		} else {
+			rslt = this.housesConfigMapper.insertSelective(config) == 1;
+		}
+		if(rslt){
+			if(Judge.isNotNull(config.getId())){
+			
+				if(Judge.isNotEmpty(pictures)){
+					Map<String,Object> param = new HashMap<String, Object>();
+					param.put("ref_id", config.getId());
+					param.put("type_id", Const.HOUSE_PT_FILE);
+					
+					//解除关联
+					this.filesMapper.deleteRefId(param);
+				
+					if(Judge.isNotEmpty(pictures)){
+						param.put("id", pictures);
+						this.filesMapper.updateRefId(param);
+					}
+				}
+			}
+		}
+		return rslt;
+	}
+
+	public boolean checkHouseProjectName(HousesProject project) {
+		boolean rslt = false;
+		try {
+			rslt = this.housesProjectMapper.checkHouseProjectName(project) == 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rslt;
+	}
+
+	
+
+}

@@ -1,0 +1,133 @@
+package net.huimin.yk.web.actions.weixin;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+
+import javax.imageio.ImageIO;
+
+import net.huimin.common.helper.SpringHelper;
+import net.huimin.common.mvc.AbstractAction;
+import net.huimin.yk.web.dao.common.FilesMapper;
+import net.huimin.yk.web.model.common.Files;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.struts2.ServletActionContext;
+import org.sword.wechat4j.common.MediaFile;
+import org.sword.wechat4j.common.MediaType;
+
+public class UploadAction extends AbstractAction {
+	private File upload; //上传的文件
+    private String uploadFileName; //文件名称
+    private String uploadContentType; //文件类型
+    
+    private Boolean createMedia;
+    
+    private Boolean saveFile;
+    private String fileType;
+    
+	private String rondom() {
+		int max = 9999;
+		int min = 1000;
+		Random random = new Random();
+
+		int s = random.nextInt(max) % (max - min + 1) + min;
+		return String.valueOf(s);
+	}
+
+    public String execute(){
+    	try {
+    		String realpath = ServletActionContext.getServletContext().getRealPath("/upload");
+        	if (upload != null) {
+        		String rondom = rondom();
+        		String subfix = this.uploadFileName.substring(this.uploadFileName.lastIndexOf("."));
+        		String target_name = new SimpleDateFormat("yyyyMMddHHmmssS").format(new Date()).concat(rondom).concat(subfix);
+                File savefile = new File(new File(realpath), target_name);
+                if (!savefile.getParentFile().exists())
+                    savefile.getParentFile().mkdirs();
+                FileUtils.copyFile(upload, savefile);
+                this.pushJSON("result", Boolean.TRUE);
+                this.pushJSON("upload_path", "upload/" + target_name);
+                
+                BufferedImage sourceImg =ImageIO.read(new FileInputStream(savefile)); 
+                
+                this.pushJSON("width", sourceImg.getWidth());
+                this.pushJSON("height", sourceImg.getHeight());
+                
+                if(null != this.createMedia && this.createMedia){
+                	//上传微信服务器
+                    MediaFile mediaFile = new MediaFile();   //创建示例对象
+                    //上传文件，并且得到上传后的mediaId
+                    String mediaId = mediaFile.upload(savefile, MediaType.image);
+                    this.pushJSON("mediaId", mediaId);
+                }
+                
+                //保存到图片表
+                if(null != this.saveFile && this.saveFile){
+                	Files file = new Files();
+                	file.setFileName(savefile.getName());
+                	file.setFilePath("upload/" + savefile.getName());
+                	file.setFileSize(String.valueOf(savefile.getTotalSpace()));
+                	file.setFileType(Integer.valueOf(this.fileType));
+                	file.setUploadTime(new Date());
+                	SpringHelper.Context().getBean(FilesMapper.class).insertSelective(file);
+                	this.pushJSON("id", file.getId());
+                }
+            }
+		} catch (Exception e) {
+			this.pushJSON("result", Boolean.FALSE);
+		}
+    	return "json";
+    }
+
+	public File getUpload() {
+		return upload;
+	}
+
+	public void setUpload(File upload) {
+		this.upload = upload;
+	}
+
+	public String getUploadFileName() {
+		return uploadFileName;
+	}
+
+	public void setUploadFileName(String uploadFileName) {
+		this.uploadFileName = uploadFileName;
+	}
+
+	public String getUploadContentType() {
+		return uploadContentType;
+	}
+
+	public void setUploadContentType(String uploadContentType) {
+		this.uploadContentType = uploadContentType;
+	}
+
+	public Boolean getCreateMedia() {
+		return createMedia;
+	}
+
+	public void setCreateMedia(Boolean createMedia) {
+		this.createMedia = createMedia;
+	}
+
+	public Boolean getSaveFile() {
+		return saveFile;
+	}
+
+	public void setSaveFile(Boolean saveFile) {
+		this.saveFile = saveFile;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+}

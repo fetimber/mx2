@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.customer.CustomerLevelMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.customer.CustomerLevel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="level_name" property="levelName" jdbcType="VARCHAR" />
+    <result column="level_score" property="levelScore" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, level_name, level_score
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_level
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectCustomerLevelist" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.customer.CustomerLevel">
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_level
+  </select>
+ 
+  <select id="selectByScore" resultMap="BaseResultMap" parameterType="java.math.BigDecimal" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_level
+    where level_score &lt;= #{_parameter}  order by level_score desc limit 0,1
+  </select>
+    <select id="selectDefLevel" resultMap="BaseResultMap">
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_level
+    where 1=1  order by level_score asc limit 0,1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_customer_level
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.customer.CustomerLevel" >
+    insert into t_customer_level (id, level_name, level_score
+      )
+    values (#{id,jdbcType=INTEGER}, #{levelName,jdbcType=VARCHAR}, #{levelScore,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.customer.CustomerLevel" >
+    insert into t_customer_level
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="levelName != null" >
+        level_name,
+      </if>
+      <if test="levelScore != null" >
+        level_score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="levelName != null" >
+        #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelScore != null" >
+        #{levelScore,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.customer.CustomerLevel" >
+    update t_customer_level
+    <set >
+      <if test="levelName != null" >
+        level_name = #{levelName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelScore != null" >
+        level_score = #{levelScore,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.customer.CustomerLevel" >
+    update t_customer_level
+    set level_name = #{levelName,jdbcType=VARCHAR},
+      level_score = #{levelScore,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

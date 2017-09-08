@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.houses.HousesConfigMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.houses.HousesConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="config_name" property="configName" jdbcType="VARCHAR" />
+    <result column="config_title" property="configTitle" jdbcType="VARCHAR" />
+    <result column="config_content" property="configContent" jdbcType="VARCHAR" />
+    <result column="pic_id" property="picId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <association property="files" column="id" select="net.huimin.yk.web.dao.common.FilesMapper.queryFileByRefIdForConfig"></association>
+  </resultMap>
+  <resultMap id="ConfigResultMap" type="net.huimin.yk.web.model.houses.HousesConfig" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="config_name" property="configName" jdbcType="VARCHAR" />
+    <result column="config_title" property="configTitle" jdbcType="VARCHAR" />
+    <result column="config_content" property="configContent" jdbcType="VARCHAR" />
+    <result column="pic_id" property="picId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <association property="files" column="id" select="net.huimin.yk.web.dao.common.FilesMapper.queryFileByRefIdForConfig"></association>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, project_id, config_name, config_content, pic_id, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+   	select * from t_houses_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectByPid"  resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT CG.* FROM T_HOUSES_CONFIG CG 
+    WHERE CG.PROJECT_ID = #{pid} ORDER BY CG.ID ASC
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_houses_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.houses.HousesConfig" >
+    insert into t_houses_config (id, project_id, config_name, 
+      config_content, pic_id, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{projectId,jdbcType=INTEGER}, #{configName,jdbcType=VARCHAR}, 
+      #{configContent,jdbcType=VARCHAR}, #{picId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+      <selectKey keyProperty="id" resultType="int">
+      	select last_insert_id() as id
+      </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.houses.HousesConfig" >
+    insert into t_houses_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projectId != null" >
+        project_id,
+      </if>
+      <if test="configName != null" >
+        config_name,
+      </if>
+      <if test="configTitle != null" >
+        config_title,
+      </if>
+      <if test="configContent != null" >
+        config_content,
+      </if>
+      <if test="picId != null" >
+        pic_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projectId != null" >
+        #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="configName != null" >
+        #{configName,jdbcType=VARCHAR},
+      </if>
+       <if test="configTitle != null" >
+        #{configTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="configContent != null" >
+        #{configContent,jdbcType=VARCHAR},
+      </if>
+      <if test="picId != null" >
+        #{picId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    <selectKey keyProperty="id" resultType="int">
+      	select last_insert_id() as id
+      </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.houses.HousesConfig" >
+    update t_houses_config
+    <set >
+      <if test="projectId != null" >
+        project_id = #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="configName != null" >
+        config_name = #{configName,jdbcType=VARCHAR},
+      </if>
+       <if test="configTitle != null" >
+        config_title = #{configTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="configContent != null" >
+        config_content = #{configContent,jdbcType=VARCHAR},
+      </if>
+      <if test="picId != null" >
+        pic_id = #{picId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.houses.HousesConfig" >
+    update t_houses_config
+    set project_id = #{projectId,jdbcType=INTEGER},
+      config_name = #{configName,jdbcType=VARCHAR},
+      config_content = #{configContent,jdbcType=VARCHAR},
+      pic_id = #{picId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

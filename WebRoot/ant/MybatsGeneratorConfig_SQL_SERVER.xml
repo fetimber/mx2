@@ -1,0 +1,482 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration  
+      PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+      "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<classPathEntry location="../WEB-INF/lib/sqljdbc4.jar" />
+	<context id="system" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.system"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="system"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+			<property name="" value=""/>
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.system" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_sys_menu" domainObjectName="Menu" />
+		<table tableName="t_sys_role" domainObjectName="Role"/>
+		<table tableName="t_sys_users" domainObjectName="UserInfo" />
+		<table tableName="t_sys_role_area" domainObjectName="RoleArea" />
+		<table tableName="t_sys_role_menu" domainObjectName="RoleMenu" />
+		<table tableName="t_sys_org" domainObjectName="Org" />
+	</context>
+	<context id="data" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.data"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="data"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.data" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_data_carbon" domainObjectName="CarbonData" />
+		<table tableName="t_data_temperature" domainObjectName="TemperatureData" />
+		<table tableName="t_data_humidity" domainObjectName="HumidityData" />
+		<table tableName="t_data_switch" domainObjectName="SwitchData" />
+		<table tableName="t_data_power" domainObjectName="PowerData" />
+		<table tableName="t_data_moisture" domainObjectName="MoistureData" />
+		<table tableName="t_data_water_level" domainObjectName="WaterLevelData" />
+		<table tableName="t_data_water_quality" domainObjectName="WaterQualityData" />
+	</context>
+	<context id="equip" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.equip"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="equip"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.equip" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_equipment" domainObjectName="Equipment" />
+		<table tableName="t_equipment_classify" domainObjectName="EquipmentClassify" />
+		<table tableName="t_equipment_operational" domainObjectName="EquipOperational" />
+		<table tableName="t_equipment_order_log" domainObjectName="EquipmentOrderLog" />
+		<table tableName="t_equipment_video" domainObjectName="EquipmentVideo" />
+		<table tableName="t_equipment_video_shot" domainObjectName="EquipmentVideoShot" />
+	</context>
+	<context id="harm" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.harm"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="harm"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.harm" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_harm" domainObjectName="Harm" />
+		<table tableName="t_harm_classify" domainObjectName="HarmClassify" />
+		<table tableName="t_harm_document" domainObjectName="HarmDocument" />
+		<table tableName="t_harm_process_log" domainObjectName="HarmProcessLog" />
+		<table tableName="t_harm_relevance" domainObjectName="HarmRelevance" />
+	</context>
+	<context id="machinery" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.machinery"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="machinery"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.machinery" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_machinery" domainObjectName="Machinery" />
+		<table tableName="t_machinery_classify" domainObjectName="MachineryClassify" />
+		<table tableName="t_machinery_operational" domainObjectName="MachineryOperational" />
+		<table tableName="t_machinery_operational_log" domainObjectName="MachineryOperationalLog" />
+		<table tableName="t_machinery_work_log" domainObjectName="MachineryWorkLog" />
+	</context>
+	<context id="specialist" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.specialist"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="specialist"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.specialist" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_specialist" domainObjectName="Specialist" />
+		<table tableName="t_specialist_classify" domainObjectName="SpecialistClassify" />
+		<table tableName="t_specialist_consult" domainObjectName="SpecialistConsult" />
+		<table tableName="t_specialist_consult_replay" domainObjectName="SpecialistConsultReplay" />
+		<table tableName="t_specialist_relevance" domainObjectName="SpecialistRelevance" />
+		<table tableName="t_specialist_suggest" domainObjectName="SpecialistSuggest" />
+	</context>
+	<context id="scheme" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.scheme"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="scheme"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.scheme" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_scheme" domainObjectName="Scheme" />
+		<table tableName="t_scheme_stage" domainObjectName="SchemeStage" />
+		<table tableName="t_scheme_stage_equip" domainObjectName="SchemeStageEquip" />
+	</context>
+	<context id="produce" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.produce"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="produce"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.produce" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_produce_record" domainObjectName="ProduceRecord" />
+		<table tableName="t_product" domainObjectName="Product" />
+		<table tableName="t_product_classify" domainObjectName="ProductClassify" />
+		<table tableName="t_product_stage" domainObjectName="ProductStage" />
+	</context>
+	<context id="farm" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.farm"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="farm"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.farm" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_alarm" domainObjectName="Alarm" />
+		<table tableName="t_alarm_process" domainObjectName="AlarmProcess" />
+		<table tableName="t_area" domainObjectName="Area" />
+		<table tableName="t_area_introduce" domainObjectName="AreaIntroduce" />
+		<table tableName="t_enclosure" domainObjectName="Enclosure" />
+	</context>
+	
+	<context id="bedder" targetRuntime="MyBatis3">
+		<!-- 注释 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<!--
+				是否取消注释
+			-->
+			<property name="suppressDate" value="false" /> <!-- 是否生成注释代时间戳-->
+		</commentGenerator>
+
+		<!-- jdbc连接 -->
+		<jdbcConnection driverClass="com.microsoft.sqlserver.jdbc.SQLServerDriver"
+			connectionURL="jdbc:sqlserver://192.168.1.150:1433;database=Device;integratedSecurity=false" userId="sa"
+			password="sqlserver">
+		</jdbcConnection>
+		<!-- 类型转换 -->
+		<javaTypeResolver>
+			<!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- model配置 -->
+		<javaModelGenerator targetPackage="com.njdobest.farm.models.bedder"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+
+		<!-- sqlMap*.xml生成的位置-->
+		<sqlMapGenerator targetPackage="bedder"
+			targetProject="..\..\config\mappers">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 客户端应用接口生成的位置(DAO Interface)-->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.njdobest.farm.dao.bedder" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<table tableName="t_bedder" domainObjectName="Bedder" />
+		<table tableName="t_bedder_box" domainObjectName="BedderBox" />
+		<table tableName="t_bedder_box_controller" domainObjectName="BedderBoxController" />
+		<table tableName="t_bedder_box_controller_config" domainObjectName="BedderBoxControllerCfg" />
+		<table tableName="t_bedder_box_controller_data" domainObjectName="BedderBoxControllerData" />
+	</context>
+</generatorConfiguration>

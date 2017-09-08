@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration 
+      PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"  
+      "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<classPathEntry location="../WEB-INF/lib/mysql-connector-java-5.1.22-bin.jar" />
+	
+	<context id="system" targetRuntime="MyBatis3">
+		<plugin type="org.mybatis.generator.plugins.MyBatisGeneratorPagePlugin" />  
+
+		<commentGenerator>
+			<property name="suppressAllComments" value="false" />
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://192.168.1.251:3306/house?useUnicode=true&amp;characterEncoding=UTF-8"
+			userId="root" password="root">	
+		</jdbcConnection>
+
+		<javaTypeResolver>
+             <property name="forceBigDecimals" value="true" />
+		</javaTypeResolver>
+		
+		<javaModelGenerator targetPackage="net.huimin.yk.web.model.agent"
+			targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="false" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="mappers.agent"
+			targetProject="..\..\config">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="net.huimin.yk.web.dao.agent" targetProject="..\..\code">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>		
+<!-- 		<table tableName="t_houses_project" domainObjectName="WechatAuto" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 		<table tableName="t_wechat_auto_history" domainObjectName="WechatAutoHistory" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 		     System -->
+<!-- 	    <table tableName="T_SYS_USER" domainObjectName="SysUser" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 	    <table tableName="T_SYS_AGENT_ACCOUNT" domainObjectName="SysAccount" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 	    <table tableName="T_SYS_MENU" domainObjectName="SysMenu" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 	    <table tableName="T_SYS_MENU_ROLE" domainObjectName="SysMenuRole" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 	    <table tableName="T_SYS_ROLE" domainObjectName="SysRole" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 	    <table tableName="T_SYS_USER_ROLE" domainObjectName="SysUserRole" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+
+<!-- Common -->
+<!--        <table tableName="T_AREA" domainObjectName="Area" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 	    <table tableName="T_CONFIG" domainObjectName="Config" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--        <table tableName="T_FILES" domainObjectName="Files" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!-- 	    <table tableName="T_PROVINCE" domainObjectName="Province" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--              <table tableName="T_CITY" domainObjectName="City" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" />  -->
+<!--       	     <table tableName="T_OPERATE_RECORD" domainObjectName="OperateRecord" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" />  -->
+       
+         
+       
+<!--        agent -->
+<!--          <table tableName="T_ACCOUNT_RECORD" domainObjectName="AccountRecord" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--         <table tableName="T_AGENT_APPLICATION" domainObjectName="AgentApplication" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--         <table tableName="T_AGENT_BALANCE" domainObjectName="AgentBalance" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--         <table tableName="T_CUSTOMER_MONEY" domainObjectName="CustomerMoney" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" />  -->
+             <table tableName="T_STORE" domainObjectName="Store" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> 
+             <table tableName="T_STORE_AGENT" domainObjectName="StoreAgent" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> 
+      
+<!--         call -->
+<!--          <table tableName="T_CALL_TEAM" domainObjectName="CallTeam" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--          <table tableName="T_CALL_USER" domainObjectName="CallUser" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+      
+<!--         cash -->
+<!--          <table tableName="T_CASH_APPLICATION" domainObjectName="CashApplication" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--          <table tableName="T_CASH_DETAIL" domainObjectName="CashDetail" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--          <table tableName="T_CASH_BALANCE" domainObjectName="CashBalance" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+      
+<!--         customer -->   
+<!--           <table tableName="T_CUSTOMER_Application" domainObjectName="CustomerApplication" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--           <table tableName="T_CUSTOMER_CHOICE" domainObjectName="CustomerChoice" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--           <table tableName="T_CUSTOMER_RULE" domainObjectName="CustomerRule" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--           <table tableName="T_CUSTOMER_LEVEL" domainObjectName="CustomerLevel" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--           <table tableName="T_CUSTOMER_RECORD" domainObjectName="CustomeRecord" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--             houses -->
+<!--           <table tableName="T_HOUSES_CONFIG" domainObjectName="HousesConfig" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--           <table tableName="T_HOUSES_PROJECT" domainObjectName="HousesProject" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" />   -->
+<!--           <table tableName="T_HOUSES_TYPE" domainObjectName="HousesType" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" />  -->
+      
+<!--                money -->
+<!--                  <table tableName="T_MONEY_APPLICATION" domainObjectName="MoneyApplication" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--                  <table tableName="T_MONEY_DETAIL" domainObjectName="MoneyDetail" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+<!--                  <table tableName="T_MONEY_BALANCE" domainObjectName="MoneyBalance" enableCountByExample="false" enableDeleteByExample="false" enableDeleteByPrimaryKey="true" enableSelectByExample="false" enableInsert="true" enableSelectByPrimaryKey="true" enableUpdateByExample="false" enableUpdateByPrimaryKey="true" selectByExampleQueryId="false" selectByPrimaryKeyQueryId="true" /> -->
+                
+       
+	</context>
+	
+	
+	
+</generatorConfiguration>

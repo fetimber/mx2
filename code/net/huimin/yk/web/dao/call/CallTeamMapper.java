@@ -1,0 +1,61 @@
+package net.huimin.yk.web.dao.call;
+
+import java.util.List;
+import java.util.Map;
+
+import net.huimin.yk.web.model.call.CallTeam;
+
+import org.springframework.stereotype.Repository;
+@Repository
+public interface CallTeamMapper {
+    /**
+     * 根据主键删除记录
+     */
+    int deleteByPrimaryKey(Integer id);
+
+    /**
+     * 保存记录,不管记录里面的属性是否为空
+     */
+    int insert(CallTeam record);
+
+    /**
+     * 保存属性不为空的记录
+     */
+    int insertSelective(CallTeam record);
+
+    /**
+     * 根据主键查询记录
+     */
+    CallTeam selectByPrimaryKey(Integer id);
+
+    
+    CallTeam selectByLeadid(Integer id); 
+    
+    CallTeam selectByTeamName(String  teamName); 
+    
+    List <CallTeam> queryCallTeams(Map<String, Object> parameters);
+    
+    /**
+     * 根据主键更新属性不为空的记录
+     */
+    int updateByPrimaryKeySelective(CallTeam record);
+
+    /**
+     * 根据主键更新记录
+     */
+    int updateByPrimaryKey(CallTeam record);
+    
+    /**
+     * 查询数量
+     * @param customer
+     * @return
+     */
+    Integer  queryCountByConditions(Map<String, Object> parameters);
+    
+    /**
+     * 根据条件查询
+     * @param customer
+     * @return
+     */
+    List<CallTeam> queryCallTeamsByConditions(Map<String, Object> parameters);
+}

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.agent.StoreAgentMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.agent.StoreAgent" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <result column="store_id" property="storeId" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="memo" property="memo" jdbcType="VARCHAR" />
+    
+    <association property="top" column="store_id" select="net.huimin.yk.web.dao.agent.AgentUserMapper.selectByPrimaryKey" />
+    <association property="bottom" column="agent_id" select="net.huimin.yk.web.dao.agent.AgentUserMapper.selectByPrimaryKey" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, agent_id, store_id, status, update_time, memo
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_store_agent
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_store_agent
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.agent.StoreAgent" >
+    insert into t_store_agent (Id, agent_id, store_id, status, update_time, memo
+      )
+    values (#{id,jdbcType=INTEGER}, #{agentId,jdbcType=INTEGER}, #{storeId,jdbcType=INTEGER}, 
+            #{status,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}, #{memo,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.agent.StoreAgent" >
+    insert into t_store_agent
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+      <if test="storeId != null" >
+        store_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="memo != null" >
+        memo,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null" >
+        #{memo,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.agent.StoreAgent" >
+    update t_store_agent
+    <set >
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="storeId != null" >
+        store_id = #{storeId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="memo != null" >
+        memo = #{memo,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.agent.StoreAgent" >
+    update t_store_agent
+    set agent_id = #{agentId,jdbcType=INTEGER},
+      store_id = #{storeId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      memo = #{memo,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM t_store_agent 
+  	  WHERE 1 = 1
+  	  <if test="null != storeAgent" >
+	     <if test="null != storeAgent.storeId" >
+    	    AND store_id = #{storeAgent.storeId,jdbcType=INTEGER}
+         </if>
+         <if test="null != storeAgent.agentId" >
+    	    AND agent_id = #{storeAgent.agentId,jdbcType=INTEGER}
+         </if>
+         <if test="null != storeAgent.status" >
+    	    AND status = #{storeAgent.status,jdbcType=INTEGER}
+         </if>
+	 </if>		
+  </select>
+   <select id="queryStoreAgentByConditions" parameterType="map" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_store_agent 
+	  WHERE 1 = 1
+	 <if test="null != storeAgent" >
+	     <if test="null != storeAgent.storeId" >
+    	    AND store_id = #{storeAgent.storeId,jdbcType=INTEGER}
+         </if>
+         <if test="null != storeAgent.agentId" >
+    	    AND agent_id = #{storeAgent.agentId,jdbcType=INTEGER}
+         </if>
+         <if test="null != storeAgent.status" >
+    	    AND status = #{storeAgent.status,jdbcType=INTEGER}
+         </if>
+	 </if>
+  	  <![CDATA[ORDER BY ID DESC LIMIT  #{_page.start,jdbcType=INTEGER} , #{_page.offset,jdbcType=INTEGER} ]]>  	   
+  </select>
+  <select id="queryTopByAgentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_store_agent 
+	  <![CDATA[WHERE 1 = 1 and agent_id = #{id,jdbcType=INTEGER} and status = 4  limit 0,1 ]]>  
+  </select>
+  <select id="queryBottomByStoreId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_store_agent 
+	  WHERE 1 = 1 and  store_id = #{id,jdbcType=INTEGER} and status = 4  
+  </select>
+  <select id="queryInviteByAgentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_store_agent 
+	  <![CDATA[WHERE 1 = 1 and agent_id = #{id,jdbcType=INTEGER} and status = 1 order by update_time desc limit 0,1 ]]>   
+  </select>
+  <select id="queryInviteByStoreId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_store_agent 
+	  WHERE 1 = 1 and  store_id = #{id,jdbcType=INTEGER} and status = 1  
+  </select>
+  <select id="queryStoreInfoByConditions" parameterType="net.huimin.yk.web.model.agent.StoreAgent" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_store_agent  WHERE 1 = 1 
+	  <if test="null != storeId" >
+    	 AND store_id = #{storeId,jdbcType=INTEGER}
+      </if>
+      <if test="null != agentId" >
+    	 AND agent_id = #{agentId,jdbcType=INTEGER}
+      </if>  
+      limit 0,1
+  </select>
+  <update id="concelAll" parameterType="net.huimin.yk.web.model.agent.StoreAgent" >
+    update t_store_agent set status = 2 where store_id = #{id,jdbcType=INTEGER} and status = 1
+  </update>
+</mapper>

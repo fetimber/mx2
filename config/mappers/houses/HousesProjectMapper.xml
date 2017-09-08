@@ -1,0 +1,474 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.houses.HousesProjectMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.houses.HousesProject" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_summary" property="projectSummary" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="area" property="area" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="brokerage" property="brokerage" jdbcType="DECIMAL" />
+     <result column="up_area" property="upArea" jdbcType="DECIMAL" />
+    <result column="down_area" property="downArea" jdbcType="DECIMAL" />
+    <result column="first_reward" property="firstReward" jdbcType="DECIMAL" />
+    <result column="view_reward" property="viewReward" jdbcType="DECIMAL" />
+    <result column="limit_desc" property="limitDesc" jdbcType="VARCHAR" />
+    <result column="bro_desc" property="broDesc" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="pm_id" property="pmId" jdbcType="INTEGER" />
+    <result column="is_main" property="isMain" jdbcType="INTEGER" />
+    <result column="req_type" property="reqType" jdbcType="INTEGER" />  
+  </resultMap>
+  <resultMap id="HouseProjectMap" type="net.huimin.yk.web.model.houses.HousesProject" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_name" property="projectName" jdbcType="VARCHAR" />
+    <result column="project_summary" property="projectSummary" jdbcType="VARCHAR" />
+    <result column="province" property="province" jdbcType="INTEGER" />
+    <result column="city" property="city" jdbcType="INTEGER" />
+    <result column="area" property="area" jdbcType="INTEGER" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="brokerage" property="brokerage" jdbcType="DECIMAL" />
+    <result column="up_area" property="upArea" jdbcType="DECIMAL" />
+    <result column="down_area" property="downArea" jdbcType="DECIMAL" />
+    <result column="up_sum" property="upSum" jdbcType="DECIMAL" />
+    <result column="down_sum" property="downSum" jdbcType="DECIMAL" />
+    <result column="first_reward" property="firstReward" jdbcType="DECIMAL" />
+    <result column="view_reward" property="viewReward" jdbcType="DECIMAL" />
+    <result column="limit_desc" property="limitDesc" jdbcType="VARCHAR" />
+    <result column="bro_desc" property="broDesc" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="pm_id" property="pmId" jdbcType="INTEGER" />
+    <result column="is_main" property="isMain" jdbcType="INTEGER" />
+    <result column="req_type" property="reqType" jdbcType="INTEGER" />
+    <result column="delete_status" property="deleteStatus" jdbcType="INTEGER" />
+    <result column="sole_count" property="soleCount" jdbcType="INTEGER" />
+    <result column="max_bro" property="maxBro" jdbcType="DECIMAL" />
+    <result column="file_PATH" property="imgPath" jdbcType="VARCHAR" />
+    <result column="deal_point" property="dealPoint" jdbcType="INTEGER" />
+    <result column="commission_point" property="commissionPoint" jdbcType="INTEGER" />
+    <result column="price_image_id" property="priceImageId" jdbcType="INTEGER" />
+    
+    <association property="provInfo" column="province" select="net.huimin.yk.web.dao.common.ProvinceMapper.selectByPrimaryKey" />
+	<association property="cityInfo" column="city" select="net.huimin.yk.web.dao.common.CityMapper.selectByPrimaryKey" />
+	<association property="areaInfo" column="area" select="net.huimin.yk.web.dao.common.AreaMapper.selectByPrimaryKey" />
+	<association property="pmInfo" column="pm_id" select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+	<association property="smallPictures" column="id" select="net.huimin.yk.web.dao.common.FilesMapper.queryFileByRefIdForSmall" />
+	<association property="bigPictures" column="id" select="net.huimin.yk.web.dao.common.FilesMapper.queryFileByRefIdForBig" />
+	<association property="priceImage" column="price_image_id" select="net.huimin.yk.web.dao.common.FilesMapper.selectByPrimaryKey" />
+	
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, project_name, project_summary, province, city, area, price, brokerage, up_area, down_area, up_sum, down_sum, 
+    first_reward, view_reward, limit_desc, bro_desc, address, create_time, update_time, pm_id, is_main, 
+    req_type, delete_status, sole_count, max_bro,deal_point,commission_point,price_image_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="HouseProjectMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_houses_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllByConditions" resultMap="HouseProjectMap" parameterType="net.huimin.yk.web.model.houses.HousesProject" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_houses_project where delete_status = 0
+    <if test="area != null" >
+      AND  area = #{area,jdbcType=INTEGER}
+     </if>
+  </select>
+  <update id="updateDeleteStatus" parameterType="int">
+  	update t_houses_project set delete_status = 1 where id = #{id,jdbcType=INTEGER}
+  </update>
+  <!-- 禁止删除 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_houses_project
+    where id = -1
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.houses.HousesProject" >
+     insert into t_houses_project (id, project_name, project_summary, 
+      province, city, area, 
+      price, brokerage, up_area, down_area, 
+      up_sum, down_sum, first_reward, view_reward, 
+      limit_desc, bro_desc, address, 
+      create_time, update_time, pm_id, 
+      is_main, req_type,delete_status,sole_count,max_bro,deal_point,commission_point,price_image_id)
+    values (#{id,jdbcType=INTEGER}, #{projectName,jdbcType=VARCHAR}, #{projectSummary,jdbcType=VARCHAR}, 
+      #{province,jdbcType=INTEGER}, #{city,jdbcType=INTEGER}, #{area,jdbcType=INTEGER}, 
+      #{price,jdbcType=DECIMAL}, #{brokerage,jdbcType=DECIMAL}, #{upArea,jdbcType=DECIMAL}, #{downArea,jdbcType=DECIMAL}, 
+      #{upSum,jdbcType=DECIMAL}, #{downSum,jdbcType=DECIMAL}, #{firstReward,jdbcType=DECIMAL}, #{viewReward,jdbcType=DECIMAL}, 
+      #{limitDesc,jdbcType=VARCHAR}, #{broDesc,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{pmId,jdbcType=INTEGER}, 
+      #{isMain,jdbcType=INTEGER}, #{reqType,jdbcType=INTEGER},0,#{soleCount,jdbcType=INTEGER},#{maxBro,jdbcType=DECIMAL},#{dealPoint,jdbcType=INTEGER},#{commissionPoint,jdbcType=INTEGER},#{priceImageId,jdbcType=INTEGER})
+    <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+    </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.houses.HousesProject" >
+    insert into t_houses_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="projectName != null" >
+        project_name,
+      </if>
+      <if test="projectSummary != null" >
+        project_summary,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="city != null" >
+        city,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="brokerage != null" >
+        brokerage,
+      </if>
+      <if test="upArea != null" >
+        up_area,
+      </if>
+      <if test="downArea != null" >
+        down_area,
+      </if>
+      <if test="upSum != null" >
+        up_Sum,
+      </if>
+      <if test="downSum != null" >
+        down_Sum,
+      </if>
+      <if test="firstReward != null" >
+        first_reward,
+      </if>
+      <if test="viewReward != null" >
+        view_reward,
+      </if>
+      <if test="limitDesc != null" >
+        limit_desc,
+      </if>
+      <if test="broDesc != null" >
+        bro_desc,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="pmId != null" >
+        pm_id,
+      </if>
+      <if test="isMain != null" >
+        is_main,
+      </if>
+      <if test="reqType != null" >
+        req_type,
+      </if>
+      <if test="deleteStatus != null" >
+        delete_status,
+      </if>
+      <if test="soleCount != null" >
+        sole_count,
+      </if>
+      <if test="maxBro != null" >
+        max_bro,
+      </if>
+      <if test="dealPoint != null" >
+        deal_point,
+      </if>
+      <if test="maxBro != null" >
+        commission_point,
+      </if>
+      <if test="priceImageId != null">
+      	price_image_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="projectName != null" >
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectSummary != null" >
+        #{projectSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        #{city,jdbcType=INTEGER},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="brokerage != null" >
+        #{brokerage,jdbcType=DECIMAL},
+      </if>
+      <if test="upArea != null" >
+        #{upArea,jdbcType=DECIMAL},
+      </if>
+      <if test="downArea != null" >
+        #{downArea,jdbcType=DECIMAL},
+      </if>
+      <if test="upSum != null" >
+        #{upSum,jdbcType=DECIMAL},
+      </if>
+      <if test="downSum != null" >
+        #{downSum,jdbcType=DECIMAL},
+      </if>
+      <if test="firstReward != null" >
+        #{firstReward,jdbcType=DECIMAL},
+      </if>
+      <if test="viewReward != null" >
+        #{viewReward,jdbcType=DECIMAL},
+      </if>
+      <if test="limitDesc != null" >
+        #{limitDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="broDesc != null" >
+        #{broDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmId != null" >
+        #{pmId,jdbcType=INTEGER},
+      </if>
+      <if test="isMain != null" >
+        #{isMain,jdbcType=INTEGER},
+      </if>
+      <if test="reqType != null" >
+        #{reqType,jdbcType=INTEGER},
+      </if>
+      <if test="deleteStatus != null" >
+        #{deleteStatus,jdbcType=INTEGER},
+      </if>
+       <if test="soleCount != null" >
+        #{soleCount,jdbcType=INTEGER},
+      </if>
+      <if test="maxBro != null" >
+        #{maxBro,jdbcType=DECIMAL},
+      </if>
+      <if test="dealPoint != null" >
+       #{dealPoint,jdbcType=INTEGER},
+      </if>
+      <if test="maxBro != null" >
+        #{commissionPoint,jdbcType=INTEGER},
+      </if>
+       <if test="priceImageId != null">
+      	 #{priceImageId,jdbcType=INTEGER},
+      </if>
+    </trim>
+    <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.houses.HousesProject" >
+    update t_houses_project
+    <set >
+      <if test="projectName != null" >
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectSummary != null" >
+        project_summary = #{projectSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=INTEGER},
+      </if>
+      <if test="city != null" >
+        city = #{city,jdbcType=INTEGER},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=INTEGER},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="brokerage != null" >
+        brokerage = #{brokerage,jdbcType=DECIMAL},
+      </if>
+      <if test="upArea != null" >
+        up_area = #{upArea,jdbcType=DECIMAL},
+      </if>
+      <if test="downArea != null" >
+        down_area = #{downArea,jdbcType=DECIMAL},
+      </if>
+      <if test="upSum != null" >
+        up_Sum = #{upSum,jdbcType=DECIMAL},
+      </if>
+      <if test="downSum != null" >
+        down_Sum = #{downSum,jdbcType=DECIMAL},
+      </if>
+      <if test="firstReward != null" >
+        first_reward = #{firstReward,jdbcType=DECIMAL},
+      </if>
+      <if test="viewReward != null" >
+        view_reward = #{viewReward,jdbcType=DECIMAL},
+      </if>
+      <if test="limitDesc != null" >
+        limit_desc = #{limitDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="broDesc != null" >
+        bro_desc = #{broDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pmId != null" >
+        pm_id = #{pmId,jdbcType=INTEGER},
+      </if>
+      <if test="isMain != null" >
+        is_main = #{isMain,jdbcType=INTEGER},
+      </if>
+      <if test="reqType != null" >
+        req_type = #{reqType,jdbcType=INTEGER},
+      </if>
+      <if test="deleteStatus != null" >
+        delete_status = #{deleteStatus,jdbcType=INTEGER},
+      </if>
+      <if test="soleCount != null" >
+        sole_count = #{soleCount,jdbcType=INTEGER},
+      </if>
+      <if test="maxBro != null" >
+        max_bro = #{maxBro,jdbcType=DECIMAL},
+      </if>
+      <if test="dealPoint != null" >
+       deal_point = #{dealPoint,jdbcType=INTEGER},
+      </if>
+      <if test="maxBro != null" >
+       commission_point = #{commissionPoint,jdbcType=INTEGER},
+      </if>
+       <if test="priceImageId != null">
+      	price_image_id = #{priceImageId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.houses.HousesProject" >
+    update t_houses_project
+    set project_name = #{projectName,jdbcType=VARCHAR},
+      project_summary = #{projectSummary,jdbcType=VARCHAR},
+      province = #{province,jdbcType=INTEGER},
+      city = #{city,jdbcType=INTEGER},
+      area = #{area,jdbcType=INTEGER},
+      price = #{price,jdbcType=DECIMAL},
+      brokerage = #{brokerage,jdbcType=DECIMAL},
+      up_area = #{upArea,jdbcType=DECIMAL},
+      down_area = #{downArea,jdbcType=DECIMAL},
+      up_sum = #{upSum,jdbcType=DECIMAL},
+      down_sum = #{downSum,jdbcType=DECIMAL},
+      first_reward = #{firstReward,jdbcType=DECIMAL},
+      view_reward = #{viewReward,jdbcType=DECIMAL},
+      limit_desc = #{limitDesc,jdbcType=VARCHAR},
+      bro_desc = #{broDesc,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      pm_id = #{pmId,jdbcType=INTEGER},
+      is_main = #{isMain,jdbcType=INTEGER},
+      req_type = #{reqType,jdbcType=INTEGER},
+      delete_status = #{deleteStatus,jdbcType=INTEGER},
+      sole_count = #{soleCount,jdbcType=INTEGER},
+      max_bro = #{maxBro,jdbcType=DECIMAL},
+       deal_point = #{dealPoint,jdbcType=INTEGER},
+       commission_point = #{commissionPoint,jdbcType=INTEGER},
+       price_image_id = #{priceImageId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM T_HOUSES_PROJECT P
+  	  <where>
+  	  	AND DELETE_STATUS =  0
+  		<if test="null != agentId" >
+	    	 AND P.ID IN (SELECT HOUSE_ID FROM T_CUSTOMER_APPLICATION A WHERE A.AGENT_ID=#{agentId,jdbcType=INTEGER})
+	    </if>
+	    <if test="null != project">
+	        <if test="null != project.reqType">
+	          AND P.REQ_TYPE =  #{project.reqType,jdbcType=INTEGER}
+	        </if>
+	        <if test="null != project.area">
+	          AND P.AREA =  #{project.area,jdbcType=INTEGER}
+	        </if>
+	        <if test="null != project.projectName">
+	          AND P.PROJECT_NAME like '%${project.projectName}%'
+	        </if>
+	    </if>
+  	</where>
+  </select>
+  <select id="queryHousesByConditions" parameterType="map" resultMap="HouseProjectMap">
+  	SELECT * FROM T_HOUSES_PROJECT P
+  	<where>
+  		AND DELETE_STATUS =  0
+  		<if test="null != agentId" >
+	    	 AND P.ID IN (SELECT HOUSE_ID FROM T_CUSTOMER_APPLICATION A WHERE A.AGENT_ID=#{agentId,jdbcType=INTEGER})
+	    </if>
+	    <if test="null != project">
+	        <if test="null != project.reqType">
+	          AND P.REQ_TYPE =  #{project.reqType,jdbcType=INTEGER}
+	        </if>
+	        <if test="null != project.area">
+	          AND P.AREA =  #{project.area,jdbcType=INTEGER}
+	        </if>
+	        <if test="null != project.projectName">
+	          AND P.PROJECT_NAME like '%${project.projectName}%'
+	        </if>
+	        <if test="null != project.orderStyle and ''!= project.orderStyle">
+	            <if test="'soleCount' == project.orderStyle">
+	                ORDER BY P.deal_point DESC
+	            </if>
+	            <if test="'maxBro' == project.orderStyle">
+	                ORDER BY P.commission_point DESC
+	            </if>
+	        </if>
+	        <if test="null == project.orderStyle or '' == project.orderStyle">
+	                ORDER BY P.UPDATE_TIME DESC
+	        </if>
+	    </if>
+	    <if test="null == project">
+	       ORDER BY P.UPDATE_TIME DESC
+	    </if> 
+  	</where>
+    <![CDATA[ LIMIT  #{_page.start,jdbcType=INTEGER}, #{_page.offset,jdbcType=INTEGER} ]]> 
+  </select>
+  <select id="checkHouseProjectName" parameterType="net.huimin.yk.web.model.houses.HousesProject" resultType="int">
+  	select count(1) from T_HOUSES_PROJECT
+  	<where>
+  		<if test="null != projectName">
+  			and project_name = #{projectName}
+  		</if>
+  		<if test="null != id">
+  			and id != #{id}
+  		</if>
+  	</where>
+  </select>
+</mapper>

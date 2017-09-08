@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.agent.StoreMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.agent.Store" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="store_name" property="storeName" jdbcType="VARCHAR" />
+    <result column="store_address" property="storeAddress" jdbcType="VARCHAR" />
+    <result column="admin_phone" property="adminPhone" jdbcType="VARCHAR" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, store_name, store_address, admin_phone, admin_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_store
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_store
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.agent.Store" >
+    insert into t_store (Id, store_name, store_address, 
+      admin_phone, admin_name)
+    values (#{id,jdbcType=INTEGER}, #{storeName,jdbcType=VARCHAR}, #{storeAddress,jdbcType=VARCHAR}, 
+      #{adminPhone,jdbcType=VARCHAR}, #{adminName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.agent.Store" >
+    insert into t_store
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="storeName != null" >
+        store_name,
+      </if>
+      <if test="storeAddress != null" >
+        store_address,
+      </if>
+      <if test="adminPhone != null" >
+        admin_phone,
+      </if>
+      <if test="adminName != null" >
+        admin_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="storeName != null" >
+        #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeAddress != null" >
+        #{storeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPhone != null" >
+        #{adminPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="adminName != null" >
+        #{adminName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.agent.Store" >
+    update t_store
+    <set >
+      <if test="storeName != null" >
+        store_name = #{storeName,jdbcType=VARCHAR},
+      </if>
+      <if test="storeAddress != null" >
+        store_address = #{storeAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="adminPhone != null" >
+        admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="adminName != null" >
+        admin_name = #{adminName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.agent.Store" >
+    update t_store
+    set store_name = #{storeName,jdbcType=VARCHAR},
+      store_address = #{storeAddress,jdbcType=VARCHAR},
+      admin_phone = #{adminPhone,jdbcType=VARCHAR},
+      admin_name = #{adminName,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  	 
+	<select id="queryStoresCountByConditions" parameterType="map" resultType="int">
+  	   select count(*)  from t_store 
+  	    <where>
+ 	    	<if test="null != param and null != param.keyword and param.keyword != ''">
+ 	    		or store_name like '%${param.keyword}%'
+ 	    		or store_address like '%${param.keyword}%'
+ 	    		or admin_phone like '%${param.keyword}%'
+ 	    		or admin_name like '%${param.keyword}%'
+ 	    	</if>
+ 	     </where>
+  </select>	 
+		 
+   <select id="queryStoresByConditions" parameterType="map" resultMap="BaseResultMap">
+  	    select * from t_store 
+  	    <where>
+ 	    	<if test="null != param and null != param.keyword and param.keyword != ''">
+ 	    		or store_name like '%${param.keyword}%'
+ 	    		or store_address like '%${param.keyword}%'
+ 	    		or admin_phone like '%${param.keyword}%'
+ 	    		or admin_name like '%${param.keyword}%'
+ 	    	</if>
+ 	     </where>
+  	     order by id desc
+         limit #{start}, #{offset}
+  </select>
+  
+  <select id="checkStoreName" parameterType="net.huimin.yk.web.model.agent.Store" resultType="int">
+  	select count(1) from t_store
+  	<where>
+  		<if test="null != storeName">
+  			and store_name = #{storeName}
+  		</if>
+  		<if test="null != id">
+  			and id != #{id}
+  		</if>
+  	</where>
+  </select>
+  
+</mapper>

@@ -1,0 +1,80 @@
+html{
+	background: #ffffff;
+}
+
+.list_ul{
+	padding:3px;
+}
+.list_ul .tbox>div:nth-of-type(2){
+	width:100%;
+}
+
+.list_ul .img_wrap{
+	display: block;
+	width: 130px;
+	height:132px;
+	margin:3px;
+}
+.list_ul img{
+	width:100%;
+	height:100%;
+}
+
+
+.list_ul dl{
+	direction: ltr;
+	overflow: hidden;
+}
+.list_ul dt, .list_ul dd{
+	padding:3px;
+	width:100%;
+	float: left;
+	text-align: center;
+}
+.list_ul dd{
+	width:50%;
+}
+.list_ul dd:nth-of-type(n+5){display: none;}
+
+.list_ul dt label{
+	display: block;
+	line-height:40px;
+	background: #baa995;
+	color:#ffffff;
+	font-size:15px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	padding:0 3px;
+}
+
+.list_ul dd a{
+	display: block;
+	font-size:13px;
+	color: #baa995;
+	border:1px solid #ebebdf;
+	height: 40px;
+	line-height: 40px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow:ellipsis;
+	padding:0 3px;
+}
+
+
+/****************************/
+.list_ul li:nth-of-type(2n){
+	direction: rtl;
+}
+/****/
+.list_ul li:nth-of-type(4n+2){}
+.list_ul li:nth-of-type(4n+2) dt label{background: #86bbb1;}
+.list_ul li:nth-of-type(4n+2) dd a{color:#86bbb1;border-color:#d2deda;}
+
+.list_ul li:nth-of-type(4n+3){}
+.list_ul li:nth-of-type(4n+3) dt label{background: #85c77f;}
+.list_ul li:nth-of-type(4n+3) dd a{color:#86bbb1;border-color:#d8e4d8;}
+
+.list_ul li:nth-of-type(4n+4){}
+.list_ul li:nth-of-type(4n+4) dt label{background: #91a6bb;}
+.list_ul li:nth-of-type(4n+4) dd a{color:#86bbb1;border-color:#dcdcde;}

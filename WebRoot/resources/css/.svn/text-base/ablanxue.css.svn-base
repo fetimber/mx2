@@ -1,0 +1,50 @@
+﻿/* CSS Document */
+body,h1,h2,h3,h4,h5,h6,p,ul,ol,li,form,img,dl,dt,dd,table,th,td,blockquote,fieldset,div,strong,label,em{margin:0;padding:0;border:0;}
+ul,ol,li{list-style:none;}
+input,button{margin:0;font-size:12px;vertical-align:middle;}
+body{font-size:12px;font-family:Arial, Helvetica, sans-serif; color:#333; margin:0 auto; }
+table{border-collapse:collapse;border-spacing:0;}
+a{ color:#333; text-decoration:none;}
+a:hover{ text-decoration:none;}
+
+.tab01-log{ width:360px; margin:20px auto;}
+.tab01-log td{ padding-bottom:12px;}
+#numkeybord{padding:10px; position:absolute; background:#ddd; width:272px; font-size:12px; height:283px; display:none;}
+#keymain{  width:100%; }
+#keymain li{ background:#fff;border:1px solid #ccc; text-align:center;margin:2px;display:inline; line-height:50px; font-size:24px; width:84px; height:50px; display:block; float:left; color:#666; cursor:pointer;}
+#keymain li:hover{
+	background:#f0f0f0;
+	color:#333;
+}
+#keymain li#esc{ font-size:16px;}
+#esc{
+	width:174px!important;
+	color:#b89058!important;
+}
+#esc:hover{
+	background:#f0f0f0!importnat;
+	color:#999!important;
+}
+.text{ width:200px; height:20px; line-height:20px; border:1px solid #ccc;}
+#back,#clear{
+	background:#fff!important;
+	font-size:16px!important;
+	color:#b89058!important;
+}
+#back:hover{
+	background:#f0f0f0!importnat;
+	color:#999!important;
+}
+#clear:hover{
+	background:#f0f0f0!importnat;
+	color:#999!important;
+}
+#enter{
+	background:#fff!important;
+	font-size:18px!important;
+	color:#ff671c!important;
+}
+#enter:hover{
+	background:#f0f0f0!importnat;
+	color:#999!important;
+}

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.money.MoneyDetailMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.money.MoneyDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="application_id" property="applicationId" jdbcType="INTEGER" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+    <result column="operater_id" property="operaterId" jdbcType="INTEGER" />
+    <result column="operater_time" property="operaterTime" jdbcType="TIMESTAMP" />
+    
+    <association property="operaterInfo" column="operater_id" select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+    
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, application_id, result, operater_id , operater_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_money_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByApplicationId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_money_detail
+    where application_id = #{id,jdbcType=INTEGER}
+    order by operater_time desc
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_money_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.money.MoneyDetail" >
+    insert into t_money_detail (id, application_id, result, 
+      operater_id , operater_time)
+    values (#{id,jdbcType=INTEGER} , #{applicationId,jdbcType=INTEGER} , #{result,jdbcType=VARCHAR}, 
+      #{operaterId,jdbcType=INTEGER} , #{operaterTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.money.MoneyDetail" >
+    insert into t_money_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="applicationId != null" >
+        application_id,
+      </if>
+      <if test="result != null" >
+        result,
+      </if>
+      <if test="operaterId != null" >
+        operater_id,
+      </if>
+      <if test="operaterTime != null" >
+        operater_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="applicationId != null" >
+        #{applicationId,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="operaterId != null" >
+        #{operaterId,jdbcType=INTEGER},
+      </if>
+      <if test="operaterTime != null" >
+        #{operaterTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.money.MoneyDetail" >
+    update t_money_detail
+    <set >
+      <if test="applicationId != null" >
+        application_id = #{applicationId,jdbcType=INTEGER},
+      </if>
+      <if test="result != null" >
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="operaterId != null" >
+        operater_id = #{operaterId,jdbcType=INTEGER},
+      </if>
+            <if test="operaterTime != null" >
+        operater_time = #{operaterTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.money.MoneyDetail" >
+    update t_money_detail
+    set application_id = #{applicationId,jdbcType=INTEGER},
+      result = #{result,jdbcType=VARCHAR},
+      operater_id = #{operaterId,jdbcType=INTEGER},
+      operater_time = #{operaterTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

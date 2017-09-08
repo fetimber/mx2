@@ -1,0 +1,203 @@
+package net.huimin.yk.web.actions.admin;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import net.huimin.common.cnst.Const;
+import net.huimin.common.helper.Judge;
+import net.huimin.common.mvc.AbstractAction;
+import net.huimin.yk.web.model.common.MainInfo;
+import net.huimin.yk.web.model.system.SysMenu;
+import net.huimin.yk.web.model.system.SysRole;
+import net.huimin.yk.web.model.system.SysUser;
+import net.huimin.yk.web.services.common.CommonService;
+import net.huimin.yk.web.services.system.UserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+public class UserAction extends AbstractAction{
+
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private CommonService commonService;
+	
+	private List<SysRole> roleList;
+	
+	private SysUser user;
+	
+	private SysRole role;
+	
+	private String checked;
+	
+    private MainInfo  info;
+	
+	public String view() {
+		this.getPage().setOffset(6);
+		this.getPage().setStart((this.getPage().getCurrent() -1 ) * this.getPage().getOffset());
+		
+		if(Judge.isNotNull(this.user) && Judge.isNotNull(this.user.getId())){
+			this.user = this.userService.queryUser(this.user.getId());
+		}
+			
+		roleList = this.userService.queryRoleList(new SysRole());
+		
+		this.userService.queryAllUser(this.getPage(), user);
+		return "view";
+	}
+
+	public String role(){
+		
+		roleList = this.userService.queryRoleList(new SysRole());
+		
+		if(Judge.isNotNull(this.role) && Judge.isNotNull(this.role.getId())){
+		   this.role = this.userService.queryRole(this.role.getId());	
+		}
+	
+		
+		return "role";
+	}
+	
+	public String rolesave(){
+		if(Judge.isNotNull(this.role)){
+			Boolean result = false;
+			SysRole  newBean = this.userService.queryRoleByName(this.role.getRoleName());
+			
+			if(Judge.isNull(newBean)){
+				result = this.userService.saveOrUpdateRole(this.role);
+				
+				if(result){
+					this.role = null;
+				} else {
+					this.pushRequest("message",  "更新失败");
+				}
+			}else{
+				this.pushRequest("message",  "存在相同角色名称,请修改后保存");	
+			}	
+		}else {
+			this.pushRequest("message",  "无法新增保存,仅在修改后保存");
+		}
+		
+		return this.role();	
+	}
+	
+	public String roledel(){
+		Boolean result =false;
+		if(Judge.isNotNull(this.role)){			
+			result = this.userService.deleteRole(this.role) == 1;
+		
+			if(result){
+				this.user = null;
+			} 
+		}
+		this.pushJSON("result", result);
+		return  RESULT_JSON;	
+	}
+	
+	public String main(){
+		info = commonService.queryMainPageInfo();
+		
+		return "main";
+	}
+	
+	public String save(){	
+		if(Judge.isNotNull(this.user)){		
+			this.user.setUserType(Const.MANAGER_TYPE);
+
+			Boolean result = this.userService.vaildUser(user);
+ 
+			if(result){
+				result  = this.userService.saveOrUpdateUser(this.user);
+				if(result){
+					this.user = null;
+				} else {
+					this.pushRequest("message",  "操作失败");
+				}
+			} else {
+				this.user.setLoginName(null);
+				this.pushRequest("message",  "已存在相同登录名用户，请重新填写");
+			}	
+		}else {
+			this.pushRequest("message",  "无法新增保存,仅在修改后保存");
+		}
+		
+		return this.view();
+	}
+	
+	public String delete(){
+		Boolean result =false;
+		if(Judge.isNotNull(this.user)){			
+			result = this.userService.deleteUser(this.user);
+			
+			if(result){
+				this.user = null;
+			} 
+		}
+		this.pushJSON("result", result);
+		return  RESULT_JSON;	
+	}
+	
+	public String role_auth() {
+		List<SysMenu> list = this.userService.queryAllMenus(Judge.isNull(this.role) ? null : this.role.getId());
+		this.pushRequest("menus", list);
+		return "role-auth";
+	}
+	
+	public String role_auth_save() {
+		boolean rslt = false;
+		if(Judge.isNotEmpty(this.checked)){
+			String[] sp = this.checked.split(",");
+			List<Integer> menus = new ArrayList<Integer>();
+			for (int i = 0; i < sp.length; i++) {
+				menus.add(Integer.valueOf(sp[i]));
+			}
+			rslt = this.userService.saveRoleMenu(menus,this.role.getId());
+		} else {
+			rslt = this.userService.deleteRoleMenu(this.role.getId());
+		}
+		this.pushJSON("result", Boolean.valueOf(rslt));
+		return "json";
+	}
+	
+	public SysUser getUser() {
+		return user;
+	}
+
+	public void setUser(SysUser user) {
+		this.user = user;
+	}
+
+	public List<SysRole> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<SysRole> roleList) {
+		this.roleList = roleList;
+	}
+
+	public SysRole getRole() {
+		return role;
+	}
+
+	public void setRole(SysRole role) {
+		this.role = role;
+	}
+
+	public String getChecked() {
+		return checked;
+	}
+
+	public void setChecked(String checked) {
+		this.checked = checked;
+	}
+
+	public MainInfo getInfo() {
+		return info;
+	}
+
+	public void setInfo(MainInfo info) {
+		this.info = info;
+	}
+	
+}

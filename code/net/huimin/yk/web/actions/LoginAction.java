@@ -1,0 +1,120 @@
+package net.huimin.yk.web.actions;
+
+import java.util.Date;
+
+import net.huimin.common.cnst.Const;
+import net.huimin.common.cnst.ConstOperate;
+import net.huimin.common.helper.CodeHelper;
+import net.huimin.common.helper.EmptyBean;
+import net.huimin.common.helper.Judge;
+import net.huimin.common.mvc.AbstractAction;
+import net.huimin.yk.web.model.common.OperateRecord;
+import net.huimin.yk.web.model.system.SysUser;
+import net.huimin.yk.web.services.common.CommonService;
+import net.huimin.yk.web.services.system.UserService;
+
+import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
+import org.springframework.beans.factory.annotation.Autowired;
+
+
+/**
+ * 跳转到登录页面
+ * @ClassName: LoginAction 
+ * @Description: 跳转到登录页面
+ * @author 胡笑尘 huxiaochen@hmeg.net
+ */
+@Results({@Result(name="login",location="login.jsp"),
+	      @Result(name="admin",location="admin/index",type="redirect")})
+public class LoginAction extends AbstractAction {
+
+	@Autowired
+	private CommonService commonService; 
+	@Autowired
+	private UserService userService;
+	
+	private SysUser user;
+	
+	private static final String SPACE_ADMIN = "admin";
+	
+	@Override
+	public String execute() {
+		return RESULT_LOGIN;
+	}
+	
+	/**
+	 * 用户后台登录
+	 * @return
+	 */
+	public String confirm(){
+		String result = RESULT_LOGIN;
+		
+		// 验证码
+				if (CodeHelper.isNull(this.getCaptcha())
+						|| CodeHelper.isNull(this.getSession().get("captcha"))
+						|| !this.getCaptcha().equalsIgnoreCase(
+								this.getSession().get("captcha").toString())) {
+					this.pushRequest("message", "验证码错误");
+				} else {
+		
+		if(Judge.isNotNull(this.user)){
+				//后台类型
+				this.user.setUserType(Const.MANAGER_TYPE);
+				SysUser logined = this.userService.userLogin(this.user);
+				
+				//日志记录
+				if(Judge.isNotNull(logined)){
+					OperateRecord record = EmptyBean.operateRecord("后台登录", 
+							ServletActionContext.getRequest().getRemoteAddr(), ConstOperate.OPERATE_LOGIN, 
+							logined.getUserType(), logined.getId());
+		
+					commonService.operatLog(record);
+					this.pushSession(Const.USERINFO_IN_SESSION, logined);
+					
+					//更新最后登录时间
+					logined.setLastLogintime(new Date());
+					logined.setIp(ServletActionContext.getRequest().getRemoteAddr());
+					
+					if( this.userService.userUpdate(logined)){		
+						result= SPACE_ADMIN;	
+					}
+				}
+				else{
+					this.user = null;
+				    this.pushRequest("message", "用户名或密码错误，请重新输入");	
+				}	
+		  }		
+		}
+		return result;
+	}
+	
+
+	public String out(){
+		if(CodeHelper.isNotNull(this.logined(false))){
+			this.getSession().remove(Const.USERINFO_IN_SESSION);
+			this.getSession().clear();
+		}
+		return this.execute();
+	}
+	
+	
+	/**
+	 * AJAX获取验证码
+	 * @return
+	 */
+	public String code(){
+		this.pushJSON("captcha", this.getSession().get("captcha"));
+		return RESULT_JSON;
+	}
+	
+	
+	public SysUser getUser() {
+		return user;
+	}
+
+	public void setUser(SysUser user) {
+		this.user = user;
+	}
+	
+}

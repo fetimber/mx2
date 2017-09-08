@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.system.SysAccountMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.system.SysAccount" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="cash" property="cash" jdbcType="DECIMAL" />
+    <result column="usable" property="usable" jdbcType="DECIMAL" />
+    <result column="total" property="total" jdbcType="DECIMAL" />
+    <result column="pending" property="pending" jdbcType="DECIMAL" />
+    <result column="history" property="history" jdbcType="DECIMAL" />
+    <result column="cashing" property="cashing" jdbcType="DECIMAL" />  
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, cash, usable, total, pending , history ,cashing
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sys_agent_account
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sys_agent_account
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.system.SysAccount" >
+    insert into t_sys_agent_account ( cash, usable, 
+      total, pending , cashing)
+    values ( #{cash,jdbcType=DECIMAL}, #{usable,jdbcType=DECIMAL}, 
+      #{total,jdbcType=DECIMAL}, #{pending,jdbcType=DECIMAL}) , #{history,jdbcType=DECIMAL} , #{cashing,jdbcType=DECIMAL}) 
+      <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+      </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.system.SysAccount" >
+    insert into t_sys_agent_account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cash != null" >
+        cash,
+      </if>
+      <if test="usable != null" >
+        usable,
+      </if>
+      <if test="total != null" >
+        total,
+      </if>
+      <if test="pending != null" >
+        pending,
+      </if>
+      <if test="history != null" >
+        history,
+      </if>
+      <if test="cashing != null" >
+        cashing,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cash != null" >
+        #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="usable != null" >
+        #{usable,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null" >
+        #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="pending != null" >
+        #{pending,jdbcType=DECIMAL},
+      </if>
+      <if test="history != null" >
+        #{history,jdbcType=DECIMAL},
+      </if>
+       <if test="cashing != null" >
+        #{cashing,jdbcType=DECIMAL},
+       </if>
+    </trim>
+    <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+      
+
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.system.SysAccount" >
+    update t_sys_agent_account
+    <set >
+      <if test="cash != null" >
+        cash = #{cash,jdbcType=DECIMAL},
+      </if>
+      <if test="usable != null" >
+        usable = #{usable,jdbcType=DECIMAL},
+      </if>
+      <if test="total != null" >
+        total = #{total,jdbcType=DECIMAL},
+      </if>
+      <if test="pending != null" >
+        pending = #{pending,jdbcType=DECIMAL},
+      </if>
+      <if test="history != null" >
+       history = #{history,jdbcType=DECIMAL},
+      </if>
+      <if test="cashing != null" >
+       cashing = #{cashing,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.system.SysAccount" >
+    update t_sys_agent_account
+    set cash = #{cash,jdbcType=DECIMAL},
+      usable = #{usable,jdbcType=DECIMAL},
+      total = #{total,jdbcType=DECIMAL},
+      pending = #{pending,jdbcType=DECIMAL},
+      history = #{history,jdbcType=DECIMAL},
+      cashing = #{cashing,jdbcType=DECIMAL},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.common.ConfigMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.common.Config" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="group_name" property="groupName" jdbcType="VARCHAR" />
+    <result column="group_key" property="groupKey" jdbcType="VARCHAR" />
+    <result column="config_name" property="configName" jdbcType="VARCHAR" />
+    <result column="config_key" property="configKey" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <resultMap id="AgentResultMap" type="net.huimin.yk.web.model.common.AgentInfo" >
+      <result column="realName" property="realName" jdbcType="VARCHAR" />
+      <result column="amount" property="amount" jdbcType="INTEGER" />
+      <result column="phone" property="phone" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <resultMap id="MainResultMap" type="net.huimin.yk.web.model.common.MainInfo" >
+    <result column="reftotal" property="refTotal" jdbcType="INTEGER" />
+    <result column="todayref" property="todayRef" jdbcType="INTEGER" />
+    <result column="regtotal" property="regTotal" jdbcType="INTEGER" />
+    <result column="todayreg" property="todayReg" jdbcType="INTEGER" />
+    <result column="baltotal" property="balTotal" jdbcType="INTEGER" />
+    <result column="todaybal" property="todayBal" jdbcType="INTEGER" />
+    <association property="list" column="reftotal" select="net.huimin.yk.web.dao.common.ConfigMapper.selectAgentIop10"></association> 
+  </resultMap>
+  
+  <resultMap id="CustomerResultMap" type="net.huimin.yk.web.model.common.CustomerInfo" >
+    <result column="monthref" property="monthRef" jdbcType="INTEGER" />
+    <result column="monthriv" property="monthRiv" jdbcType="INTEGER" />
+    <result column="monthsig" property="monthSig" jdbcType="INTEGER" />
+    <result column="reftotal" property="refTotal" jdbcType="INTEGER" />
+    <result column="refsig" property="refSig" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, group_name, group_key, config_name, config_key
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="selectMenuInfo" resultMap="MainResultMap">
+       select  (select count(*) from t_customer_application) as reftotal, 
+        (select count(*) from t_customer_application where date(refer_time)  =  curdate()) as todayref, 
+        (select count(*) from t_agent_user a, t_sys_user b where a.user_id = b.id) as regtotal, 
+        (select count(*) from t_agent_user a, t_sys_user b where a.user_id = b.id and date(b.create_time) = curdate() ) as todayreg, 
+        (select sum(final_money) from t_money_balance) as baltotal, 
+        (select count(*) from t_money_balance where date(finish_time)  =  curdate()) as todaybal 
+       FROM dual
+  </select>
+  
+  <select id="selectAgentIop10" resultMap="AgentResultMap" parameterType="java.lang.Integer">
+        select c.real_name  as realName  , a.history as amount  ,c.phone as  phone 
+		from t_sys_agent_account a, t_agent_user b ,t_sys_user c
+		where a.id = b.account_id  and b.user_id = c.id
+		order by history DESC
+		limit 10  
+  </select>
+  
+   <select id="selectCustomerInfoByAgentId" resultMap="CustomerResultMap" parameterType="java.lang.Integer">
+       select  (select count(*) from t_customer_application where agent_id = #{id,jdbcType=INTEGER} and month(date(refer_time))  =  month(curdate())) as monthref, 
+        (select count(*) from t_customer_application where agent_id = #{id,jdbcType=INTEGER} and month(date(refer_time))  =  month(curdate()) and customer_status = 4) as monthriv, 
+        (select count(*) from t_customer_application where agent_id = #{id,jdbcType=INTEGER} and month(date(refer_time))  =  month(curdate()) and customer_status = 6) as monthsig, 
+        (select count(*) from t_customer_application where agent_id = #{id,jdbcType=INTEGER}) as reftotal, 
+        (select count(*) from t_customer_application where agent_id = #{id,jdbcType=INTEGER}  and customer_status = 6) as refsig 
+       FROM dual
+  </select>
+
+  <select id="selectBySearch" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.common.Config"  >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_config
+    <trim prefix="where 1=1 " suffixOverrides=",">
+      <if test="id != null" >
+        and id= #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null" >
+        and group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupKey != null" >
+        and group_key = #{groupKey,jdbcType=VARCHAR},
+      </if>
+      <if test="configName != null" >
+        and config_name = #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configKey != null" >
+        and config_key = #{configKey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    order by id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.common.Config" >
+    insert into t_config (id, group_name, group_key, 
+      config_name, config_key)
+    values (#{id,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{groupKey,jdbcType=VARCHAR}, 
+      #{configName,jdbcType=VARCHAR}, #{configKey,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.common.Config" >
+    insert into t_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="groupName != null" >
+        group_name,
+      </if>
+      <if test="groupKey != null" >
+        group_key,
+      </if>
+      <if test="configName != null" >
+        config_name,
+      </if>
+      <if test="configKey != null" >
+        config_key,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupKey != null" >
+        #{groupKey,jdbcType=VARCHAR},
+      </if>
+      <if test="configName != null" >
+        #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configKey != null" >
+        #{configKey,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.common.Config" >
+    update t_config
+    <set >
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupKey != null" >
+        group_key = #{groupKey,jdbcType=VARCHAR},
+      </if>
+      <if test="configName != null" >
+        config_name = #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configKey != null" >
+        config_key = #{configKey,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+   <update id="updateByGroupKeySelective" parameterType="net.huimin.yk.web.model.common.Config" >
+    update t_config
+    <set >
+      <if test="groupName != null" >
+        group_name = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupKey != null" >
+        group_key = #{groupKey,jdbcType=VARCHAR},
+      </if>
+      <if test="configName != null" >
+        config_name = #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configKey != null" >
+        config_key = #{configKey,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where group_key = #{groupKey,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.common.Config" >
+    update t_config
+    set group_name = #{groupName,jdbcType=VARCHAR},
+      group_key = #{groupKey,jdbcType=VARCHAR},
+      config_name = #{configName,jdbcType=VARCHAR},
+      config_key = #{configKey,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.sea.SeaWorkerPoorMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.sea.SeaWorkerPoor" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="family_people" property="familyPeople" jdbcType="VARCHAR" />
+    <result column="family_income" property="familyIncome" jdbcType="VARCHAR" />
+    <result column="poor_reason" property="poorReason" jdbcType="VARCHAR" />
+    <result column="in_unit" property="inUnit" jdbcType="INTEGER" />
+    <result column="check_unit" property="checkUnit" jdbcType="VARCHAR" />
+    <result column="change_memo" property="changeMemo" jdbcType="VARCHAR" />
+    <result column="poor_level" property="poorLevel" jdbcType="VARCHAR" />
+    <result column="worker_id" property="workerId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="check_flag" property="checkFlag" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="send_dept" property="sendDept" jdbcType="VARCHAR" /> 
+    <result column="send_thing" property="sendThing" jdbcType="VARCHAR" /> 
+    <result column="send_remark" property="sendRemark" jdbcType="VARCHAR" /> 
+    <result column="check_desc" property="checkDesc" jdbcType="VARCHAR" />
+  </resultMap>
+  
+    <resultMap id="WorkerPoorMap" type="net.huimin.yk.web.model.sea.SeaWorkerPoor" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="family_people" property="familyPeople" jdbcType="VARCHAR" />
+    <result column="family_income" property="familyIncome" jdbcType="VARCHAR" />
+    <result column="poor_reason" property="poorReason" jdbcType="VARCHAR" />
+    <result column="in_unit" property="inUnit" jdbcType="INTEGER" />
+    <result column="check_unit" property="checkUnit" jdbcType="VARCHAR" />
+    <result column="change_memo" property="changeMemo" jdbcType="VARCHAR" />
+    <result column="poor_level" property="poorLevel" jdbcType="VARCHAR" />
+    <result column="worker_id" property="workerId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="check_flag" property="checkFlag" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="send_dept" property="sendDept" jdbcType="VARCHAR" /> 
+    <result column="send_thing" property="sendThing" jdbcType="VARCHAR" /> 
+    <result column="send_remark" property="sendRemark" jdbcType="VARCHAR" /> 
+    <result column="check_desc" property="checkDesc" jdbcType="VARCHAR" />
+    
+    <association property="workerInfo" column="worker_id" select="net.huimin.yk.web.dao.sea.SeaWorkerMapper.selectByPrimaryKey" />
+    <association property="unitInfo" column="in_unit" select="net.huimin.yk.web.dao.sea.SeaUnitMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    Id, family_people, family_income, poor_reason, in_unit, check_unit, change_memo, 
+    poor_level, worker_id ,create_time,check_flag,send_time,send_dept,send_thing,send_remark,check_desc
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="WorkerPoorMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sea_worker_poor
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByWorkerId" resultMap="WorkerPoorMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sea_worker_poor
+    where worker_id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="queryCountByConditions" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultType="int">
+  	  SELECT COUNT(*) from T_SEA_WORKER_POOR poor 
+  	     left join T_SEA_WORKER worker on poor.worker_id = worker.id
+  	     left join t_sea_govunit unit on poor.in_unit = unit.id
+  	    <where>
+  	    	<if test="null != keyword and keyword != ''">
+  	    	   
+  	    		or worker.worker_name like '%${keyword}%'
+  	    		or worker.worker_idnumber like '%${keyword}%'
+  	    		or unit.unit_name like '%${keyword}%'
+  	    		or worker.worker_address like '%${keyword}%'
+  	    		or worker.worker_phone like '%${keyword}%'
+  	    		or poor.send_dept like '%${keyword}%'
+  	    		or poor.send_thing like '%${keyword}%'
+  	    		or poor.send_remark like '%${keyword}%'
+  	    	</if>
+  	    	<if test="null != ageMin">
+  	    		and worker.worker_age >= #{ageMin}
+  	    	</if>
+  	    	<if test="null != ageMax">
+  	    		<![CDATA[and worker.worker_age <= #{ageMax}]]>
+  	    	</if>
+  	    	<if test="null != familyCountMin">
+  	    		and poor.family_people >= #{familyCountMin}
+  	    	</if>
+  	    	<if test="null != familyCountMax">
+  	    		<![CDATA[and poor.family_people <= #{familyCountMax}]]>
+  	    	</if>
+  	    	<if test="null != incomeMin">
+  	    		and poor.family_income >= #{incomeMin}
+  	    	</if>
+  	    	<if test="null != incomeMax">
+  	    		<![CDATA[and poor.family_income <= #{incomeMax}]]>
+  	    	</if>
+  	    	<if test="null != level and level != ''">
+  	    		and poor.poor_level = #{level}
+  	    	</if>
+  	    	<if test="null != honorTimeStart">
+  	    		and poor.create_time >= #{honorTimeStart}
+  	    	</if>
+  	    	<if test="null != honorTimeEnd">
+  	    		<![CDATA[and poor.create_time <= #{honorTimeEnd}]]>
+  	    	</if>
+  	    	<if test="null != reason and reason != ''">
+  	    		<![CDATA[and poor.poor_reason = #{reason}]]>
+  	    	</if>
+  	    	<if test="null != check and check != ''">
+  	    	    <if test="check == '-1'">
+  	    		   <![CDATA[and poor.check_flag in ('1','2','0')]]>
+  	    	    </if>
+  	    	     <if test="check == '-2'">
+  	    		   <![CDATA[and (poor.check_flag  is null or poor.check_flag = '')]]>
+  	    		</if>
+  	    		<if test="check != '-1' and check != '-2'">
+  	    		   <![CDATA[and poor.check_flag = #{check}]]>
+  	    		</if>	
+  	    	</if>
+  	    	<if test="null != checkflag and checkflag != ''">
+  	    		<![CDATA[and poor.check_flag = #{checkflag}]]>
+  	    	</if>
+            <if test="null != sex and sex != ''">
+  	    		<![CDATA[and worker.worker_sex = #{sex}]]>
+  	    	</if>
+  	    	<if test="null != cityId and cityId != ''">
+  	    		<![CDATA[and unit.unit_city = #{cityId}]]>
+  	    	</if>
+  	    	<if test="null != unit and unit != ''">
+  	    		<![CDATA[and unit.id = #{unit}]]>
+  	    	</if>
+  	    </where>
+  </select>
+  
+  <select id="queryResultByConditions" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultMap="WorkerPoorMap">  
+  	  select * from T_SEA_WORKER_POOR poor 
+  	     left join T_SEA_WORKER worker on poor.worker_id = worker.id
+  	     left join t_sea_govunit unit on poor.in_unit = unit.id
+  	    <where>
+  	    	<if test="null != keyword and keyword != ''">
+  	    		or worker.worker_name like '%${keyword}%'
+  	    		or worker.worker_idnumber like '%${keyword}%'
+  	    		or unit.unit_name like '%${keyword}%'
+  	    		or worker.worker_address like '%${keyword}%'
+  	    		or worker.worker_phone like '%${keyword}%'
+  	    		or poor.send_dept like '%${keyword}%'
+  	    		or poor.send_thing like '%${keyword}%'
+  	    		or poor.send_remark like '%${keyword}%'
+  	    	</if>
+  	    	<if test="null != ageMin">
+  	    		and worker.worker_age >= #{ageMin}
+  	    	</if>
+  	    	<if test="null != ageMax">
+  	    		<![CDATA[and worker.worker_age <= #{ageMax}]]>
+  	    	</if>
+  	    	<if test="null != familyCountMin">
+  	    		and poor.family_people >= #{familyCountMin}
+  	    	</if>
+  	    	<if test="null != familyCountMax">
+  	    		<![CDATA[and poor.family_people <= #{familyCountMax}]]>
+  	    	</if>
+  	    	<if test="null != incomeMin">
+  	    		and poor.family_income >= #{incomeMin}
+  	    	</if>
+  	    	<if test="null != incomeMax">
+  	    		<![CDATA[and poor.family_income <= #{incomeMax}]]>
+  	    	</if>
+  	    	<if test="null != level and level != ''">
+  	    		and poor.poor_level = #{level}
+  	    	</if>
+  	    	<if test="null != honorTimeStart">
+  	    		and poor.create_time >= #{honorTimeStart}
+  	    	</if>
+  	    	<if test="null != honorTimeEnd">
+  	    		<![CDATA[and poor.create_time <= #{honorTimeEnd}]]>
+  	    	</if>
+  	    	<if test="null != reason and reason != ''">
+  	    		<![CDATA[and poor.poor_reason = #{reason}]]>
+  	    	</if>
+  	    	<if test="null != check and check != ''">
+  	    	   <if test="check == '-1'">
+  	    		   <![CDATA[and poor.check_flag in ('1','2','0')]]>
+  	    	    </if>
+  	    	     <if test="check == '-2'">
+  	    		   <![CDATA[and (poor.check_flag  is null or poor.check_flag = '')]]>
+  	    		</if>
+  	    		<if test="check != '-1' and check != '-2'">
+  	    		   <![CDATA[and poor.check_flag = #{check}]]>
+  	    		</if>
+  	    	</if>
+  	    	<if test="null != checkflag and checkflag != ''">
+  	    		<![CDATA[and poor.check_flag = #{checkflag}]]>
+  	    	</if>
+            <if test="null != sex and sex != ''">
+  	    		<![CDATA[and worker.worker_sex = #{sex}]]>
+  	    	</if>
+  	    	<if test="null != cityId and cityId != ''">
+  	    		<![CDATA[and unit.unit_city = #{cityId}]]>
+  	    	</if>
+  	    	<if test="null != unit and unit != ''">
+  	    		<![CDATA[and unit.id = #{unit}]]>
+  	    	</if>
+  	    </where>
+  	   	    
+  	     <if test="null != page"> 
+  	    	<![CDATA[ 	ORDER BY poor.ID desc limit #{page.start}, #{page.offset} ]]> 
+  	    </if>
+    
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sea_worker_poor
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.sea.SeaWorkerPoor" >
+    insert into t_sea_worker_poor (Id, family_people, family_income, 
+      poor_reason, in_unit, check_unit, 
+      change_memo, poor_level, worker_id,create_time,check_flag,
+      send_time,send_dept,send_thing,send_remark
+      )
+    values (#{id,jdbcType=INTEGER}, #{familyPeople,jdbcType=VARCHAR}, #{familyIncome,jdbcType=VARCHAR}, 
+      #{poorReason,jdbcType=VARCHAR}, #{inUnit,jdbcType=INTEGER}, #{checkUnit,jdbcType=VARCHAR}, 
+      #{changeMemo,jdbcType=VARCHAR}, #{poorLevel,jdbcType=VARCHAR}, #{workerId,jdbcType=INTEGER},
+      #{createTime,jdbcType=TIMESTAMP}, #{checkFlag,jdbcType=VARCHAR},
+      #{sendTime,jdbcType=TIMESTAMP},#{sendDept,jdbcType=VARCHAR},
+      #{sendThing,jdbcType=VARCHAR},#{sendRemark,jdbcType=VARCHAR}
+      )
+      <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+      </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.sea.SeaWorkerPoor" >
+    insert into t_sea_worker_poor
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="familyPeople != null" >
+        family_people,
+      </if>
+      <if test="familyIncome != null" >
+        family_income,
+      </if>
+      <if test="poorReason != null" >
+        poor_reason,
+      </if>
+      <if test="inUnit != null" >
+        in_unit,
+      </if>
+      <if test="checkUnit != null" >
+        check_unit,
+      </if>
+      <if test="changeMemo != null" >
+        change_memo,
+      </if>
+      <if test="poorLevel != null" >
+        poor_level,
+      </if>
+      <if test="workerId != null" >
+        worker_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="checkDesc != null" >
+        check_desc,
+      </if>
+      <if test="checkFlag != null || checkFlag ==''" >
+        check_flag,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="sendDept != null" >
+        send_dept,
+      </if>
+      <if test="sendThing != null" >
+        send_thing,
+      </if>
+       <if test="sendRemark != null" >
+        send_remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="familyPeople != null" >
+        #{familyPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="familyIncome != null" >
+        #{familyIncome,jdbcType=VARCHAR},
+      </if>
+      <if test="poorReason != null" >
+        #{poorReason,jdbcType=VARCHAR},
+      </if>
+      <if test="inUnit != null" >
+        #{inUnit,jdbcType=INTEGER},
+      </if>
+      <if test="checkUnit != null" >
+        #{checkUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="changeMemo != null" >
+        #{changeMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="poorLevel != null" >
+        #{poorLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="workerId != null" >
+        #{workerId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkDesc != null" >
+        #{checkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFlag != null || checkFlag ==''" >
+        #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+         #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendDept != null" >
+        #{sendDept,jdbcType=VARCHAR},
+      </if>
+      <if test="sendThing != null" >
+        #{sendThing,jdbcType=VARCHAR},
+      </if>
+      <if test="sendRemark != null" >
+        #{sendRemark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+    <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.sea.SeaWorkerPoor" >
+    update t_sea_worker_poor
+    <set >
+      <if test="familyPeople != null" >
+        family_people = #{familyPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="familyIncome != null" >
+        family_income = #{familyIncome,jdbcType=VARCHAR},
+      </if>
+      <if test="poorReason != null" >
+        poor_reason = #{poorReason,jdbcType=VARCHAR},
+      </if>
+      <if test="inUnit != null" >
+        in_unit = #{inUnit,jdbcType=INTEGER},
+      </if>
+      <if test="checkUnit != null" >
+        check_unit = #{checkUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="changeMemo != null" >
+        change_memo = #{changeMemo,jdbcType=VARCHAR},
+      </if>
+      <if test="poorLevel != null" >
+        poor_level = #{poorLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="workerId != null" >
+        worker_id = #{workerId,jdbcType=INTEGER},
+      </if>
+       <if test="createTime != null" >
+       create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>  
+       <if test="checkFlag != null" >
+        check_flag = #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDesc != null" >
+        check_desc = #{checkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time =  #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendDept != null" >
+        send_dept = #{sendDept,jdbcType=VARCHAR},
+      </if>
+      <if test="sendThing != null" >
+        send_thing = #{sendThing,jdbcType=VARCHAR},
+      </if>
+      <if test="sendRemark != null" >
+        send_remark = #{sendRemark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.sea.SeaWorkerPoor" >
+    update t_sea_worker_poor
+    set family_people = #{familyPeople,jdbcType=VARCHAR},
+      family_income = #{familyIncome,jdbcType=VARCHAR},
+      poor_reason = #{poorReason,jdbcType=VARCHAR},
+      in_unit = #{inUnit,jdbcType=INTEGER},
+      check_unit = #{checkUnit,jdbcType=VARCHAR},
+      change_memo = #{changeMemo,jdbcType=VARCHAR},
+      poor_level = #{poorLevel,jdbcType=VARCHAR},
+      worker_id = #{workerId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      check_flag = #{checkFlag,jdbcType=VARCHAR},
+      send_time =  #{sendTime,jdbcType=TIMESTAMP},
+      send_dept = #{sendDept,jdbcType=VARCHAR},
+      send_thing = #{sendThing,jdbcType=VARCHAR},
+      send_remark = #{sendThing,jdbcType=VARCHAR}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

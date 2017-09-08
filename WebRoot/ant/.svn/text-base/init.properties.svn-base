@@ -1,0 +1,8 @@
+#Mybatis Generator configuration
+generator_jar=../WEB-INF/lib/mybatis-generator-core-1.3.1.jar
+classPath=E:\SVN\\u57A0\u5764\u623F\u5C0F\u5E05\trunk\\u6E90\u4EE3\u7801\yk\WebRoot\WEB-INF\lib/mysql-connector-java-5.1.28.jar
+jdbc_driver = 
+jdbc_lib=
+jdbc_url=
+jdbc_user=
+jdbc_password=root  

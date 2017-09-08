@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.system.SysUserMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.system.SysUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    <result column="pwd_code" property="pwdCode" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="last_logintime" property="lastLogintime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="wechat_time" property="wechatTime" jdbcType="TIMESTAMP" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="user_level" property="userLevel" jdbcType="VARCHAR" />
+    <result column="ip" property="ip" jdbcType="VARCHAR" />
+    
+    <association property="cityInfo" column="city_id" select="net.huimin.yk.web.dao.common.CityMapper.selectByPrimaryKey" />
+    <association property="roleInfo" column="role_id" select="net.huimin.yk.web.dao.system.SysRoleMapper.selectByPrimaryKey" />
+    <association property="unitInfo" column="unit_id" select="net.huimin.yk.web.dao.sea.SeaUnitMapper.selectByPrimaryKey" />
+ 
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, login_name, pwd_code, real_name, nick_name,sex, user_type, role_id, 
+    last_logintime, create_time, phone,wechat_time,unit_id,city_id,user_level,ip
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_SYS_USER
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <!-- 根据用户名查询用户-->
+  <select id="selectUserByName" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.system.SysUser" >
+    select <include refid="Base_Column_List" />
+    from T_SYS_USER
+    where LOGIN_NAME = #{loginName,jdbcType=VARCHAR}
+    <if test="null != userType" >
+    	AND USER_TYPE = #{userType,jdbcType=INTEGER}
+    </if>
+  </select>
+  
+  <select id="selectLeader" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.system.SysUser">
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_SYS_USER user
+    where user.role_id = 3 
+    <if test="null != id" >
+    	AND user.id not in(select lead_id from t_call_team where lead_id != #{id,jdbcType=INTEGER})
+    </if>
+    <if test="null == id" >
+    	AND user.id not in(select lead_id from t_call_team)
+    </if>
+  </select>
+
+    <select id="selectTeamUser" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.system.SysUser">
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_SYS_USER user
+    where user.role_id = 4 
+    <if test="null != id" >
+    	AND user.id not in(select user_id from t_call_user where user_id != #{id,jdbcType=INTEGER})
+    </if>
+    <if test="null == id" >
+    	AND user.id not in(select user_id from t_call_user)
+    </if>
+  </select>
+
+
+   <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM T_SYS_USER
+  	  WHERE 1 = 1	and   user_type = 2
+	  <if test="null != user.roleId and user.roleId != ''" >
+  	     and (role_id > #{user.roleId,jdbcType=INTEGER} or 1= #{user.roleId,jdbcType=INTEGER})
+  	  </if>
+  	   <if test="null != user.cityId and user.cityId != ''" >
+  	    and city_id =  #{user.cityId,jdbcType=INTEGER}
+  	  </if>
+  	  <if test="null != user.loginName and user.loginName != ''" >
+  	    and  login_name like '%${user.loginName}%'
+  	  </if>
+  </select>
+  
+   <select id="queryUsersByConditions" parameterType="map" resultMap="BaseResultMap">
+  	  SELECT 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  FROM T_SYS_USER WHERE user_type = 2 
+	  <if test="null != user.roleId and user.roleId != ''" >
+  	     and (role_id > #{user.roleId,jdbcType=INTEGER} or 1= #{user.roleId,jdbcType=INTEGER})
+  	  </if>
+	  <if test="null != user.cityId and user.cityId != ''" >
+  	    and city_id =  #{user.cityId,jdbcType=INTEGER}
+  	  </if>
+  	   <if test="null != user.loginName and user.loginName != ''" >
+  	    and  login_name like  '%${user.loginName}%'
+  	  </if>
+  	  <![CDATA[ORDER BY role_id asc ,id  DESC LIMIT  #{_page.start,jdbcType=INTEGER} , #{_page.offset,jdbcType=INTEGER} ]]>  	   
+  </select>
+  
+  <select id="checkLoginName" parameterType="net.huimin.yk.web.model.system.SysUser" resultType="int">
+  	select count(1) from T_SYS_USER
+  	<where>
+  		<if test="null != loginName">
+  			and LOGIN_NAME = #{loginName}
+  		</if>
+  		<if test="null != id">
+  			and id != #{id}
+  		</if>
+  	</where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sys_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  
+  <insert id="insert"  useGeneratedKeys="true" keyProperty="id" parameterType="net.huimin.yk.web.model.system.SysUser" >
+    insert into t_sys_user (login_name, pwd_code, 
+      real_name, sex, user_type, 
+      role_id, last_logintime, 
+      create_time,phone,nick_name,wechat_time,unit_id,city_id,user_level,ip)
+    values ( #{loginName,jdbcType=VARCHAR}, #{pwdCode,jdbcType=VARCHAR}, 
+      #{realName,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}, 
+      #{roleId,jdbcType=INTEGER},  #{lastLogintime,jdbcType=TIMESTAMP}, 
+      NOW(),#{phone,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR},#{wechatTime,jdbcType=TIMESTAMP}
+      ,#{unitId,jdbcType=INTEGER},#{cityId,jdbcType=INTEGER},#{userLevel,jdbcType=VARCHAR},#{ip,jdbcType=VARCHAR})
+    <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.system.SysUser" >
+    insert into t_sys_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="loginName != null" >
+        login_name,
+      </if>
+      <if test="pwdCode != null" >
+        pwd_code,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="lastLogintime != null" >
+        last_logintime,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+       <if test="nickName != null" >
+        nick_name,
+       </if>
+       <if test="wechatTime != null" >
+        wechat_time,
+       </if>
+       <if test="unitId != null" >
+        unit_id,
+       </if> 
+       <if test="cityId != null" >
+        city_id,
+       </if>        
+       <if test="userLevel != null" >
+         user_level
+       </if> 
+       <if test="ip != null" >
+         ip
+       </if> 
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null" >
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdCode != null" >
+        #{pwdCode,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="lastLogintime != null" >
+        #{lastLogintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+       <if test="nickName != null" >
+        #{nickName,jdbcType=VARCHAR},
+      </if>
+       <if test="wechatTime != null" >
+        #{wechatTime,jdbcType=TIMESTAMP},
+       </if>
+       <if test="unitId != null" >
+         #{unitId,jdbcType=INTEGER},
+       </if> 
+       <if test="cityId != null" >
+         #{cityId,jdbcType=INTEGER},
+       </if>        
+       <if test="userLevel != null" >
+         #{userLevel,jdbcType=VARCHAR},
+       </if> 
+        <if test="ip != null" >
+         #{ip,jdbcType=VARCHAR},
+       </if> 
+       
+    </trim>
+    <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.system.SysUser" >
+    update t_sys_user
+    <set >
+      <if test="loginName != null" >
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="pwdCode != null" >
+        pwd_code = #{pwdCode,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="lastLogintime != null" >
+        last_logintime = #{lastLogintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+        <if test="phone != null" >
+       phone =  #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="nickName != null" >
+        nick_name = #{nickName,jdbcType=VARCHAR},
+      </if>  
+      <if test="wechatTime != null" >
+       wechat_time =  #{wechatTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unitId != null" >
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null" >
+        user_level = #{userLevel,jdbcType=VARCHAR},
+      </if> 
+      <if test="ip != null" >
+        ip = #{ip,jdbcType=VARCHAR},
+      </if> 
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.system.SysUser" >
+    update t_sys_user
+    set login_name = #{loginName,jdbcType=VARCHAR},
+      pwd_code = #{pwdCode,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=INTEGER},
+      role_id = #{roleId,jdbcType=INTEGER},
+      last_logintime = #{lastLogintime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      phone =  #{phone,jdbcType=VARCHAR},
+      nick_name = #{nickName,jdbcType=VARCHAR},
+      wechat_time = #{wechatTime,jdbcType=TIMESTAMP},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      city_id = #{unitId,jdbcType=INTEGER},
+      user_level = #{userLevel,jdbcType=VARCHAR},
+      ip = #{ip,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="queryAllProjectManager" resultMap="BaseResultMap">
+  	select * from t_sys_user u where u.role_id = 5 order by id asc
+  </select>
+  <select id="queryUserByOpenId" parameterType="string" resultMap="BaseResultMap">
+  	select * from t_sys_user u left join t_agent_user a on a.user_id = u.id where a.wechat_id = #{_parameter} limit 1
+  </select>
+</mapper>

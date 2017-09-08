@@ -1,0 +1,59 @@
+package net.huimin.yk.web.dao.money;
+
+import java.util.List;
+import java.util.Map;
+
+import net.huimin.yk.web.model.money.MoneyBalance;
+
+public interface MoneyBalanceMapper {
+    /**
+     * 根据主键删除记录
+     */
+    int deleteByPrimaryKey(Integer id);
+
+    /**
+     * 保存记录,不管记录里面的属性是否为空
+     */
+    int insert(MoneyBalance record);
+
+    /**
+     * 保存属性不为空的记录
+     */
+    int insertSelective(MoneyBalance record);
+
+    /**
+     * 根据主键查询记录
+     */
+    MoneyBalance selectByPrimaryKey(Integer id);
+
+    /**
+     * 根据主键更新属性不为空的记录
+     */
+    int updateByPrimaryKeySelective(MoneyBalance record);
+
+    /**
+     * 根据主键更新记录
+     */
+    int updateByPrimaryKey(MoneyBalance record);
+    	
+    /**
+     * 查询可体现佣金表
+     * @param parameters
+     * @return
+     */
+    List<MoneyBalance> selectBalanceApplication(Map<String, Object> parameters);
+    
+    /**
+     * 查询可体现佣金表Count
+     * @param parameters
+     * @return
+     */
+    Integer selectBalanceCount(Map<String, Object> parameters);
+    
+    /**
+     * 根据application表 id查询MoneyBalance
+     * @param id
+     * @return
+     */
+    MoneyBalance selectByApplicationId(Integer id);
+}

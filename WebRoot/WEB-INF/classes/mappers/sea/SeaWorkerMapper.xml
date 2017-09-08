@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.sea.SeaWorkerMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.sea.SeaWorker" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="worker_name" property="workerName" jdbcType="VARCHAR" />
+    <result column="worker_sex" property="workerSex" jdbcType="VARCHAR" />
+    <result column="worker_age" property="workerAge" jdbcType="VARCHAR" />
+    <result column="worker_idnumber" property="workerIdnumber" jdbcType="VARCHAR" />
+    <result column="worker_address" property="workerAddress" jdbcType="VARCHAR" />
+    <result column="worker_phone" property="workerPhone" jdbcType="VARCHAR" />
+    <result column="honor_remark" property="honorRemark" jdbcType="VARCHAR" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="is_hard" property="isHard" jdbcType="VARCHAR" />
+    <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+    <result column="work_duty" property="workDuty" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+   <resultMap id="WorkerMap" type="net.huimin.yk.web.model.sea.SeaWorker" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="worker_name" property="workerName" jdbcType="VARCHAR" />
+    <result column="worker_sex" property="workerSex" jdbcType="VARCHAR" />
+    <result column="worker_age" property="workerAge" jdbcType="VARCHAR" />
+    <result column="worker_idnumber" property="workerIdnumber" jdbcType="VARCHAR" />
+    <result column="worker_address" property="workerAddress" jdbcType="VARCHAR" />
+    <result column="worker_phone" property="workerPhone" jdbcType="VARCHAR" />
+    <result column="honor_remark" property="honorRemark" jdbcType="VARCHAR" />
+    <result column="unit_id" property="unitId" jdbcType="INTEGER" />
+    <result column="is_hard" property="isHard" jdbcType="VARCHAR" />
+    <result column="bank_card" property="bankCard" jdbcType="VARCHAR" />
+    <result column="work_duty" property="workDuty" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    
+     <association property="unitInfo" column="unit_id" select="net.huimin.yk.web.dao.sea.SeaUnitMapper.selectByPrimaryKey" />
+ 
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, worker_name, worker_sex, worker_age, worker_idnumber, worker_address, worker_phone, 
+    honor_remark, unit_id, is_hard ,create_time,bank_card,work_duty
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="WorkerMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sea_worker
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="queryWorkerByIdNumber" resultMap="WorkerMap" parameterType="net.huimin.yk.web.model.sea.SeaWorker" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sea_worker
+    <where>
+  		<if test="null != workerIdnumber">
+  			and worker_idnumber = #{workerIdnumber}
+  		</if>
+  		<if test="null != id">
+  			and id != #{id}
+  		</if>
+  	</where>
+  </select>
+  
+  
+    <select id="checkIdCard" parameterType="net.huimin.yk.web.model.sea.SeaWorker" resultType="int">
+  	select count(1) from t_sea_worker
+  	<where>
+  		<if test="null != workerIdnumber">
+  			and worker_idnumber = #{workerIdnumber}
+  		</if>
+  		<if test="null != id">
+  			and id != #{id}
+  		</if>
+  	</where>
+  </select>
+  
+   <select id="selectAllWorkerByUnitId" resultMap="WorkerMap" parameterType="net.huimin.yk.web.model.sea.SeaWorker" >
+      select 'true' as QUERYID,
+       <include refid="Base_Column_List" />
+      from T_SEA_WORKER
+       <where>
+	      <if test="null != unitId">
+	           AND unit_id  = #{unitId,jdbcType=INTEGER}
+	      </if>     
+  	   </where>
+      
+    </select>
+  
+   <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM T_SEA_WORKER
+  	  <where>
+  	    is_hard = '0'
+	    <if test="null != worker">
+	        <if test="null != worker.workerName">
+	          AND worker_name like '%${worker.workerName}%'
+	        </if>
+	         <if test="null != worker.unitId">
+	           AND unit_id  = #{worker.unitId,jdbcType=INTEGER}
+	        </if>     
+	    </if>
+  	</where>
+  </select>
+  <select id="queryResultByConditions" parameterType="map" resultMap="WorkerMap">
+  	SELECT * FROM T_SEA_WORKER
+  	<where>
+  	     is_hard = '0'
+	     <if test="null != worker">
+	        <if test="null != worker.workerName">
+	          AND worker_name like '%${worker.workerName}%'
+	        </if>
+	        <if test="null != worker.unitId">
+	           AND unit_id  = #{worker.unitId,jdbcType=INTEGER}
+	        </if>   
+	    </if>
+  	</where>
+  	 ORDER BY ID DESC
+    <![CDATA[ LIMIT  #{_page.start,jdbcType=INTEGER}, #{_page.offset,jdbcType=INTEGER} ]]> 
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sea_worker
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.sea.SeaWorker" >
+    insert into t_sea_worker (id, worker_name, worker_sex, 
+      worker_age, worker_idnumber, worker_address, 
+      worker_phone, honor_remark, unit_id, create_time
+      is_hard,bank_card,work_duty
+    values (#{id,jdbcType=INTEGER}, #{workerName,jdbcType=VARCHAR}, #{workerSex,jdbcType=VARCHAR}, 
+      #{workerAge,jdbcType=VARCHAR}, #{workerIdnumber,jdbcType=VARCHAR}, #{workerAddress,jdbcType=VARCHAR}, 
+      #{workerPhone,jdbcType=VARCHAR}, #{honorRemark,jdbcType=VARCHAR}, #{unitId,jdbcType=INTEGER}, 
+      #{isHard,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP}, #{bankCard,jdbcType=VARCHAR},#{workDuty,jdbcType=VARCHAR})
+      <selectKey keyProperty="id" resultType="int">
+      	select last_insert_id() as id
+      </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.sea.SeaWorker" >
+    insert into t_sea_worker
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="workerName != null" >
+        worker_name,
+      </if>
+      <if test="workerSex != null" >
+        worker_sex,
+      </if>
+      <if test="workerAge != null" >
+        worker_age,
+      </if>
+      <if test="workerIdnumber != null" >
+        worker_idnumber,
+      </if>
+      <if test="workerAddress != null" >
+        worker_address,
+      </if>
+      <if test="workerPhone != null" >
+        worker_phone,
+      </if>
+      <if test="honorRemark != null" >
+        honor_remark,
+      </if>
+      <if test="unitId != null" >
+        unit_id,
+      </if>
+      <if test="isHard != null" >
+        is_hard,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="bankCard != null" >
+        bank_card,
+      </if>
+       <if test="workDuty != null" >
+        work_duty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="workerName != null" >
+        #{workerName,jdbcType=VARCHAR},
+      </if>
+      <if test="workerSex != null" >
+        #{workerSex,jdbcType=VARCHAR},
+      </if>
+      <if test="workerAge != null" >
+        #{workerAge,jdbcType=VARCHAR},
+      </if>
+      <if test="workerIdnumber != null" >
+        #{workerIdnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="workerAddress != null" >
+        #{workerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="workerPhone != null" >
+        #{workerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="honorRemark != null" >
+        #{honorRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="unitId != null" >
+        #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="isHard != null" >
+        #{isHard,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankCard != null" >
+        #{bankCard,jdbcType=VARCHAR},
+      </if>
+      <if test="workDuty != null" >
+         #{workDuty,jdbcType=VARCHAR},
+      </if>
+    </trim>
+     <selectKey keyProperty="id" resultType="int">
+      	select last_insert_id() as id
+     </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.sea.SeaWorker" >
+    update t_sea_worker
+    <set >
+      <if test="workerName != null" >
+        worker_name = #{workerName,jdbcType=VARCHAR},
+      </if>
+      <if test="workerSex != null" >
+        worker_sex = #{workerSex,jdbcType=VARCHAR},
+      </if>
+      <if test="workerAge != null" >
+        worker_age = #{workerAge,jdbcType=VARCHAR},
+      </if>
+      <if test="workerIdnumber != null" >
+        worker_idnumber = #{workerIdnumber,jdbcType=VARCHAR},
+      </if>
+      <if test="workerAddress != null" >
+        worker_address = #{workerAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="workerPhone != null" >
+        worker_phone = #{workerPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="honorRemark != null" >
+        honor_remark = #{honorRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="unitId != null" >
+        unit_id = #{unitId,jdbcType=INTEGER},
+      </if>
+      <if test="isHard != null" >
+        is_hard = #{isHard,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+       create_time =  #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bankCard != null" >
+        bank_card = #{bankCard,jdbcType=VARCHAR},
+      </if>
+       <if test="workDuty != null" >
+        work_duty =  #{workDuty,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.sea.SeaWorker" >
+    update t_sea_worker
+    set worker_name = #{workerName,jdbcType=VARCHAR},
+      worker_sex = #{workerSex,jdbcType=VARCHAR},
+      worker_age = #{workerAge,jdbcType=VARCHAR},
+      worker_idnumber = #{workerIdnumber,jdbcType=VARCHAR},
+      worker_address = #{workerAddress,jdbcType=VARCHAR},
+      worker_phone = #{workerPhone,jdbcType=VARCHAR},
+      honor_remark = #{honorRemark,jdbcType=VARCHAR},
+      unit_id = #{unitId,jdbcType=INTEGER},
+      is_hard = #{isHard,jdbcType=VARCHAR},
+      create_time =  #{createTime,jdbcType=TIMESTAMP},
+      bank_card = #{bankCard,jdbcType=VARCHAR},
+      work_duty =  #{workDuty,jdbcType=VARCHAR},
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

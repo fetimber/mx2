@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.bq.FloorRoomMapper">
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.bq.FloorRoom" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="building_no" property="buildingNo" jdbcType="VARCHAR" />
+    <result column="floor_no" property="floorNo" jdbcType="VARCHAR" />
+    <result column="room_no" property="roomNo" jdbcType="VARCHAR" />
+    <result column="room_name" property="roomName"  jdbcType="VARCHAR" />
+    <result column="room_type" property="roomType"  jdbcType="VARCHAR"/>
+    <result column="is_used" property="isUsed"  jdbcType="VARCHAR"/>
+    <result column="room_code" property="roomCode"  jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, building_no, floor_no, room_no, room_name, room_type, is_used ,room_code
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_floor_room
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_floor_room
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.bq.FloorRoom" >
+    insert into t_floor_room (id, building_no, floor_no, 
+      room_no, room_name, room_type, is_used,room_code)
+    values (#{id,jdbcType=INTEGER}, #{buildingNo,jdbcType=VARCHAR}, 
+      #{floorNo,jdbcType=VARCHAR}, #{roomNo,jdbcType=VARCHAR}, #{roomName,jdbcType=VARCHAR}, 
+      #{roomType,jdbcType=VARCHAR},  #{isUsed,jdbcType=VARCHAR}, #{roomCode,jdbcType=VARCHAR})
+      <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+      </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.bq.FloorRoom" >
+    insert into t_floor_room
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="reason != null" >
+        reason,
+      </if>
+      <if test="amount != null" >
+        amount,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="operatType != null" >
+        operat_type,
+      </if>
+      <if test="operatTime != null" >
+        operat_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        #{reason,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatType != null" >
+        #{operatType,jdbcType=INTEGER},
+      </if>
+      <if test="operatTime != null" >
+        #{operatTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+    <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.bq.FloorRoom" >
+    update t_floor_room
+    <set >
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="reason != null" >
+        reason = #{reason,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null" >
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="operatType != null" >
+        operat_type = #{operatType,jdbcType=INTEGER},
+      </if>
+      <if test="operatTime != null" >
+        operat_time = #{operatTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.bq.FloorRoom" >
+    update t_floor_room
+    set building_no = #{buildingNo,jdbcType=VARCHAR},
+      floor_no = #{floorNo,jdbcType=VARCHAR},
+      room_no = #{roomNo,jdbcType=VARCHAR},
+      room_name = #{roomName,jdbcType=VARCHAR},
+      room_type = #{roomType,jdbcType=VARCHAR},
+      is_used = #{isUsed,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+ <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM T_FLOOR_ROOM
+  	  <where>
+  	  	AND IS_USED = '0'
+	    <if test="null != room">
+	        <if test="null != room.buildingNo">
+	          AND building_no =  #{room.buildingNo,jdbcType=VARCHAR}
+	        </if>
+	        <if test="null != room.roomNo">
+	          AND room_no =  #{room.roomNo,jdbcType=VARCHAR}
+	        </if>
+	        <if test="null != room.roomCode and room.roomCode != '' ">
+	          AND ROOM_CODE =  #{room.roomCode,jdbcType=VARCHAR}
+	        </if>
+	        <if test="null != room.roomName">
+	          AND room_name like '%${room.roomName}%'
+	        </if>
+	    </if>
+  	</where>
+  </select>
+  <select id="queryHousesByConditions" parameterType="map" resultMap="BaseResultMap">
+  	SELECT * FROM T_FLOOR_ROOM
+  	 <where>
+  	  	AND IS_USED = '0'
+	    <if test="null != room">
+	        <if test="null != room.buildingNo">
+	          AND BUILDING_NO =  #{room.buildingNo,jdbcType=VARCHAR}
+	        </if>
+	        <if test="null != room.roomNo">
+	          AND ROOM_NO =  #{room.roomNo,jdbcType=VARCHAR}
+	        </if>
+	         <if test="null != room.roomCode and room.roomCode != '' ">
+	          AND ROOM_CODE =  #{room.roomCode,jdbcType=VARCHAR}
+	        </if>
+	        <if test="null != room.roomName">
+	          AND ROOM_NAME like '%${room.roomName}%'
+	        </if>
+	    </if>
+	    ORDER BY ROOM_CODE ASC
+  	</where>
+    <![CDATA[ LIMIT  #{_page.start,jdbcType=INTEGER}, #{_page.offset,jdbcType=INTEGER} ]]> 
+  </select>
+
+</mapper>

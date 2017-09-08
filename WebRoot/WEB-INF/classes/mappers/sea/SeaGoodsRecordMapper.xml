@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.sea.SeaGoodsRecordMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.sea.SeaGoodsRecord" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="work_poor_id" property="workPoorId" jdbcType="INTEGER" />
+    <result column="goods_cash" property="goodsCash" jdbcType="VARCHAR" />
+    <result column="goods_value" property="goodsValue" jdbcType="VARCHAR" />
+    <result column="send_time" property="sendTime" jdbcType="TIMESTAMP" />
+    <result column="send_dept" property="sendDept" jdbcType="VARCHAR" />
+    <result column="send_thing" property="sendThing" jdbcType="VARCHAR" />
+    <result column="send_remark" property="sendRemark" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    
+    <association property="workerInfo" column="work_poor_id" select="net.huimin.yk.web.dao.sea.SeaWorkerPoorMapper.selectByPrimaryKey" />
+    <association property="bigPictures" column="id" select="net.huimin.yk.web.dao.common.FilesMapper.queryFileByGoodsRecord" />
+ 
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Id, work_poor_id, goods_cash, goods_value, send_time, send_dept, send_thing, send_remark, 
+    create_time, delete_time, is_delete
+  </sql>
+  
+  <select id="queryCountByConditions" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultType="int">
+  	  SELECT COUNT(*) FROM T_SEA_GOODS_RECORD record
+  	    <where>
+  	        record.is_delete != 1 
+  	    	<if test="null != keyword and keyword != ''">
+  	    	and (
+  	    		 record.goods_cash like '%${keyword}%'
+  	    		 or record.goods_value like '%${keyword}%'
+  	    		 or record.send_dept like '%${keyword}%'
+  	    		 or record.send_thing like '%${keyword}%'
+  	    		 or record.send_remark like '%${keyword}%' )
+  	    	</if>
+  	    	<if test="null != honorTimeStart">
+  	    		and record.send_time >= #{honorTimeStart}
+  	    	</if>
+  	    	<if test="null != honorTimeEnd">
+  	    		<![CDATA[and record.send_time <= #{honorTimeEnd}]]>
+  	    	</if>
+  	    	<if test="null != workPoorId and workPoorId != ''">
+  	    		<![CDATA[and record.work_poor_id = #{workPoorId}]]>
+  	    	</if>
+  	    </where>
+  </select>
+  <select id="queryResultByConditions" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultMap="BaseResultMap">
+  	   SELECT * FROM T_SEA_GOODS_RECORD record
+  	   <where>
+  	        record.is_delete != 1 
+  	    	<if test="null != keyword and keyword != ''">
+ 	    		and (
+  	    		 record.goods_cash like '%${keyword}%'
+  	    		 or record.goods_value like '%${keyword}%'
+  	    		 or record.send_dept like '%${keyword}%'
+  	    		 or record.send_thing like '%${keyword}%'
+  	    		 or record.send_remark like '%${keyword}%' )
+  	    	</if>
+  	    	<if test="null != honorTimeStart">
+  	    		and record.send_time >= #{honorTimeStart}
+  	    	</if>
+  	    	<if test="null != honorTimeEnd">
+  	    		<![CDATA[and record.send_time <= #{honorTimeEnd}]]>
+  	    	</if>
+  	    	<if test="null != workPoorId and workPoorId != ''">
+  	    		<![CDATA[and record.work_poor_id = #{workPoorId}]]>
+  	    	</if>
+  	    </where>
+        <if test="null != page"> 
+  	    	<![CDATA[ 	ORDER BY record.ID desc limit #{page.start}, #{page.offset} ]]> 
+  	    </if>
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sea_goods_record
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sea_goods_record
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.sea.SeaGoodsRecord" >
+    insert into t_sea_goods_record (Id, work_poor_id, goods_cash, 
+      goods_value, send_time, send_dept, 
+      send_thing, send_remark, create_time, 
+      delete_time, is_delete)
+    values (#{id,jdbcType=INTEGER}, #{workPoorId,jdbcType=INTEGER}, #{goodsCash,jdbcType=VARCHAR}, 
+      #{goodsValue,jdbcType=VARCHAR}, #{sendTime,jdbcType=TIMESTAMP}, #{sendDept,jdbcType=VARCHAR}, 
+      #{sendThing,jdbcType=VARCHAR}, #{sendRemark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{deleteTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.sea.SeaGoodsRecord" >
+    insert into t_sea_goods_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="workPoorId != null" >
+        work_poor_id,
+      </if>
+      <if test="goodsCash != null" >
+        goods_cash,
+      </if>
+      <if test="goodsValue != null" >
+        goods_value,
+      </if>
+      <if test="sendTime != null" >
+        send_time,
+      </if>
+      <if test="sendDept != null" >
+        send_dept,
+      </if>
+      <if test="sendThing != null" >
+        send_thing,
+      </if>
+      <if test="sendRemark != null" >
+        send_remark,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="workPoorId != null" >
+        #{workPoorId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCash != null" >
+        #{goodsCash,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsValue != null" >
+        #{goodsValue,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendDept != null" >
+        #{sendDept,jdbcType=VARCHAR},
+      </if>
+      <if test="sendThing != null" >
+        #{sendThing,jdbcType=VARCHAR},
+      </if>
+      <if test="sendRemark != null" >
+        #{sendRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+     <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+      </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.sea.SeaGoodsRecord" >
+    update t_sea_goods_record
+    <set >
+      <if test="workPoorId != null" >
+        work_poor_id = #{workPoorId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsCash != null" >
+        goods_cash = #{goodsCash,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsValue != null" >
+        goods_value = #{goodsValue,jdbcType=VARCHAR},
+      </if>
+      <if test="sendTime != null" >
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sendDept != null" >
+        send_dept = #{sendDept,jdbcType=VARCHAR},
+      </if>
+      <if test="sendThing != null" >
+        send_thing = #{sendThing,jdbcType=VARCHAR},
+      </if>
+      <if test="sendRemark != null" >
+        send_remark = #{sendRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.sea.SeaGoodsRecord" >
+    update t_sea_goods_record
+    set work_poor_id = #{workPoorId,jdbcType=INTEGER},
+      goods_cash = #{goodsCash,jdbcType=VARCHAR},
+      goods_value = #{goodsValue,jdbcType=VARCHAR},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      send_dept = #{sendDept,jdbcType=VARCHAR},
+      send_thing = #{sendThing,jdbcType=VARCHAR},
+      send_remark = #{sendRemark,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default="MybatisGenerator" basedir="." name="YK房小帅">
+	<!-- 引入配置文件 -->
+	<property name="generated.source.dir" value="${basedir}" />
+	<property name="useActualColumnNames" value="true" />
+    <target name="MybatisGenerator" description="MybatisGenerator" >  
+        <taskdef name="MybatisGenerator" classname="org.mybatis.generator.ant.GeneratorAntTask"  
+            classpath="../WEB-INF/lib/mybatis-generator.jar" />  
+        <MybatisGenerator overwrite="true" configfile="MybatsGeneratorConfig.xml" verbose="false" >  
+            <propertyset>  
+                <propertyref name="generated.source.dir"/>  
+            </propertyset>  
+        </MybatisGenerator>  
+    </target>
+
+	<!-- 删除mybatis生成配置文件 -->
+	<target name="deleteMappersFile">
+		<delete dir="..\..\config\mappers\data" />
+		<delete dir="..\..\config\mappers\equip" />
+		<delete dir="..\..\config\mappers\farm" />
+		<delete dir="..\..\config\mappers\harm" />
+		<delete dir="..\..\config\mappers\machinery" />
+		<delete dir="..\..\config\mappers\produce" />
+		<delete dir="..\..\config\mappers\scheme" />
+		<delete dir="..\..\config\mappers\specialist" />
+		<delete dir="..\..\config\mappers\bedder" />
+	</target>
+	
+
+	<!-- 自动修改配置文件，添加变动的配置文件 -->
+	<target name="BuildMapperPath" depends="MybatisGenerator">
+		<java classname="test.BuildMapperPath">
+			<classpath path="../WEB-INF/classes" />
+			<classpath>
+				<fileset dir="../WEB-INF/lib" includes="**/*.jar" />
+			</classpath>
+		</java>
+	</target>
+</project>

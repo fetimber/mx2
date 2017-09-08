@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.sea.SeaHonorUnitMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.sea.SeaHonorUnit" >
+    <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="honor_unit" property="honorUnit" jdbcType="VARCHAR" />
+    <result column="unit_location" property="unitLocation" jdbcType="VARCHAR" />
+    <result column="unit_phone" property="unitPhone" jdbcType="VARCHAR" />
+    <result column="unit_duty" property="unitDuty" jdbcType="VARCHAR" />
+    <result column="unit_leader" property="unitLeader" jdbcType="VARCHAR" />
+    <result column="honor_duty" property="honorDuty" jdbcType="VARCHAR" />
+    <result column="honor_type" property="honorType" jdbcType="VARCHAR" />
+    <result column="honor_level" property="honorLevel" jdbcType="VARCHAR" />
+    <result column="honor_dept" property="honorDept" jdbcType="VARCHAR" />
+    <result column="unit_honor_desc" property="unitHonorDesc" jdbcType="VARCHAR" />
+    <result column="honor_code" property="honorCode" jdbcType="VARCHAR" />
+    <result column="honor_title" property="honorTitle" jdbcType="VARCHAR" />
+    <result column="honor_time" property="honorTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="check_flag" property="checkFlag" jdbcType="VARCHAR" />
+    <result column="check_desc" property="checkDesc" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="add_user" property="addUser" jdbcType="INTEGER" />
+    <association property="bigPictures" column="id" select="net.huimin.yk.web.dao.common.FilesMapper.queryFileByHonorUnit" />
+ 
+    
+  </resultMap>
+  
+  <resultMap id="HonorUnitMap" type="net.huimin.yk.web.model.sea.SeaHonorUnit" >
+     <id column="Id" property="id" jdbcType="INTEGER" />
+    <result column="honor_unit" property="honorUnit" jdbcType="VARCHAR" />
+    <result column="unit_location" property="unitLocation" jdbcType="VARCHAR" />
+    <result column="unit_phone" property="unitPhone" jdbcType="VARCHAR" />
+    <result column="unit_duty" property="unitDuty" jdbcType="VARCHAR" />
+    <result column="unit_leader" property="unitLeader" jdbcType="VARCHAR" />
+    <result column="honor_duty" property="honorDuty" jdbcType="VARCHAR" />
+    <result column="honor_dept" property="honorDept" jdbcType="VARCHAR" />
+    <result column="honor_type" property="honorType" jdbcType="VARCHAR" />
+    <result column="honor_level" property="honorLevel" jdbcType="VARCHAR" />
+    <result column="unit_honor_desc" property="unitHonorDesc" jdbcType="VARCHAR" />
+    <result column="honor_code" property="honorCode" jdbcType="VARCHAR" />
+    <result column="honor_title" property="honorTitle" jdbcType="VARCHAR" />
+    <result column="honor_time" property="honorTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="delete_time" property="deleteTime" jdbcType="TIMESTAMP" />
+    <result column="check_flag" property="checkFlag" jdbcType="VARCHAR" />
+    <result column="check_desc" property="checkDesc" jdbcType="VARCHAR" />
+    <result column="is_delete" property="isDelete" jdbcType="INTEGER" />
+    <result column="add_user" property="addUser" jdbcType="INTEGER" />
+    
+    <association property="bigPictures" column="id" select="net.huimin.yk.web.dao.common.FilesMapper.queryFileByHonorUnit" />
+ 
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    Id, honor_unit, unit_location, unit_phone, unit_duty, unit_leader, honor_duty, honor_type, honor_dept,
+    honor_level, unit_honor_desc, honor_code, honor_title, honor_time, create_time, delete_time, 
+    check_flag, check_desc ,is_delete,add_user
+  </sql>
+  
+   <select id="queryCountByConditions" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultType="int">
+  	  SELECT COUNT(*) FROM T_SEA_HONOR_UNIT honor
+  	    <where>
+  	        honor.is_delete != 1 
+  	    	<if test="null != keyword and keyword != ''">
+  	    		and(
+  	    		honor.honor_unit like '%${keyword}%'
+  	    		or honor.unit_location like '%${keyword}%'
+  	    		or honor.unit_phone like '%${keyword}%'
+  	    		or honor.unit_duty like '%${keyword}%'
+  	    		or honor.unit_leader like '%${keyword}%'
+  	    		or honor.honor_duty like '%${keyword}%'
+  	    		or honor.unit_honor_desc like '%${keyword}%'
+  	    		or honor.honor_code like '%${keyword}%'
+  	    		or honor.honor_title like '%${keyword}%')
+  	    	</if>
+  	    	<if test="null != honorTimeStart">
+  	    		and honor.honor_time >= #{honorTimeStart}
+  	    	</if>
+  	    	<if test="null != honorTimeEnd">
+  	    		<![CDATA[and honor.honor_time <= #{honorTimeEnd}]]>
+  	    	</if>
+  	    	<if test="null != level and level != ''">
+  	    		and honor.honor_level = #{level}
+  	    	</if>
+  	    	<if test="null != honorType and honorType != ''">
+  	    		<![CDATA[and honor.honor_type = #{honorType}]]>
+  	    	</if>
+  	    	<if test="null != check and check != ''">
+  	    	    <if test="check == '-1'">
+  	    		   <![CDATA[and honor.check_flag in ('1','2','0')]]>
+  	    	    </if>
+  	    	     <if test="check == '-2'">
+  	    		   <![CDATA[and (honor.check_flag  is null or honor.check_flag = '')]]>
+  	    		</if>
+  	    		<if test="check != '-1' and check != '-2'">
+  	    		   <![CDATA[and honor.check_flag = #{check}]]>
+  	    		</if>
+  	    	</if>
+  	    	
+  	    	<if test="null != checkflag and checkflag != ''">
+  	    		<![CDATA[and honor.check_flag = #{checkflag}]]>
+  	    	</if>
+  	    	<if test="null != cityId and cityId != ''" >
+  	            and  (select city_id from t_sys_user u ,t_city c
+                      where u.city_id = c.id 
+                      and  u.id = honor.add_user) = #{cityId}       
+  	       </if>
+  	      	    	 <if test="null != unit and unit != ''" >
+  	            and  (SELECT unit_id FROM t_sys_user u,t_sea_govunit c
+	                   WHERE u.unit_id = c.id 
+	                   AND u.id = honor.add_user) = #{unit}       
+  	       </if>
+  	    </where>
+  </select>
+  <select id="queryResultByConditions" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultMap="HonorUnitMap">
+  	 SELECT * FROM T_SEA_HONOR_UNIT honor
+  	    <where>
+  	        honor.is_delete != 1
+  	    	<if test="null != keyword and keyword != ''">
+  	    		    		and(
+  	    		honor.honor_unit like '%${keyword}%'
+  	    		or honor.unit_location like '%${keyword}%'
+  	    		or honor.unit_phone like '%${keyword}%'
+  	    		or honor.unit_duty like '%${keyword}%'
+  	    		or honor.unit_leader like '%${keyword}%'
+  	    		or honor.honor_duty like '%${keyword}%'
+  	    		or honor.unit_honor_desc like '%${keyword}%'
+  	    		or honor.honor_code like '%${keyword}%'
+  	    		or honor.honor_title like '%${keyword}%')
+  	    	</if>
+  	    	<if test="null != honorTimeStart">
+  	    		and honor.honor_time >= #{honorTimeStart}
+  	    	</if>
+  	    	<if test="null != honorTimeEnd">
+  	    		<![CDATA[and honor.honor_time <= #{honorTimeEnd}]]>
+  	    	</if>
+  	    	<if test="null != level and level != ''">
+  	    		and honor.honor_level = #{level}
+  	    	</if>
+  	    	<if test="null != honorType and honorType != ''">
+  	    		<![CDATA[and honor.honor_type = #{honorType}]]>
+  	    	</if>
+  	        <if test="null != check and check != ''">
+  	    		 <if test="check == '-1'">
+  	    		   <![CDATA[and honor.check_flag in ('1','2','0')]]>
+  	    	    </if>
+  	    	     <if test="check == '-2'">
+  	    		   <![CDATA[and (honor.check_flag  is null or honor.check_flag = '')]]>
+  	    		</if>
+  	    		<if test="check != '-1' and check != '-2'">
+  	    		   <![CDATA[and honor.check_flag = #{check}]]>
+  	    		</if>
+  	    	</if>
+  	    	<if test="null != checkflag and checkflag != ''">
+  	    		<![CDATA[and honor.check_flag = #{checkflag}]]>
+  	    	</if>
+  	    	<if test="null != cityId and cityId != ''" >
+  	            and  (select city_id from t_sys_user u ,t_city c
+                      where u.city_id = c.id 
+                      and  u.id = honor.add_user) = #{cityId}         
+  	       </if>
+  	    	 <if test="null != unit and unit != ''" >
+  	            and  (SELECT unit_id FROM t_sys_user u,t_sea_govunit c
+	                   WHERE u.unit_id = c.id 
+	                   AND u.id = honor.add_user) = #{unit}       
+  	       </if>
+  	    </where>
+        <if test="null != page"> 
+  	    	<![CDATA[ 	ORDER BY honor.ID desc limit #{page.start}, #{page.offset} ]]> 
+  	    </if>
+  </select>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sea_honor_unit
+    where Id = #{id,jdbcType=INTEGER} and is_delete != 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sea_honor_unit
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.sea.SeaHonorUnit" >
+    insert into t_sea_honor_unit (Id, honor_unit, unit_location, 
+      unit_phone, unit_duty, unit_leader, 
+      honor_duty, honor_type, honor_level, honor_dept,
+      unit_honor_desc, honor_code, honor_title, 
+      honor_time, create_time, delete_time, 
+      check_flag, is_delete)
+    values (#{id,jdbcType=INTEGER}, #{honorUnit,jdbcType=VARCHAR}, #{unitLocation,jdbcType=VARCHAR}, 
+      #{unitPhone,jdbcType=VARCHAR}, #{unitDuty,jdbcType=VARCHAR}, #{unitLeader,jdbcType=VARCHAR}, 
+      #{honorDuty,jdbcType=VARCHAR}, #{honorType,jdbcType=VARCHAR}, #{honorLevel,jdbcType=VARCHAR}, #{honorDept,jdbcType=VARCHAR}, 
+      #{unitHonorDesc,jdbcType=VARCHAR}, #{honorCode,jdbcType=VARCHAR}, #{honorTitle,jdbcType=VARCHAR}, 
+      #{honorTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{deleteTime,jdbcType=TIMESTAMP}, 
+      #{checkFlag,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.sea.SeaHonorUnit" >
+    insert into t_sea_honor_unit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        Id,
+      </if>
+      <if test="honorUnit != null" >
+        honor_unit,
+      </if>
+      <if test="unitLocation != null" >
+        unit_location,
+      </if>
+      <if test="unitPhone != null" >
+        unit_phone,
+      </if>
+      <if test="unitDuty != null" >
+        unit_duty,
+      </if>
+      <if test="unitLeader != null" >
+        unit_leader,
+      </if>
+      <if test="honorDuty != null" >
+        honor_duty,
+      </if>
+      <if test="honorType != null" >
+        honor_type,
+      </if>
+      <if test="honorLevel != null" >
+        honor_level,
+      </if>
+      <if test="honorDept != null" >
+        honor_dept,
+      </if>
+      <if test="unitHonorDesc != null" >
+        unit_honor_desc,
+      </if>
+      <if test="honorCode != null" >
+        honor_code,
+      </if>
+      <if test="honorTitle != null" >
+        honor_title,
+      </if>
+      <if test="honorTime != null" >
+        honor_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="deleteTime != null" >
+        delete_time,
+      </if>
+      <if test="checkDesc != null" >
+        check_desc,
+      </if>
+      <if test="checkFlag != null || checkFlag ==''" >
+        check_flag,
+      </if>
+      <if test="isDelete != null" >
+        is_delete,
+      </if>
+       <if test="addUser != null" >
+        add_user,
+      </if> 
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="honorUnit != null" >
+        #{honorUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="unitLocation != null" >
+        #{unitLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPhone != null" >
+        #{unitPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="unitDuty != null" >
+        #{unitDuty,jdbcType=VARCHAR},
+      </if>
+      <if test="unitLeader != null" >
+        #{unitLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="honorDuty != null" >
+        #{honorDuty,jdbcType=VARCHAR},
+      </if>
+      <if test="honorType != null" >
+        #{honorType,jdbcType=VARCHAR},
+      </if>
+      <if test="honorLevel != null" >
+        #{honorLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="honorDept != null" >
+        #{honorDept,jdbcType=VARCHAR},
+      </if>
+      <if test="unitHonorDesc != null" >
+        #{unitHonorDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="honorCode != null" >
+        #{honorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="honorTitle != null" >
+        #{honorTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="honorTime != null" >
+        #{honorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkDesc != null" >
+        #{checkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="checkFlag != null || checkFlag ==''" >
+        #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+       <if test="addUser != null" >
+        #{addUser,jdbcType=INTEGER},
+      </if> 
+    </trim>
+         <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+      </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.sea.SeaHonorUnit" >
+    update t_sea_honor_unit
+    <set >
+      <if test="honorUnit != null" >
+        honor_unit = #{honorUnit,jdbcType=VARCHAR},
+      </if>
+      <if test="unitLocation != null" >
+        unit_location = #{unitLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="unitPhone != null" >
+        unit_phone = #{unitPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="unitDuty != null" >
+        unit_duty = #{unitDuty,jdbcType=VARCHAR},
+      </if>
+      <if test="unitLeader != null" >
+        unit_leader = #{unitLeader,jdbcType=VARCHAR},
+      </if>
+      <if test="honorDuty != null" >
+        honor_duty = #{honorDuty,jdbcType=VARCHAR},
+      </if>
+      <if test="honorType != null" >
+        honor_type = #{honorType,jdbcType=VARCHAR},
+      </if>
+      <if test="honorLevel != null" >
+        honor_level = #{honorLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="honorDept != null" >
+        honor_dept = #{honorDept,jdbcType=VARCHAR},
+      </if>
+      
+      <if test="unitHonorDesc != null" >
+        unit_honor_desc = #{unitHonorDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="honorCode != null" >
+        honor_code = #{honorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="honorTitle != null" >
+        honor_title = #{honorTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="honorTime != null" >
+        honor_time = #{honorTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteTime != null" >
+        delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkFlag != null" >
+        check_flag = #{checkFlag,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDesc != null" >
+        check_desc = #{checkDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null" >
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.sea.SeaHonorUnit" >
+    update t_sea_honor_unit
+    set honor_unit = #{honorUnit,jdbcType=VARCHAR},
+      unit_location = #{unitLocation,jdbcType=VARCHAR},
+      unit_phone = #{unitPhone,jdbcType=VARCHAR},
+      unit_duty = #{unitDuty,jdbcType=VARCHAR},
+      unit_leader = #{unitLeader,jdbcType=VARCHAR},
+      honor_duty = #{honorDuty,jdbcType=VARCHAR},
+      honor_type = #{honorType,jdbcType=VARCHAR},
+      honor_level = #{honorLevel,jdbcType=VARCHAR},
+      honor_dept = #{honorDept,jdbcType=VARCHAR},
+      unit_honor_desc = #{unitHonorDesc,jdbcType=VARCHAR},
+      honor_code = #{honorCode,jdbcType=VARCHAR},
+      honor_title = #{honorTitle,jdbcType=VARCHAR},
+      honor_time = #{honorTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      delete_time = #{deleteTime,jdbcType=TIMESTAMP},
+      check_flag = #{checkFlag,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

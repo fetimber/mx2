@@ -1,0 +1,37 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%
+String path = request.getContextPath();
+String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
+%>
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="<%=basePath%>">
+		<title>邀请结果</title>
+		<meta charset="utf-8">
+		<meta content="" name="description">
+		<meta content="" name="keywords">
+		<meta content="application/xhtml+xml;charset=UTF-8" http-equiv="Content-Type">
+		<meta content="telephone=no, address=no" name="format-detection">
+		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<link href="resources/weixin/css/style.css?v=044" rel="stylesheet" />
+		<script type="text/javascript">
+			function back(){
+				history.go(-1);
+			}
+		</script>
+	</head>
+	<body class="bg">
+		<div class="su_img1">
+			<img src="resources/images/su_img2.png" width="79" height="67" />
+		</div>
+		<div class="su_txt">
+			<s:property value="#request.errorMsg"/>
+		</div>
+		<div class="btn_w">
+			<input type="button" class="btn_zc" value="返回" onclick="back();"/>
+		</div>
+	</body>
+</html>

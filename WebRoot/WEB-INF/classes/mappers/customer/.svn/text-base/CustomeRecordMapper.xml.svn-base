@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.customer.CustomeRecordMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.customer.CustomeRecord" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_type" property="userType" jdbcType="INTEGER" />
+    <result column="operate_type" property="operateType" jdbcType="INTEGER" />
+    <result column="operate_content" property="operateContent" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operateTime" jdbcType="TIMESTAMP" />
+    <result column="customer_referid" property="customerReferid" jdbcType="INTEGER" />
+    <result column="message_type" property="messageType" jdbcType="INTEGER" />
+    
+    <association property="user" column="user_id" select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, user_id, user_type, operate_type, operate_content, operate_time, customer_referid , message_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectLastFollowRecord" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_record
+    where customer_referid = #{id,jdbcType=INTEGER}
+    order by operate_time desc limit 0,1
+  </select>
+   <select id="selectRecords" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_record
+    where customer_referid = #{id,jdbcType=INTEGER} and operate_type != 100
+    order by operate_time desc
+  </select> 
+  
+  <select id="selectNewCount" resultType="int"  parameterType="java.lang.Integer" >
+    select count(*)
+    from t_customer_record
+    where customer_referid = #{id,jdbcType=INTEGER} and operate_type != 100 and (message_type is null or message_type = 0)
+  </select> 
+  
+  <select id="selectNewTotalCount" resultType="int"  parameterType="java.lang.Integer" >
+    select count(*)
+    from t_customer_record a , t_customer_application b, t_agent_user c
+    where 
+    a.customer_referid = b.id 
+    and  b.agent_id = c.id 
+    and  c.id = #{id,jdbcType=INTEGER} and a.operate_type != 100 
+    and  b.effect_type = 1
+    and (message_type is null or message_type = 0) 
+  </select> 
+  
+  
+  <select id="selectAgentRecords" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_record
+    where customer_referid = #{id,jdbcType=INTEGER} and operate_type = 100
+    order by operate_time desc
+  </select> 
+ 
+ 
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_customer_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.customer.CustomeRecord" >
+    insert into t_customer_record (id, user_id, user_type, 
+      operate_type, operate_content, operate_time, 
+      customer_referid,message_type)
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}, 
+      #{operateType,jdbcType=INTEGER}, #{operateContent,jdbcType=VARCHAR}, #{operateTime,jdbcType=TIMESTAMP}, 
+      #{customerReferid,jdbcType=INTEGER},#{messageType,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.customer.CustomeRecord" >
+    insert into t_customer_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userType != null" >
+        user_type,
+      </if>
+      <if test="operateType != null" >
+        operate_type,
+      </if>
+      <if test="operateContent != null" >
+        operate_content,
+      </if>
+      <if test="operateTime != null" >
+        operate_time,
+      </if>
+      <if test="customerReferid != null" >
+        customer_referid,
+      </if>
+      <if test="messageType != null" >
+        message_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="operateType != null" >
+        #{operateType,jdbcType=INTEGER},
+      </if>
+      <if test="operateContent != null" >
+        #{operateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+     <if test="customerReferid != null" >
+        #{customerReferid,jdbcType=INTEGER},
+      </if>
+      <if test="messageType != null" >
+        #{messageType,jdbcType=INTEGER},
+      </if>
+    </trim>
+    <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+      </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.customer.CustomeRecord" >
+    update t_customer_record
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null" >
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
+      <if test="operateType != null" >
+        operate_type = #{operateType,jdbcType=INTEGER},
+      </if>
+      <if test="operateContent != null" >
+        operate_content = #{operateContent,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="customerReferid != null" >
+        customer_referid = #{customerReferid,jdbcType=INTEGER},
+      </if>
+      <if test="messageType != null" >
+        message_type = #{messageType,jdbcType=INTEGER},
+      </if> 
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.customer.CustomeRecord" >
+    update t_customer_record
+    set user_id = #{userId,jdbcType=INTEGER},
+        user_type = #{userType,jdbcType=INTEGER},
+        operate_type = #{operateType,jdbcType=INTEGER},
+        operate_content = #{operateContent,jdbcType=VARCHAR},
+        operate_time = #{operateTime,jdbcType=TIMESTAMP},
+        customer_referid = #{customerReferid,jdbcType=INTEGER},
+        message_type = #{messageType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,219 @@
+package net.huimin.yk.channel.msg;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.huimin.common.helper.Judge;
+import net.huimin.yk.web.dao.system.MessageRecordMapper;
+import net.huimin.yk.web.dao.system.MsgValidateRecordMapper;
+import net.huimin.yk.web.dao.system.SysUserMapper;
+import net.huimin.yk.web.model.system.MessageRecord;
+import net.huimin.yk.web.model.system.MsgValidateRecord;
+import net.huimin.yk.web.model.system.SysUser;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.sword.wechat4j.message.CustomerMsg;
+
+@Service
+public class MessageAPIImpl implements MessageAPI {
+
+	@Autowired
+	private MessageCore core;
+	
+	@Autowired
+	private SysUserMapper userMapper;
+	
+	@Autowired
+	private MessageRecordMapper messageRecordMapper;
+	
+	@Autowired
+	private MsgValidateRecordMapper validateRecordMapper;
+	
+	public boolean send(Integer userId, String content) {
+		boolean rslt = false;
+		SysUser user = this.userMapper.selectByPrimaryKey(userId);
+		if(this.isMobile(user.getPhone())){
+			rslt = this.core.send(user.getPhone(), content);
+			MessageRecord record = new MessageRecord();
+			record.setContent(content);
+			record.setMsgType(4);
+			record.setPhoneNumber(user.getPhone());
+			record.setSendStatus(rslt ? 1 : 0);
+			record.setSendTime(new Date());
+			record.setUserId(userId);
+			this.messageRecordMapper.insertSelective(record);
+		}
+		
+		return rslt;
+	}
+
+	public boolean send(String target, String content) {
+		boolean rslt = false;
+		if(this.isMobile(target)){
+			rslt = this.core.send(target, content);
+			MessageRecord record = new MessageRecord();
+			record.setContent(content);
+			record.setMsgType(4);
+			record.setPhoneNumber(target);
+			record.setSendStatus(rslt ? 1 : 0);
+			record.setSendTime(new Date());
+			this.messageRecordMapper.insertSelective(record);
+		}
+		
+		return rslt;
+	}
+
+	public boolean batchForUser(List<Integer> users, String content) {
+		boolean rslt = false;
+		List<String> targets = new ArrayList<String>();
+		Iterator<Integer> iterator = users.iterator();
+		while (iterator.hasNext()) {
+			Integer userId = iterator.next();
+			SysUser user = this.userMapper.selectByPrimaryKey(userId);
+			if(this.isMobile(user.getPhone())){
+				targets.add(user.getPhone());
+			}
+		}
+		
+		rslt = this.core.send(targets, content);
+		
+		for (String phone : targets) {
+			MessageRecord record = new MessageRecord();
+			record.setContent(content);
+			record.setMsgType(4);
+			record.setPhoneNumber(phone);
+			record.setSendStatus(rslt ? 1 : 0);
+			record.setSendTime(new Date());
+			
+			this.messageRecordMapper.insertSelective(record);
+		}
+		
+		return rslt;
+	}
+
+	public boolean batchForTarget(List<String> targets, String content) {
+		boolean rslt = this.core.send(targets, content);
+		for (String phone : targets) {
+			MessageRecord record = new MessageRecord();
+			record.setContent(content);
+			record.setMsgType(4);
+			record.setPhoneNumber(phone);
+			record.setSendStatus(rslt ? 1 : 0);
+			record.setSendTime(new Date());
+			
+			this.messageRecordMapper.insertSelective(record);
+		}
+		return rslt;
+	}
+
+	public boolean sendValidateCode(Integer userId, int flag) {
+		SysUser user = this.userMapper.selectByPrimaryKey(userId);
+		if(!this.isMobile(user.getPhone())){
+			return false;
+		}
+		String code = this.createValidateCode();
+		boolean rslt = this.core.sendValidate(code,user.getPhone());
+		MessageRecord record = new MessageRecord();
+		record.setContent(code);
+		record.setMsgType(4);
+		record.setPhoneNumber(user.getPhone());
+		record.setSendStatus(rslt ? 1 : 0);
+		record.setSendTime(new Date());
+		MsgValidateRecord code_record = new MsgValidateRecord();
+		code_record.setContent(code);
+		code_record.setExpirationTime(new Date(new Date().getTime() + 300000l));
+		code_record.setPhoneNumber(user.getPhone());
+		code_record.setPurpose(flag == 1 ? "支付" :(flag == 2 ? "注册资料" : "修改资料"));
+		code_record.setRecordId(record.getId());
+		code_record.setSendTime(new Date());
+		code_record.setUserId(userId);
+		code_record.setValidateCode(code);
+		code_record.setValidateStatus(-1);
+		this.validateRecordMapper.insertSelective(code_record);
+		return rslt;
+	}
+
+	public boolean sendValidateCode(String target, int flag) {
+		if(!this.isMobile(target)){
+			return false;
+		}
+		String code = this.createValidateCode();
+		boolean rslt = this.core.sendValidate(code,target);
+		MessageRecord record = new MessageRecord();
+		record.setContent(code);
+		record.setMsgType(4);
+		record.setPhoneNumber(target);
+		record.setSendStatus(rslt ? 1 : 0);
+		record.setSendTime(new Date());
+		MsgValidateRecord code_record = new MsgValidateRecord();
+		code_record.setContent(code);
+		code_record.setExpirationTime(new Date(new Date().getTime() + 300000l));
+		code_record.setPhoneNumber(target);
+		code_record.setPurpose(flag == 1 ? "支付" :(flag == 2 ? "注册资料" : "修改资料"));
+		code_record.setRecordId(record.getId());
+		code_record.setSendTime(new Date());
+		code_record.setValidateCode(code);
+		code_record.setValidateStatus(-1);
+		this.validateRecordMapper.insertSelective(code_record);
+		return rslt;
+	}
+
+	public int validateCode(Integer userId, String code) {
+		SysUser user = this.userMapper.selectByPrimaryKey(userId);
+		return this.validateCode(user.getPhone(), code);
+	}
+	
+	public int validateCode(String phone, String code) {
+		int rslt = -1;
+		MsgValidateRecord code_record = this.validateRecordMapper.queryLastCodeByPhoneNumber(phone);
+		if(Judge.isNull(code_record)){
+			rslt = 4;
+		} else if(code_record.getValidateCode().equals(code)){
+			if(new Date().compareTo(code_record.getExpirationTime()) < 0){
+				rslt = 1;
+			} else {
+				rslt = 2;
+			}
+		} else {
+			rslt = 3;
+					
+		}
+		if(Judge.isNotNull(code_record)){
+			code_record.setValidateStatus(rslt);
+			this.validateRecordMapper.updateByPrimaryKeySelective(code_record);
+		}
+		return rslt;
+	}
+	
+	public boolean isMobile(String str) {
+		Pattern p = null;
+		Matcher m = null;
+		boolean b = false;
+		p = Pattern.compile("^[1][0-9]{10}$"); // 验证手机号
+		m = p.matcher(str);
+		b = m.matches();
+		return b;
+	}
+	
+	private String createValidateCode(){
+		return String.valueOf((int)(1000+Math.random()*(9999-1000+1)));
+	}
+
+	public void sendWechatTextMsg(String openId, String content) {
+		CustomerMsg customerMsg = new CustomerMsg(openId);
+		customerMsg.sendText(content);
+	}
+
+	public boolean sendMsgForKey(String phone, String key) {
+		return this.send(phone, MessageCore.getProperties(key));
+	}
+
+	public boolean sendMsgForKey(Integer userId, String key) {
+		return this.send(userId, MessageCore.getProperties(key));
+	}
+}

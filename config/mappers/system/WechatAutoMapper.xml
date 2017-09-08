@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.system.WechatAutoMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.system.WechatAuto" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="auto_type" property="autoType" jdbcType="INTEGER" />
+    <result column="keyword" property="keyword" jdbcType="VARCHAR" />
+    <result column="content_type" property="contentType" jdbcType="INTEGER" />
+    <result column="media_id" property="mediaId" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="pic_url" property="picUrl" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, auto_type, keyword, content_type, media_id, content, role_name, create_time,pic_url
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_wechat_auto
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_wechat_auto
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.system.WechatAuto" >
+    insert into t_wechat_auto (id, auto_type, keyword, 
+      content_type, media_id, content, 
+      role_name, create_time,pic_url)
+    values (#{id,jdbcType=INTEGER}, #{autoType,jdbcType=INTEGER}, #{keyword,jdbcType=VARCHAR}, 
+      #{contentType,jdbcType=INTEGER}, #{mediaId,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{roleName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},#{picUrl,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.system.WechatAuto" >
+    insert into t_wechat_auto
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="autoType != null" >
+        auto_type,
+      </if>
+      <if test="keyword != null" >
+        keyword,
+      </if>
+      <if test="contentType != null" >
+        content_type,
+      </if>
+      <if test="mediaId != null" >
+        media_id,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="roleName != null" >
+        role_name,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="autoType != null" >
+        #{autoType,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null" >
+        #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        #{contentType,jdbcType=INTEGER},
+      </if>
+      <if test="mediaId != null" >
+        #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.system.WechatAuto" >
+    update t_wechat_auto
+    <set >
+      <if test="autoType != null" >
+        auto_type = #{autoType,jdbcType=INTEGER},
+      </if>
+      <if test="keyword != null" >
+        keyword = #{keyword,jdbcType=VARCHAR},
+      </if>
+      <if test="contentType != null" >
+        content_type = #{contentType,jdbcType=INTEGER},
+      </if>
+      <if test="mediaId != null" >
+        media_id = #{mediaId,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picUrl != null" >
+       pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.system.WechatAuto" >
+    update t_wechat_auto
+    set auto_type = #{autoType,jdbcType=INTEGER},
+      keyword = #{keyword,jdbcType=VARCHAR},
+      content_type = #{contentType,jdbcType=INTEGER},
+      media_id = #{mediaId,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      pic_url = #{picUrl,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="queryAllKeywordAutos" resultMap="BaseResultMap">
+  	select * from t_wechat_auto a where a.auto_type = 1 order by a.create_time desc
+  </select>
+  <select id="queryGuanzhuAuto" resultMap="BaseResultMap">
+  	select * from t_wechat_auto a where a.auto_type = 0 order by a.create_time desc limit 1
+  </select>
+</mapper>

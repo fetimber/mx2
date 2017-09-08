@@ -1,0 +1,306 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<s:include value="../common/meta.jsp" />
+		<style type="text/css">
+			.tab1 td{font-family: "Courier New","微软雅黑"}
+			.input_1 {width:165px;font-family: "Courier New","微软雅黑"}
+			.ui-menu-item{font-family: "Courier New","微软雅黑"}
+		</style>
+		<script type="text/javascript">
+			function _forward_page(page) {
+				$(":hidden[name='page.current']").val(page);
+				$("#customersview").submit();
+			}
+			function tabshow(divid, obj) {
+				if ('ar_tab_now' != $(obj).attr('class')) {
+					$(".ar_tab li").removeClass("ar_tab_now");
+					$(obj).addClass("ar_tab_now");
+				}
+			}
+			var team = null;
+			var app = null;
+			function allot(team_id, app_id) {
+				team = team_id;
+				app = app_id;
+				$.dialog({
+					title: '分配',
+					content: 'url:admin/team!user?callUser.teamId=' + team_id
+				});
+			}
+
+			function allot_ok(checked) {
+				var param = 'teamInfo.id=' + team + '&customerApplication.id=' + app;
+				$.each(checked, function(idx, item) {
+					param += "&calluser=" + item;
+				});
+				$.post("admin/customer!allot", param, function(data) {
+					eval("data=" + data);
+					if (data.result) {
+						$.dialog.tips("分配完成", 2, 'success.gif',function() {
+							window.location.reload(true);
+						});
+
+					} else {
+						$.dialog.tips("分配失败，请稍后再试....", 3, 'error.gif');
+					}
+				});
+				return true;
+			}
+
+			function auto_allot() {
+				var param = "";
+				$.post("admin/customer!autoallot", param, function(data) {
+					eval("data=" + data);
+					if (data.result) {
+						$.dialog.tips("分配完成", 2, 'success.gif',
+						function() {
+							window.location.reload(true);
+						});
+
+					} else {
+						$.dialog.tips("没有待分配的申请", 3, 'error.gif');
+					}
+				});
+
+			}
+			
+			
+			function exportButton() {
+				window.location.href = "admin/customer!export";
+			}
+			
+
+			$(function() {
+				$("select").selectmenu({width:'178px'});
+				$(".timer").datepicker({ showButtonPanel: true });
+				
+				$(".ar_tab li").each(function(idx,item){
+					$(this).bind("click",function(){
+						$("input:hidden[name='param.tableType']").val(idx);
+						_forward_page(1);
+					});
+				});
+				
+
+				$("#querybtn").bind("click", function() {
+					/**
+					if ($('#startime').val() >= $('#endtime').val()) {
+						$.dialog.tips('起始时间不能大于或者等于结束时间', 2.5, 'error.gif');
+						return;
+					} else if ($('#endtime').val() > new Date().Format("yyyy-MM-dd")) {
+						$.dialog.tips('结束时间不能大于当前时间', 2.5, 'error.gif');
+						return;
+					}
+					**/
+					_forward_page(1);
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<div class="home" style="min-width: 1702px;">
+			<img src="resources/images/icon_home.png" width="20" height="20" />数据管理&nbsp;&gt;&nbsp;客户管理
+		</div>
+		<div class="m_w">
+			<div class="tab_check" style="margin-top:0!important;">
+			<!--检索部分-->
+				<s:form action="customer!view" namespace="/admin" id="customersview">
+					<s:hidden name="page.current" />
+					<s:hidden name="param.tableType" />
+					<table class="tab1" width="100%" style="border:0;min-width: 1663px;"> 
+						<tr>
+							<td width="10%" align="right">客户电话:</td>
+							<td width="15%"><s:textfield name="param.customerPhone" cssClass="input_1" alt="" maxlength="11" /></td>
+							<td width="10%" align="right">楼盘ID:</td>
+							<td width="15%"><s:textfield name="param.dutyName" cssClass="input_1" alt="" maxlength="10" /></td>
+							<td width="10%" align="right">经纪人姓名:</td>
+							<td width="15%"><s:textfield name="param.agentName" cssClass="input_1" alt="" maxlength="10" /></td>
+							<td width="10%" align="right">经纪人电话:</td>
+							<td><s:textfield name="param.agentPhone" cssClass="input_1" alt="" maxlength="11"/></td>
+						</tr>
+						<tr>
+							<td align="right">推荐类型:</td>
+							<td><s:select name="param.recommendType" list="#{'':'全部类型','0':'推荐楼盘','1':'推荐区域'}" /></td>
+							<td align="right">客户状态:</td>
+							<td><s:select name="param.customerStatus" list="#{'':'全部状态','1':'有效客户','0':'无效客户','2':'无意向客户'}" /></td>
+							<td align="right">报备时间开始:</td>
+							<td><input name="param.referDateStart" type="text" class="input_1 timer" value="<s:date name="%{param.referDateStart}" format="yyyy-MM-dd" />" readonly="readonly" /></td>
+							<td align="right">报备时间结束:</td>
+							<td><input name="param.referDateEnd" type="text" class="input_1 timer" value="<s:date name="%{param.referDateEnd}" format="yyyy-MM-dd" />" readonly="readonly" /></td>
+						</tr>
+						<tr>
+							<td align="right">申诉状态:</td>
+							<td><s:select name="param.appealStatus" list="#{'':'全部状态','1':'已申诉','0':'未申诉' }" /></td>
+							<td align="right">催办状态:</td>
+							<td><s:select name="param.pressStatus" list="#{'':'全部状态','1':'已催办','0':'未催办' }" /></td>
+							<td align="right">客户等级:</td>
+							<td><s:select name="param.customerLevelId" list="#{'':'全部等级','1':'A类客户','2':'B类客户','3':'C类客户','4':'D类客户','5':'E类客户' }" /></td>
+							<td align="right">排序方式:</td>
+							<td><s:select name="param.order" list="#{'':'默认排序',1:'报备时间',2:'最后跟进时间'}" /></td>
+						</tr>
+						<tr>
+							<td colspan="8" style="text-align: center;">
+								<s:submit cssStyle="display:none"></s:submit>
+								<input id="querybtn" type="button" value="搜索" class="btn_search" style="width:240px" />
+								<input type="button" value="重置" class="btn_search" style="width:240px;margin-left:20px;" onclick="window.location.href='admin/customer!view';" />
+								<input id="exportbtn" type="button" value="导出" class="btn_search" style="width:240px;margin-left:20px;" onclick="exportButton();" />
+								<s:if test="teamInfo != null">
+									<input id="allotbtn" type="button" value="自动分配" class="btn_search" style="width:240px;margin-left:20px;" onclick="auto_allot();" />
+								</s:if>
+							</td>
+						</tr>
+					</table>
+				</s:form>
+			</div>
+			<!--表格-->
+			<ul class="ar_tab" style="border:1px solid #d1d1d1;border-bottom:0;min-width: 1663px">
+				<li <s:if test="null == param.tableType or param.tableType == 0">class="ar_tab_now"</s:if>>
+					全部客户
+				</li>
+				<li <s:if test="param.tableType == 1">class="ar_tab_now"</s:if>>
+					未处理客户
+				</li>
+				<li <s:if test="param.tableType == 2">class="ar_tab_now"</s:if>>
+					已处理客户
+				</li>
+			</ul>
+			<div style="padding:20px;border:1px solid #d1d1d1;border-top:0px;min-width: 1621px">
+				<table width="100%" border="0" cellspacing="0" cellpadding="0" class="tab1" style="min-width: 1621px">
+					<tbody>
+						<tr>
+							<th width="3%">&nbsp;</th>
+							<th width="8%">
+								区域
+							</th>
+							<th width="13%">
+								项目
+							</th>
+							<th width="11%">
+								客户
+							</th>
+							<th width="8%">
+								客户分类
+							</th>
+							<th width="11%">
+								最新跟进
+							</th>
+							<th width="11%">
+								经纪人
+							</th>
+							<th width="6%">
+								进度
+							</th>
+							<th width="8%">
+								申诉催办
+							</th>
+							<th width="13%">
+								报备时间/下次跟进
+							</th>
+							<th>
+								操作
+							</th>
+						</tr>
+						<s:if test="null != page.beans && !page.beans.isEmpty()">
+							<s:iterator value="page.beans" var="item" status="status">
+								<s:set var="notProcessed" value="%{#item.dutyId eq null or #item.customerStatus eq 1 or #item.customerStatus eq 2 or #item.customerStatus eq null}" />
+								<tr <s:if test="#status.odd != true">class="inter"</s:if>>
+									<td>
+										<s:if test="notProcessed"><img src="resources/images/new.png" alt="未处理客户" /></s:if>
+										<s:else>&nbsp;</s:else>
+									</td>
+									<td align="center" valign="top">
+										<s:property value="#item.houseInfo.areaInfo.areaName" /><s:if test="#item.referArea == 1">[<span style="color:red">推</span>]</s:if>
+									</td>
+									<td align="center" valign="top">
+										<s:property value="#item.houseInfo.projectName" /><s:if test="#item.referArea == 0">[<span style="color:red">推</span>]</s:if>
+									</td>
+									<td align="center" valign="top">
+										<s:property value="#item.customerName" />[<s:property value="#item.customerDecimal" />]
+									</td>
+									<td align="center" valign="top">
+										<s:if test="#item.effectType == 0">无效</s:if><s:else>有效</s:else>客户[<s:if test="null == #item.customerLevel or #item.customerLevel == 1">A类</s:if><s:elseif test="null == #item.customerLevel or #item.customerLevel == 2">B类</s:elseif><s:elseif test="null == #item.customerLevel or #item.customerLevel == 3">C类</s:elseif><s:elseif test="null == #item.customerLevel or #item.customerLevel == 4">D类</s:elseif><s:elseif test="null == #item.customerLevel or #item.customerLevel == 5">E类</s:elseif>]
+									</td>
+									<td align="center" valign="top">
+										<s:if test="null != #item.duty"><s:property value="#item.duty.realName" /></s:if><s:else>暂无跟进人</s:else>
+									</td>
+									<td align="center" valign="top">
+										<s:if test="null != #item.agentInfo"><s:property value="#item.agentInfo.user.nickName" />[<s:property value="#item.agentInfo.phoneDecimal" />]</s:if><s:else>暂无经纪人</s:else>
+									</td>
+									<td align="center" valign="top">
+										<s:if test="#item.customerStatus == 1">
+											未分配
+										</s:if>
+										<s:elseif test="#item.customerStatus == 2">
+											未处理
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 3">
+											电联
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 4">
+											到访
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 5">
+											认购
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 6">
+											签约
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 7">
+											申请结佣
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 8">
+											已结佣
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 9">
+											申请提现
+										</s:elseif>
+										<s:elseif test="#item.customerStatus == 10">
+											提现成功
+										</s:elseif>
+									</td>
+									<td align="center" valign="top">
+										<s:if test="#item.appealStatus == 1"><span style="color:red">已申诉</span></s:if><s:elseif test="#item.appealStatus == 2">已处理</s:elseif><s:else>未申诉</s:else>，<s:if test="#item.presStatus == 1"><span style="color:red">已催办</span></s:if><s:else>未催办</s:else>
+									</td>
+									<td align="center" valign="top">
+										<s:date name="#item.referTime" format="yyyy-MM-dd" />/<s:if test="null == #item.nextTime">未设置</s:if><s:else><s:date name="#item.nextTime" format="yyyy-MM-dd" /></s:else>
+									</td>
+									<td align="center" valign="top">
+										<s:if test="#item.customerStatus == 1">
+											<s:if test="teamInfo != null">
+												<a href="javascript:allot(<s:property value="teamInfo.id"/>,'<s:property value="#item.id "/>')">分配</a>｜
+											</s:if>
+											<s:else>
+												<a href="javascript:allot(1,'<s:property value=" #item.id "/>')">分配</a>｜
+											</s:else>
+										</s:if>
+										<a href="admin/customer!track?customerApplication.id=<s:property value="#item.id "/>">跟踪</a>
+										<s:if test="#item.appealStatus != 0">
+											｜<a href="admin/customer!appeal?customerApplication.id=<s:property value="#item.id "/>">申诉处理</a>
+										</s:if>
+									</td>
+								</tr>
+							</s:iterator>
+						</s:if>
+						<s:else>
+							<tr>
+								<td colspan="11" align="center">
+									<font style="color:#ff671c;">
+										没查询到您想要的数据信息！！
+									</font>
+								</td>
+							</tr>
+						</s:else>
+					</tbody>
+				</table>
+				<!--页码-->
+				<div class="page">
+					<s:include value="../common/page.jsp" />
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+	</body>
+</html>

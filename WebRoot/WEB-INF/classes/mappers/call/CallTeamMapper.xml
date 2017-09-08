@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.call.CallTeamMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.call.CallTeam" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="team_name" property="teamName" jdbcType="VARCHAR" />
+    <result column="lead_id" property="leadId" jdbcType="INTEGER" />
+    <result column="team_count" property="teamCount" jdbcType="INTEGER" />
+    <result column="team_type" property="teamType" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    
+    <association property="levelInfo" column="team_type" select="net.huimin.yk.web.dao.customer.CustomerLevelMapper.selectByPrimaryKey" />
+    <association property="userInfo"  column="lead_id"   select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, team_name, lead_id, team_count, team_type,update_time,create_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_call_team
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="selectByLeadid" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_call_team
+    where lead_id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectByTeamName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_call_team
+    where team_name = #{teamName,jdbcType=VARCHAR}
+  </select>
+  
+  <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM t_call_team team
+  	  WHERE 1 = 1		
+  </select>
+  
+   <select id="queryCallTeams"  parameterType="map" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  FROM t_call_team team 
+  	  <![CDATA[ORDER BY id  DESC ]]>  	   
+  </select>
+  
+   <select id="queryCallTeamsByConditions" parameterType="map" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  FROM t_call_team team 
+  	  <![CDATA[ORDER BY id  DESC LIMIT  #{_page.start,jdbcType=INTEGER} , #{_page.offset,jdbcType=INTEGER} ]]>  	   
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_call_team
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.call.CallTeam" >
+    insert into t_call_team (id, team_name, lead_id, 
+      team_count, team_type , create_time , update_time)
+    values (#{id,jdbcType=INTEGER}, #{teamName,jdbcType=VARCHAR}, #{leadId,jdbcType=INTEGER}, 
+      #{teamCount,jdbcType=INTEGER}, #{teamType,jdbcType=INTEGER} , #{create_time,jdbcType=TIMESTAMP}, #{update_time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.call.CallTeam" >
+    insert into t_call_team
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="teamName != null" >
+        team_name,
+      </if>
+      <if test="leadId != null" >
+        lead_id,
+      </if>
+      <if test="teamCount != null" >
+        team_count,
+      </if>
+      <if test="teamType != null" >
+        team_type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="teamName != null" >
+        #{teamName,jdbcType=VARCHAR},
+      </if>
+      <if test="leadId != null" >
+        #{leadId,jdbcType=INTEGER},
+      </if>
+      <if test="teamCount != null" >
+        #{teamCount,jdbcType=INTEGER},
+      </if>
+      <if test="teamType != null" >
+        #{teamType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.call.CallTeam" >
+    update t_call_team
+    <set >
+      <if test="teamName != null" >
+        team_name = #{teamName,jdbcType=VARCHAR},
+      </if>
+      <if test="leadId != null" >
+        lead_id = #{leadId,jdbcType=INTEGER},
+      </if>
+      <if test="teamCount != null" >
+        team_count = #{teamCount,jdbcType=INTEGER},
+      </if>
+      <if test="teamType != null" >
+        team_type = #{teamType,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.call.CallTeam" >
+    update t_call_team
+    set team_name = #{teamName,jdbcType=VARCHAR},
+      lead_id = #{leadId,jdbcType=INTEGER},
+      team_count = #{teamCount,jdbcType=INTEGER},
+      team_type = #{teamType,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

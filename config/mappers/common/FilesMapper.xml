@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.common.FilesMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.common.Files" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="file_name" property="fileName" jdbcType="VARCHAR" />
+    <result column="file_size" property="fileSize" jdbcType="VARCHAR" />
+    <result column="file_PATH" property="filePath" jdbcType="VARCHAR" />
+    <result column="upload_time" property="uploadTime" jdbcType="TIMESTAMP" />
+    <result column="LOGIC_STATUS" property="logicStatus" jdbcType="INTEGER" />
+    <result column="file_type" property="fileType" jdbcType="INTEGER" />
+    <result column="refer_id" property="referId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, file_name, file_size, file_PATH, upload_time, LOGIC_STATUS, file_type, refer_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_files
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByConditions" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.common.Files" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_files
+    <trim prefix="WHERE" prefixOverrides="AND|OR">
+        
+		<if test="null != fileType">
+			<![CDATA[ AND file_type = #{fileType}]]> 
+		</if>
+		<if test="null != referId">
+			<![CDATA[ AND refer_id = #{referId}]]> 
+		</if>
+	</trim>
+  </select>
+  <select id="selectMain" resultMap="BaseResultMap" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_files
+    where file_type = 1 and refer_id in (select id from t_houses_project where is_main = 1)
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_files
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.common.Files" >
+    insert into t_files (id, file_name, file_size, 
+      file_PATH, upload_time, LOGIC_STATUS, 
+      file_type, refer_id)
+    values (#{id,jdbcType=INTEGER}, #{fileName,jdbcType=VARCHAR}, #{fileSize,jdbcType=VARCHAR}, 
+      #{filePath,jdbcType=VARCHAR}, #{uploadTime,jdbcType=TIMESTAMP}, #{logicStatus,jdbcType=INTEGER}, 
+      #{fileType,jdbcType=INTEGER}, #{referId,jdbcType=INTEGER})
+      <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+    </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.common.Files" >
+    insert into t_files
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="fileName != null" >
+        file_name,
+      </if>
+      <if test="fileSize != null" >
+        file_size,
+      </if>
+      <if test="filePath != null" >
+        file_PATH,
+      </if>
+      <if test="uploadTime != null" >
+        upload_time,
+      </if>
+      <if test="logicStatus != null" >
+        LOGIC_STATUS,
+      </if>
+      <if test="fileType != null" >
+        file_type,
+      </if>
+      <if test="referId != null" >
+        refer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fileName != null" >
+        #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        #{fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null" >
+        #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logicStatus != null" >
+        #{logicStatus,jdbcType=INTEGER},
+      </if>
+      <if test="fileType != null" >
+        #{fileType,jdbcType=INTEGER},
+      </if>
+      <if test="referId != null" >
+        #{referId,jdbcType=INTEGER},
+      </if>
+    </trim>
+    <selectKey keyProperty="id" resultType="int">
+    	select last_insert_id()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.common.Files" >
+    update t_files
+    <set >
+      <if test="fileName != null" >
+        file_name = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileSize != null" >
+        file_size = #{fileSize,jdbcType=VARCHAR},
+      </if>
+      <if test="filePath != null" >
+        file_PATH = #{filePath,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null" >
+        upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logicStatus != null" >
+        LOGIC_STATUS = #{logicStatus,jdbcType=INTEGER},
+      </if>
+      <if test="fileType != null" >
+        file_type = #{fileType,jdbcType=INTEGER},
+      </if>
+      <if test="referId != null" >
+        refer_id = #{referId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.common.Files" >
+    update t_files
+    set file_name = #{fileName,jdbcType=VARCHAR},
+      file_size = #{fileSize,jdbcType=VARCHAR},
+      file_PATH = #{filePath,jdbcType=VARCHAR},
+      upload_time = #{uploadTime,jdbcType=TIMESTAMP},
+      LOGIC_STATUS = #{logicStatus,jdbcType=INTEGER},
+      file_type = #{fileType,jdbcType=INTEGER},
+      refer_id = #{referId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateRefId" parameterType="map">
+  	update t_files f set f.refer_id = #{ref_id,jdbcType=INTEGER},f.file_type = #{type_id,jdbcType=INTEGER}
+  	where f.id in
+  	<foreach collection="id" open="(" close=")" separator="," item="item">
+  		#{item}
+  	</foreach> 
+  </update>
+  <update id="deleteRefId" parameterType="map">
+  	update t_files set refer_id = null 
+  	where refer_id = #{ref_id,jdbcType=INTEGER} and file_type = #{type_id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="queryFileByRefIdForSmall" parameterType="int" resultMap="BaseResultMap">
+  	select * from t_files f where f.refer_id = #{_parameter,jdbcType=INTEGER} and file_type = 1
+  </select>
+  <select id="queryFileByRefIdForBig" parameterType="int" resultMap="BaseResultMap">
+  	select * from t_files f where f.refer_id = #{_parameter,jdbcType=INTEGER} and file_type = 2
+  </select>
+  <select id="queryFileByRefIdForConfig" parameterType="int" resultMap="BaseResultMap">
+  	select * from t_files f where f.refer_id = #{_parameter,jdbcType=INTEGER} and file_type = 3
+  </select>
+
+  <select id="queryFilesForAgentComfirm" parameterType="int" resultMap="BaseResultMap">
+  	select * from t_files f where f.refer_id = #{_parameter,jdbcType=INTEGER} and file_type = 4
+  </select>
+   <select id="queryRewardConfirm" parameterType="int" resultMap="BaseResultMap">
+  	select * from t_files f where f.refer_id = #{_parameter,jdbcType=INTEGER} and file_type = 5
+  </select>
+  
+   <select id="queryFileByHonorUnit" parameterType="int" resultMap="BaseResultMap">
+  	 select * from t_files f where f.refer_id = #{_parameter,jdbcType=INTEGER} and file_type = 6
+  </select>
+  
+  <select id="queryFileByGoodsRecord" parameterType="int" resultMap="BaseResultMap">
+  	 select * from t_files f where f.refer_id = #{_parameter,jdbcType=INTEGER} and file_type = 7
+  </select>
+  
+  
+</mapper> 

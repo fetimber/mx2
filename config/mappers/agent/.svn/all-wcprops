@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 121
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/113/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/agent
+END
+AgentApplicationMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/8/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/agent/AgentApplicationMapper.xml
+END
+AccountRecordMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/52/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/agent/AccountRecordMapper.xml
+END
+AgentUserMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/548/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/agent/AgentUserMapper.xml
+END
+StoreMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/agent/StoreMapper.xml
+END
+StoreAgentMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/570/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/agent/StoreAgentMapper.xml
+END

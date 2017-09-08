@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.customer.CustomerApplicationMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.customer.CustomerApplication" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="house_id" property="houseId" jdbcType="INTEGER" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+    <result column="customer_decimal" property="customerDecimal" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="customer_level" property="customerLevel" jdbcType="INTEGER" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="agent_id" property="agentId" jdbcType="INTEGER" />
+    <result column="customer_status" property="customerStatus" jdbcType="INTEGER" />
+    <result column="refer_time" property="referTime" jdbcType="TIMESTAMP" />
+    <result column="effect_type" property="effectType" jdbcType="INTEGER" />
+    <result column="appeal_status" property="appealStatus" jdbcType="INTEGER" />
+    <result column="appeal_msg" property="appealMsg" jdbcType="VARCHAR" />
+    <result column="press_status" property="presStatus" jdbcType="INTEGER" />
+    <result column="read_status" property="readStatus" jdbcType="INTEGER" /> 
+    <result column="house_price" property="housePrice" jdbcType="DECIMAL" />
+    <result column="house_count" property="houseCount" jdbcType="INTEGER" />
+    <result column="follow_time" property="followTime" jdbcType="TIMESTAMP" />
+    <result column="next_time" property="nextTime" jdbcType="TIMESTAMP" />
+    <result column="refer_area" property="referArea" jdbcType="INTEGER" />
+    <result column="self_send" property="selfSend" jdbcType="INTEGER" />
+    <result column="self_look" property="selfLook" jdbcType="INTEGER" />
+    <result column="batch_id" property="batchId" jdbcType="INTEGER" />
+    <result column="money_status" property="moneyStatus" jdbcType="INTEGER" />
+    <result column="arrived_status" property="arrivedStatus" jdbcType="INTEGER" />
+    <result column="look_status" property="lookStatus" jdbcType="INTEGER" />
+    <result column="consultant_name" property="consultantName" jdbcType="VARCHAR" />
+    <result column="duty_id" property="dutyId" jdbcType="INTEGER" />
+    
+    
+    <association property="houseInfo" column="house_id" select="net.huimin.yk.web.dao.houses.HousesProjectMapper.selectByPrimaryKey" />
+    <association property="customerLevelInfo" column="customer_level" select="net.huimin.yk.web.dao.customer.CustomerLevelMapper.selectByPrimaryKey" />
+    <association property="agentInfo" column="agent_id" select="net.huimin.yk.web.dao.agent.AgentUserMapper.selectByPrimaryKey" />
+    <association property="records" column="id" select="net.huimin.yk.web.dao.customer.CustomeRecordMapper.selectRecords" />
+    <association property="duty" column="duty_id" select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+     
+    <association property="messageCount" column="id" select="net.huimin.yk.web.dao.customer.CustomeRecordMapper.selectNewCount" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+     id, house_id, customer_name, customer_decimal, sex, customer_level, remark, agent_id, house_id,
+    customer_status, refer_time, effect_type, appeal_status, appeal_msg, press_status, read_status, house_count, house_price, follow_time,
+    next_time,refer_area,self_send,self_look,batch_id,money_status,arrived_status,look_status,consultant_name,duty_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_application
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  
+   <select id="queryCountListByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM t_customer_application customer
+  	  WHERE 1 = 1
+  	  <if test="null != customer" >
+	     <if test="null != customer.agentId" >
+    	    AND agent_id = #{customer.agentId,jdbcType=INTEGER}
+         </if>
+         <if test="null != customer.effectType and 1 != customer.effectType" >
+    	    AND effect_type != 1
+         </if>
+         <if test="null != customer.effectType and 1 == customer.effectType" >
+    	    AND effect_type = 1
+         </if>
+         <if test="null != customer.referTime">
+			AND refer_time > #{customer.referTime,jdbcType=TIMESTAMP}
+		 </if>
+	 </if>		
+  </select>
+  
+   <select id="queryCustomerListByConditions" parameterType="map" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_customer_application 
+	  WHERE 1 = 1
+	  <if test="null != customer" >
+	     <if test="null != customer.agentId" >
+    	    AND agent_id = #{customer.agentId,jdbcType=INTEGER}
+         </if>
+           <if test="null != customer.effectType and 1 != customer.effectType" >
+    	    AND effect_type != 1
+         </if>
+         <if test="null != customer.effectType and 1 == customer.effectType" >
+    	    AND effect_type = 1
+         </if>
+         <if test="null != customer.referTime">
+		 	AND refer_time > #{customer.referTime,jdbcType=TIMESTAMP}
+		 </if>
+	  </if>
+  	  <![CDATA[ORDER BY follow_time desc ,customer_status asc ,refer_time  DESC , effect_type DESC LIMIT  #{_page.start,jdbcType=INTEGER} , #{_page.offset,jdbcType=INTEGER} ]]>  	   
+  </select>
+  
+
+  <select id="selectByConditions" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.customer.CustomerApplication" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_application
+    where 1=1
+    <if test="null != agentId" >
+    	 AND agent_id = #{agentId,jdbcType=INTEGER}
+    </if>
+    <if test="null != houseId" >
+    	 AND house_id = #{houseId,jdbcType=INTEGER}
+    </if>
+    <if test="null != customerStatus" >
+    	 AND customer_status = #{customerStatus,jdbcType=INTEGER}
+    </if>
+    <if test="null != customerDecimal" >
+    	 AND customer_decimal = #{customerDecimal,jdbcType=INTEGER}
+    </if>
+    order by refer_time desc 
+  </select>
+  
+  <select id="selectAgentBrokerageCount" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM t_customer_application 
+  	  where agent_id = #{customer.agentId,jdbcType=INTEGER}
+      and customer_status = #{customer.customerStatus,jdbcType=INTEGER}
+     <![CDATA[order by refer_time desc ]]>
+    </select>
+  
+   <select id="selectAgentBrokerage"  parameterType="map" resultMap="BaseResultMap">
+     select 'true' as QUERYID,
+     <include refid="Base_Column_List" />
+     from t_customer_application
+     where agent_id = #{customer.agentId,jdbcType=INTEGER}
+     and customer_status = #{customer.customerStatus,jdbcType=INTEGER}
+     order by refer_time desc 
+     <if test="null != _page and null != _page.start and null != _page.offset">
+          <![CDATA[
+          LIMIT  #{_page.start,jdbcType=INTEGER} , #{_page.offset,jdbcType=INTEGER}
+          ]]> 
+     </if>
+    
+   </select>
+  
+   <select id="queryCountByConditions" parameterType="map" resultType="int">
+		select count(1) from t_customer_application ca
+		<where>
+			<if test="null != param.customerPhone and '' != param.customerPhone">
+				and customer_decimal like '%${param.customerPhone}%'
+			</if>
+			<if test="null != param.dutyName and '' != param.dutyName">
+			   and  house_id = ${param.dutyName}
+			</if>
+			<if test="null != param.agentName and '' != param.agentName">
+				and agent_id in (select au.id from t_agent_user au left join t_sys_user su on au.user_id = su.id where su.real_name like '%${param.agentName}%')
+			</if>
+			<if test="null != param.agentPhone and '' != param.agentPhone">
+				and agent_id in (select au.id from t_agent_user au where au.phone_decimal like '%${param.agentPhone}%')
+			</if>
+			<!-- 1:楼盘,0:区域 -->
+			<if test="null != param.recommendType">
+				<if test="param.recommendType == 1">
+					and refer_area = 1
+				</if>
+				<if test="param.recommendType != 1">
+					and refer_area != 1
+				</if>
+			</if>
+			<if test="null != param.customerStatus">
+				and effect_type = #{param.customerStatus}
+			</if>
+			<if test="null != param.referDateStart">
+				and refer_time >= #{param.referDateStart}
+			</if>
+			<if test="null != param.referDateEnd">
+				<![CDATA[and refer_time <= DATE_ADD(#{param.referDateEnd},INTERVAL 1 DAY)]]>
+			</if>
+			<if test="null != param.appealStatus">
+				and appeal_status = #{param.appealStatus}
+			</if>
+			<if test="null != param.pressStatus">
+				and press_status = #{param.pressStatus}
+			</if>
+			<if test="null != param.customerLevelId">
+				and customer_level = #{param.customerLevelId}
+			</if>
+			<if test="null != param.isTeamLeader and param.isTeamLeader">
+				and (duty_id = #{param.userId} or customer_status = 1)
+			</if>
+			<if test="null != param.isTeam and param.isTeam">
+				and duty_id = #{param.userId}
+			</if>
+			<if test="null != param.tableType and param.tableType > 0">
+				<if test="param.tableType == 2">
+					and customer_status not in (1,2)
+				</if>
+				<if test="param.tableType == 1"><!-- 未处理 -->
+					<![CDATA[and customer_status in (1,2)]]>
+				</if>
+			</if>
+		</where>
+  </select>
+   <select id="queryCustomerByConditions" parameterType="map" resultMap="BaseResultMap">
+		select * from t_customer_application
+		<where>
+			<if test="null != param.customerPhone and '' != param.customerPhone">
+				and customer_decimal like '%${param.customerPhone}%'
+			</if>
+			<if test="null != param.dutyName and '' != param.dutyName">
+			   and  house_id = ${param.dutyName}
+<!-- 				and duty_id in (select id from t_sys_user su where su.real_name like '%${param.dutyName}%') -->
+			</if>
+			<if test="null != param.agentName and '' != param.agentName">
+				and agent_id in (select au.id from t_agent_user au left join t_sys_user su on au.user_id = su.id where su.real_name like '%${param.agentName}%')
+			</if>
+			<if test="null != param.agentPhone and '' != param.agentPhone">
+				and agent_id in (select au.id from t_agent_user au where au.phone_decimal like '%${param.agentPhone}%')
+			</if>
+			<!-- 1:楼盘,0:区域 -->
+			<if test="null != param.recommendType">
+				<if test="param.recommendType == 1">
+					and refer_area = 1
+				</if>
+				<if test="param.recommendType != 1">
+					and refer_area != 1
+				</if>
+			</if>
+			<if test="null != param.customerStatus">
+				and effect_type = #{param.customerStatus}
+			</if>
+			<if test="null != param.referDateStart">
+				and refer_time >= #{param.referDateStart}
+			</if>
+			<if test="null != param.referDateEnd">
+				<![CDATA[and refer_time <= DATE_ADD(#{param.referDateEnd},INTERVAL 1 DAY)]]>
+			</if>
+			<if test="null != param.appealStatus">
+				and appeal_status = #{param.appealStatus}
+			</if>
+			<if test="null != param.pressStatus">
+				and press_status = #{param.pressStatus}
+			</if>
+			<if test="null != param.customerLevelId">
+				and customer_level = #{param.customerLevelId}
+			</if>
+			<if test="null != param.isTeamLeader and param.isTeamLeader">
+				and (duty_id = #{param.userId} or customer_status = 1)
+			</if>
+			<if test="null != param.isTeam and param.isTeam">
+				and duty_id = #{param.userId}
+			</if>
+			<if test="null != param.tableType and param.tableType > 0">
+				<if test="param.tableType == 2">
+					and customer_status not in (1,2)
+				</if>
+				<if test="param.tableType == 1"><!-- 未处理 -->
+					<![CDATA[and customer_status in (1,2)]]>
+				</if>
+			</if>
+		</where>
+		<if test="null != param.order">
+			<if test="param.order == 1">order by refer_time desc</if>
+			<if test="param.order == 2">order by follow_time desc</if>
+		</if>
+		<if test="null == param.order">
+			order by customer_status
+		</if>
+		<if test="null != start">
+			limit #{start},#{offset}
+		</if>
+  </select>
+  
+  
+   <select id="queryUndealCustomerList"  resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  from t_customer_application 
+	  WHERE customer_status = 1
+  	  <![CDATA[ORDER BY CUSTOMER_STATUS ASC ,REFER_TIME  DESC ]]>  	   
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_customer_application
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.customer.CustomerApplication" >
+    insert into t_customer_application (id, house_id,area_id, customer_name, 
+      customer_decimal, sex, customer_level, remark, 
+      agent_id, customer_status,  refer_time, effect_type,
+      appeal_status, appeal_msg, press_status, read_status, house_count, house_price, follow_time ,
+      next_time,refer_area,self_send,self_look,batch_id,money_status,arrived_status,look_status
+      )
+    values (#{id,jdbcType=INTEGER}, #{houseId,jdbcType=INTEGER},  #{areaId,jdbcType=INTEGER}, #{customerName,jdbcType=VARCHAR}, 
+      #{customerDecimal,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{customerLevel,jdbcType=INTEGER}, 
+      #{remark,jdbcType=VARCHAR}, #{agentId,jdbcType=INTEGER}, #{customerStatus,jdbcType=INTEGER}, 
+      #{referTime,jdbcType=TIMESTAMP}, #{effectType,jdbcType=INTEGER},#{appealStatus,jdbcType=INTEGER},
+      #{appealMsg,jdbcType=VARCHAR}, #{presStatus,jdbcType=INTEGER}, #{readStatus,jdbcType=INTEGER},
+      #{houseCount,jdbcType=INTEGER}, #{housePrice,jdbcType=DECIMAL}, #{followTime,jdbcType=TIMESTAMP},
+      #{nextTime,jdbcType=TIMESTAMP},#{referArea,jdbcType=INTEGER},#{selfSend,jdbcType=INTEGER},#{selfLook,jdbcType=INTEGER},#{batchId,jdbcType=INTEGER},#{moneyStatus,jdbcType=INTEGER},
+      #{arrivedStatus,jdbcType=INTEGER},#{lookStatus,jdbcType=INTEGER},#{lookStatus,jdbcType=INTEGER},#{consultantName,jdbcType=VARCHAR},#{dutyId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.customer.CustomerApplication" >
+    insert into t_customer_application
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="areaId != null" >
+        area_id,
+      </if>
+      <if test="customerName != null" >
+        customer_name,
+      </if>
+      <if test="customerDecimal != null" >
+        customer_decimal,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="customerLevel != null" >
+        customer_level,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="agentId != null" >
+        agent_id,
+      </if>
+      <if test="customerStatus != null" >
+        customer_status,
+      </if>
+      <if test="referTime != null" >
+        refer_time,
+      </if>
+      <if test="effectType != null" >
+        effect_type,
+      </if>
+      <if test="appealStatus != null" >
+        appeal_status,
+      </if>
+      <if test="appealMsg != null" >
+        appeal_msg,
+      </if>
+      <if test="presStatus != null" >
+        press_status,
+      </if>
+      <if test="readStatus != null" >
+        read_status,
+      </if>
+      <if test="houseCount != null" >
+        house_count,
+      </if>
+      <if test="housePrice != null" >
+        house_price,
+      </if>
+      <if test="followTime != null" >
+        follow_time,
+      </if>
+           <if test="nextTime != null" >
+        next_time,
+      </if>
+            <if test="referArea != null" >
+        refer_area,
+      </if>
+            <if test="selfSend != null" >
+        self_send,
+      </if>
+            <if test="selfLook != null" >
+        self_look,
+      </if>
+            <if test="batchId != null" >
+        batch_id,
+      </if>
+            <if test="moneyStatus != null" >
+        money_status,
+      </if>
+            <if test="arrivedStatus != null" >
+        arrived_status,
+      </if>
+            <if test="lookStatus != null" >
+        look_status,
+        </if>
+                <if test="consultantName != null" >
+        consultant_name,
+      </if>
+            <if test="dutyId != null" >
+        duty_id,
+        </if>
+        
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=INTEGER},
+      </if> 
+      <if test="customerName != null" >
+        #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerDecimal != null" >
+        #{customerDecimal,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="customerLevel != null" >
+        #{customerLevel,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="customerStatus != null" >
+        #{customerStatus,jdbcType=INTEGER},
+      </if>
+      <if test="referTime != null" >
+        #{referTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effectType != null" >
+        #{effectType,jdbcType=INTEGER},
+      </if>
+      <if test="appealStatus != null" >
+        #{appealStatus,jdbcType=INTEGER},
+      </if>
+      <if test="appealMsg != null" >
+        #{appealMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="presStatus != null" >
+        #{presStatus,jdbcType=INTEGER},
+      </if>
+      <if test="readStatus != null" >
+        #{readStatus,jdbcType=INTEGER},
+      </if>
+      <if test="houseCount != null" >
+        #{houseCount,jdbcType=INTEGER},
+      </if>
+      <if test="housePrice != null" >
+        #{housePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="followTime != null" >
+        #{followTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="nextTime != null" >
+        #{nextTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="referArea != null" >
+        #{referArea,jdbcType=INTEGER},
+      </if>
+       <if test="selfSend != null" >
+        #{selfSend,jdbcType=INTEGER},
+      </if>
+       <if test="selfLook != null" >
+        #{selfLook,jdbcType=INTEGER},
+      </if>
+       <if test="batchId != null" >
+        #{batchId,jdbcType=INTEGER},
+      </if>
+       <if test="moneyStatus != null" >
+        #{moneyStatus,jdbcType=INTEGER},
+      </if>
+       <if test="arrivedStatus != null" >
+        #{arrivedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="lookStatus != null" >
+        #{lookStatus,jdbcType=INTEGER},
+      </if> 
+       <if test="consultantName != null" >
+           #{consultantName,jdbcType=INTEGER},
+      </if>
+      <if test="dutyId != null" >
+         #{dutyId,jdbcType=INTEGER},
+      </if>  
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.customer.CustomerApplication" >
+    update t_customer_application
+    <set >
+      <if test="houseId != null" >
+        house_id = #{houseId,jdbcType=INTEGER},
+      </if>
+      <if test="areaId != null" >
+        area_id = #{areaId,jdbcType=INTEGER},
+      </if>
+      <if test="customerName != null" >
+        customer_name = #{customerName,jdbcType=VARCHAR},
+      </if>
+      <if test="customerDecimal != null" >
+        customer_decimal = #{customerDecimal,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="customerLevel != null" >
+        customer_level = #{customerLevel,jdbcType=INTEGER},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="agentId != null" >
+        agent_id = #{agentId,jdbcType=INTEGER},
+      </if>
+      <if test="customerStatus != null" >
+        customer_status = #{customerStatus,jdbcType=INTEGER},
+      </if>
+      <if test="referTime != null" >
+        refer_time = #{referTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="effectType != null" >
+        effect_type = #{effectType,jdbcType=INTEGER},
+      </if>
+      <if test="appealStatus != null" >
+        appeal_status = #{appealStatus,jdbcType=INTEGER},
+      </if>
+       <if test="appealMsg != null" >
+        appeal_msg = #{appealMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="presStatus != null" >
+        press_status = #{presStatus,jdbcType=INTEGER},
+      </if>
+      <if test="readStatus != null" >
+        read_status = #{readStatus,jdbcType=INTEGER},
+      </if>
+      <if test="houseCount != null" >
+        house_count = #{houseCount,jdbcType=INTEGER},
+      </if>
+      <if test="housePrice != null" >
+        house_price = #{housePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="followTime != null" >
+        follow_time = #{followTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="nextTime != null" >
+        next_time = #{nextTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="referArea != null" >
+        refer_area = #{referArea,jdbcType=INTEGER},
+      </if>
+       <if test="selfSend != null" >
+        self_send = #{selfSend,jdbcType=INTEGER},
+      </if>
+       <if test="selfLook != null" >
+        self_look = #{selfLook,jdbcType=INTEGER},
+      </if>
+       <if test="batchId != null" >
+        batch_id = #{batchId,jdbcType=INTEGER},
+      </if>
+       <if test="moneyStatus != null" >
+        money_status = #{moneyStatus,jdbcType=INTEGER},
+      </if>
+       <if test="arrivedStatus != null" >
+        arrived_status = #{arrivedStatus,jdbcType=INTEGER},
+      </if>
+      <if test="lookStatus != null" >
+        look_status = #{lookStatus,jdbcType=INTEGER},
+      </if> 
+      <if test="consultantName != null" >
+         consultant_name =  #{consultantName,jdbcType=INTEGER},
+      </if>
+      <if test="dutyId != null" >
+         duty_id = #{dutyId,jdbcType=INTEGER},
+      </if>   
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.customer.CustomerApplication" >
+    update t_customer_application
+    set house_id = #{houseId,jdbcType=INTEGER},
+      area_id = #{areaId,jdbcType=INTEGER},
+      customer_name = #{customerName,jdbcType=VARCHAR},
+      customer_decimal = #{customerDecimal,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      customer_level = #{customerLevel,jdbcType=INTEGER},
+      remark = #{remark,jdbcType=VARCHAR},
+      agent_id = #{agentId,jdbcType=INTEGER},
+      customer_status = #{customerStatus,jdbcType=INTEGER},
+      refer_time = #{referTime,jdbcType=TIMESTAMP},
+      effect_type = #{effectType,jdbcType=INTEGER},
+      appeal_status = #{appealStatus,jdbcType=INTEGER},
+      appeal_msg = #{appealMsg,jdbcType=INTEGER},
+      press_status = #{presStatus,jdbcType=INTEGER},
+      read_status = #{readStatus,jdbcType=INTEGER},
+      house_count = #{houseCount,jdbcType=INTEGER},
+      house_price = #{housePrice,jdbcType=DECIMAL},
+      follow_time = #{followTime,jdbcType=TIMESTAMP},
+      next_time = #{nextTime,jdbcType=TIMESTAMP},
+      refer_area = #{referArea,jdbcType=INTEGER},
+      self_send = #{selfSend,jdbcType=INTEGER},
+      self_look = #{selfLook,jdbcType=INTEGER},
+      batch_id = #{batchId,jdbcType=INTEGER},
+      money_status = #{moneyStatus,jdbcType=INTEGER},
+      arrived_status = #{arrivedStatus,jdbcType=INTEGER},
+      look_status = #{lookStatus,jdbcType=INTEGER},  
+      consultant_name =  #{consultantName,jdbcType=INTEGER},
+      duty_id = #{dutyId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+   <select id="queryDayCustomerCount" parameterType="int" resultType="int">
+       select count(1) from t_customer_application where to_days(refer_time) = to_days(now()) and agent_id = #{id,jdbcType=INTEGER}; 
+  </select>
+</mapper>

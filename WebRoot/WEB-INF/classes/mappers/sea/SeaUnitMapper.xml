@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.sea.SeaUnitMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.sea.SeaUnit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+    <result column="unit_city" property="unitCity" jdbcType="INTEGER" />
+    <result column="is_member" property="isMember" jdbcType="VARCHAR" />
+    <result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+    <result column="unit_duty" property="unitDuty" jdbcType="VARCHAR" />
+  </resultMap>
+    <resultMap id="UnitsMap" type="net.huimin.yk.web.model.sea.SeaUnit" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+    <result column="unit_city" property="unitCity" jdbcType="INTEGER" />
+    <result column="is_member" property="isMember" jdbcType="VARCHAR" />
+    <result column="join_time" property="joinTime" jdbcType="TIMESTAMP" />
+    <result column="unit_duty" property="unitDuty" jdbcType="VARCHAR" />
+    <association property="cityInfo" column="unit_city" select="net.huimin.yk.web.dao.common.CityMapper.selectByPrimaryKey" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, unit_name, unit_city, is_member, join_time, unit_duty
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="UnitsMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_sea_govunit
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM T_SEA_GOVUNIT
+  	  <where>
+  	  	AND IS_MEMBER =  1
+	    <if test="null != seaunit">
+	        <if test="null != seaunit.unitName">
+	          AND UNIT_NAME like '%${seaunit.unitName}%'
+	        </if>
+	        <if test="null != seaunit.unitCity">
+	          AND UNIT_CITY = #{seaunit.unitCity}
+	        </if>
+	    </if>
+  	</where>
+  </select>
+  <select id="queryResultByConditions" parameterType="map" resultMap="UnitsMap">
+  	SELECT * FROM T_SEA_GOVUNIT
+  	<where>
+  		AND IS_MEMBER = 1
+	    <if test="null != seaunit">
+	        <if test="null != seaunit.unitName">
+	          AND UNIT_NAME like '%${seaunit.unitName}%'
+	        </if>
+	        <if test="null != seaunit.unitCity">
+	          AND UNIT_CITY = #{seaunit.unitCity}
+	        </if>
+	    </if>
+	     ORDER BY ID DESC
+  	</where>
+    <![CDATA[ LIMIT  #{_page.start,jdbcType=INTEGER}, #{_page.offset,jdbcType=INTEGER} ]]> 
+  </select>
+  
+    <select id="checkUnitName" parameterType="net.huimin.yk.web.model.sea.SeaUnit" resultType="int">
+  	select count(1) from T_SEA_GOVUNIT
+  	<where>
+  		<if test="null != unitName">
+  			and UNIT_NAME = #{unitName}
+  		</if>
+  		<if test="null != id">
+  			and id != #{id}
+  		</if>
+  	</where>
+  </select>
+  
+   <select id="selectAllUnits" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.sea.SeaUnit" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from T_SEA_GOVUNIT 
+    where  1 = 1 
+      <if test="null != unitCity and unitCity != ''" >
+  	     and unit_city = #{unitCity,jdbcType=INTEGER}
+  	  </if>
+    </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_sea_govunit
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.sea.SeaUnit" >
+    insert into t_sea_govunit (id, unit_name, unit_city, 
+      is_member, join_time, unit_duty
+      )
+    values (#{id,jdbcType=INTEGER}, #{unitName,jdbcType=VARCHAR}, #{unitCity,jdbcType=INTEGER}, 
+      #{isMember,jdbcType=VARCHAR}, #{joinTime,jdbcType=TIMESTAMP}, #{unitDuty,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.sea.SeaUnit" >
+    insert into t_sea_govunit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="unitName != null" >
+        unit_name,
+      </if>
+      <if test="unitCity != null" >
+        unit_city,
+      </if>
+      <if test="isMember != null" >
+        is_member,
+      </if>
+      <if test="joinTime != null" >
+        join_time,
+      </if>
+      <if test="unitDuty != null" >
+        unit_duty,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="unitName != null" >
+        #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitCity != null" >
+        #{unitCity,jdbcType=INTEGER},
+      </if>
+      <if test="isMember != null" >
+        #{isMember,jdbcType=VARCHAR},
+      </if>
+      <if test="joinTime != null" >
+        #{joinTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unitDuty != null" >
+        #{unitDuty,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.sea.SeaUnit" >
+    update t_sea_govunit
+    <set >
+      <if test="unitName != null" >
+        unit_name = #{unitName,jdbcType=VARCHAR},
+      </if>
+      <if test="unitCity != null" >
+        unit_city = #{unitCity,jdbcType=INTEGER},
+      </if>
+      <if test="isMember != null" >
+        is_member = #{isMember,jdbcType=VARCHAR},
+      </if>
+      <if test="joinTime != null" >
+        join_time = #{joinTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="unitDuty != null" >
+        unit_duty = #{unitDuty,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.sea.SeaUnit" >
+    update t_sea_govunit
+    set unit_name = #{unitName,jdbcType=VARCHAR},
+      unit_city = #{unitCity,jdbcType=INTEGER},
+      is_member = #{isMember,jdbcType=VARCHAR},
+      join_time = #{joinTime,jdbcType=TIMESTAMP},
+      unit_duty = #{unitDuty,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

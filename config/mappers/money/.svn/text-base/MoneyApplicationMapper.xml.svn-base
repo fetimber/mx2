@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.money.MoneyApplicationMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.money.MoneyApplication" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="amount_money" property="amountMoney" jdbcType="DECIMAL" />
+    <result column="final_money" property="finalMoney" jdbcType="DECIMAL" />
+    <result column="application_time" property="applicationTime" jdbcType="TIMESTAMP" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="finish_time" property="finishTime" jdbcType="TIMESTAMP" />
+    <result column="operater_id" property="operaterId" jdbcType="INTEGER" />
+    <result column="pm_id" property="pmId" jdbcType="INTEGER" />
+    <result column="result_status" property="resultStatus" jdbcType="INTEGER" />
+    <result column="customer_id" property="customerId" jdbcType="INTEGER" />
+    <result column="app_type" property="appType" jdbcType="INTEGER" />
+    
+    <association property="agentInfo" column="account_id" select="net.huimin.yk.web.dao.agent.AgentUserMapper.selectByAccontId" />
+    <association property="appInfo" column="customer_id" select="net.huimin.yk.web.dao.customer.CustomerMoneyMapper.selectByPrimaryKey" />
+    <association property="pmInfo" column="pm_id" select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+    <association property="detailInfo" column="id" select="net.huimin.yk.web.dao.money.MoneyDetailMapper.selectByApplicationId" />
+    <association property="moneyBalance" column="id" select="net.huimin.yk.web.dao.money.MoneyBalanceMapper.selectByApplicationId" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, account_id, amount_money, final_money, application_time, remark, finish_time, result_status,customer_id,
+    operater_id, pm_id ,app_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_money_application
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByCustomerId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_money_application
+    where customer_id = #{id,jdbcType=INTEGER}
+  </select>
+
+   <select id="selectMoneyApplicationCount" parameterType="map" resultType="int" >
+    select count(*) from t_money_application money , t_agent_user  agent , t_sys_user user
+    where  money.account_id = agent.account_id  and agent.user_id =  user.id
+     <if test="null != money"> 
+        <if test="null != money.accountId">
+          AND account_id =  #{money.accountId,jdbcType=INTEGER}
+        </if> 
+        <if test="null != money.resultStatus">
+          AND result_status =  #{money.resultStatus,jdbcType=INTEGER}
+        </if>   
+    </if>
+    <if test="null != keyword and keyword != ''"> 
+         AND ( user.phone like '%${keyword}%'  or  agent.phone_decimal like '%${keyword}%')
+    </if>
+  	<if test="null != startime">
+   		AND  money.application_time >= #{startime}
+   	</if>
+   	<if test="null != endtime">
+   		<![CDATA[AND  money.application_time <= DATE_ADD(#{endtime},INTERVAL 1 DAY)]]>
+   	</if>
+    <![CDATA[ order by money.id desc , app_type asc  ]]> 
+   </select>
+
+
+   <select id="selectMoneyApplication" parameterType="map" resultMap="BaseResultMap"  >
+	    select  money.id, money.account_id, money.amount_money, money.final_money,money. application_time, money.remark, money.finish_time, money.result_status,money.customer_id,
+                money.operater_id, money.pm_id ,money.app_type
+	    from t_money_application money , t_agent_user  agent , t_sys_user user
+	    where  money.account_id = agent.account_id  and agent.user_id =  user.id
+	     <if test="null != money"> 
+	        <if test="null != money.accountId">
+	          AND money.account_id =  #{money.accountId,jdbcType=INTEGER}
+	        </if> 
+	        <if test="null != money.resultStatus">
+	          <if test="0 == money.resultStatus">
+	             AND money.result_status in (0,2)  
+	          </if>
+	          <if test="1 == money.resultStatus">
+	              AND money.result_status =  #{money.resultStatus,jdbcType=INTEGER}
+	          </if>  
+	        </if>   
+	    </if>
+	    <if test="null != keyword and keyword != ''"> 
+	         and ( user.phone like '%${keyword}%'  or  agent.phone_decimal like '%${keyword}%')
+	    </if>
+	  	<if test="null != startime">
+	   		AND  money.application_time >= #{startime}
+	   	</if>
+	   	<if test="null != endtime">
+	   		<![CDATA[AND  money.application_time <= DATE_ADD(#{endtime},INTERVAL 1 DAY)]]>
+	   	</if>
+	    <![CDATA[ order by  money.id desc , app_type asc ]]> 
+  </select>
+  
+  <select id="selectMoneyApplicationForPage" parameterType="map" resultMap="BaseResultMap"  >
+	    select  money.id, money.account_id, money.amount_money, money.final_money,money. application_time, money.remark, money.finish_time, money.result_status,money.customer_id,
+                money.operater_id, money.pm_id ,money.app_type
+	    from t_money_application money , t_agent_user  agent , t_sys_user user
+	    where  money.account_id = agent.account_id  and agent.user_id =  user.id
+	     <if test="null != money"> 
+	        <if test="null != money.accountId">
+	          AND money.account_id =  #{money.accountId,jdbcType=INTEGER}
+	        </if> 
+	        <if test="null != money.resultStatus">
+	          <if test="0 == money.resultStatus">
+	             AND money.result_status in (0,2)  
+	          </if>
+	          <if test="1 == money.resultStatus">
+	              AND money.result_status =  #{money.resultStatus,jdbcType=INTEGER}
+	          </if>  
+	        </if>   
+	    </if>
+	    <if test="null != keyword and keyword != ''"> 
+	         and ( user.phone like '%${keyword}%'  or  agent.phone_decimal like '%${keyword}%')
+	    </if>
+	  	<if test="null != startime">
+	   		AND  money.application_time >= #{startime}
+	   	</if>
+	   	<if test="null != endtime">
+	   		<![CDATA[AND  money.application_time <= DATE_ADD(#{endtime},INTERVAL 1 DAY)]]>
+	   	</if>
+	    <![CDATA[ order by  money.id desc , app_type asc LIMIT  #{_page.start,jdbcType=INTEGER} , #{_page.offset,jdbcType=INTEGER}  ]]> 
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_money_application
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.money.MoneyApplication" >
+    insert into t_money_application (id, account_id, amount_money, 
+      final_money, application_time, remark, 
+      finish_time, operater_id, pm_id,result_status,customer_id,app_type
+      )
+    values (#{id,jdbcType=INTEGER}, #{accountId,jdbcType=INTEGER}, #{amountMoney,jdbcType=DECIMAL}, 
+      #{finalMoney,jdbcType=DECIMAL}, #{applicationTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}, 
+      #{finishTime,jdbcType=TIMESTAMP}, #{operaterId,jdbcType=INTEGER}, #{pmId,jdbcType=INTEGER}, #{resultStatus,jdbcType=INTEGER},#{customerId,jdbcType=INTEGER},#{appType,jdbcType=INTEGER}
+      )
+     <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+      </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.money.MoneyApplication" >
+    insert into t_money_application
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="amountMoney != null" >
+        amount_money,
+      </if>
+      <if test="finalMoney != null" >
+        final_money,
+      </if>
+      <if test="applicationTime != null" >
+        application_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="finishTime != null" >
+        finish_time,
+      </if>
+      <if test="operaterId != null" >
+        operater_id,
+      </if>
+      <if test="pmId != null" >
+        pm_id,
+      </if>
+      <if test="resultStatus != null" >
+        result_status,
+      </if>
+      <if test="customerId != null" >
+        customer_id,
+      </if>
+     <if test="appType != null" >
+        app_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="amountMoney != null" >
+        #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="finalMoney != null" >
+        #{finalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationTime != null" >
+        #{applicationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operaterId != null" >
+        #{operaterId,jdbcType=INTEGER},
+      </if>
+      <if test="pmId != null" >
+        #{pmId,jdbcType=INTEGER},
+      </if>
+      <if test="resultStatus != null" >
+        #{resultStatus,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null" >
+        #{customerId,jdbcType=INTEGER},
+      </if>
+       <if test="appType != null" >
+         #{appType,jdbcType=INTEGER},
+      </if>
+    </trim>
+    <selectKey resultType="int" keyProperty="id">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.money.MoneyApplication" >
+    update t_money_application
+    <set >
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="amountMoney != null" >
+        amount_money = #{amountMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="finalMoney != null" >
+        final_money = #{finalMoney,jdbcType=DECIMAL},
+      </if>
+      <if test="applicationTime != null" >
+        application_time = #{applicationTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="finishTime != null" >
+        finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="operaterId != null" >
+        operater_id = #{operaterId,jdbcType=INTEGER},
+      </if>
+      <if test="pmId != null" >
+        pm_id = #{pmId,jdbcType=INTEGER},
+      </if>
+      <if test="resultStatus != null" >
+        result_status = #{resultStatus,jdbcType=INTEGER},
+      </if>
+      <if test="customerId != null" >
+        customer_id = #{customerId,jdbcType=INTEGER},
+      </if>
+      <if test="appType != null" >
+        app_type = #{appType,jdbcType=INTEGER},
+      </if>  
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.money.MoneyApplication" >
+    update t_money_application
+    set account_id = #{accountId,jdbcType=INTEGER},
+      amount_money = #{amountMoney,jdbcType=DECIMAL},
+      final_money = #{finalMoney,jdbcType=DECIMAL},
+      application_time = #{applicationTime,jdbcType=TIMESTAMP},
+      remark = #{remark,jdbcType=VARCHAR},
+      finish_time = #{finishTime,jdbcType=TIMESTAMP},
+      operater_id = #{operaterId,jdbcType=INTEGER},
+      pm_id = #{pmId,jdbcType=INTEGER},
+      result_status = #{resultStatus,jdbcType=INTEGER},
+      customer_id = #{customerId,jdbcType=INTEGER},
+      app_type = #{appType,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

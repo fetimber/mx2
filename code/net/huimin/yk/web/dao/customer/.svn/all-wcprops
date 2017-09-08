@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/200/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/customer
+END
+CustomerChoiceMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/64/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/customer/CustomerChoiceMapper.java
+END
+CustomerRuleMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/117/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/customer/CustomerRuleMapper.java
+END
+CustomerLevelMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/108/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/customer/CustomerLevelMapper.java
+END
+CustomeRecordMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/412/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/customer/CustomeRecordMapper.java
+END
+CustomerApplicationMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 167
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/355/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/customer/CustomerApplicationMapper.java
+END
+CustomerMoneyMapper.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/283/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/code/net/huimin/yk/web/dao/customer/CustomerMoneyMapper.java
+END

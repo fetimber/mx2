@@ -1,0 +1,41 @@
+K 25
+svn:wc:ra_dav:version-url
+V 124
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/200/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/customer
+END
+CustomerLevelMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/108/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/customer/CustomerLevelMapper.xml
+END
+CustomerRuleMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/109/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/customer/CustomerRuleMapper.xml
+END
+CustomerChoiceMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 149
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/157/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/customer/CustomerChoiceMapper.xml
+END
+CustomerApplicationMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/549/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/customer/CustomerApplicationMapper.xml
+END
+CustomerMoneyMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/283/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/customer/CustomerMoneyMapper.xml
+END
+CustomeRecordMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/509/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/customer/CustomeRecordMapper.xml
+END

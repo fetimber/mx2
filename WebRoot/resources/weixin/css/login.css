@@ -1,0 +1,215 @@
+@charset "utf-8";
+
+body {
+    background-color: #fff;
+    color: #000;
+    font-family: 微软雅黑;
+    font-size: 14px;
+    height: 100%;
+    line-height: 1.5em;
+}
+* {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+.wrapper {
+    box-sizing: border-box;
+    min-width: 320px;
+}
+.show {
+    display: block;
+    left: 0;
+}
+.show {
+    display: block;
+    left: 0;
+}
+.page {
+    background-color: #fff;
+    height: 100%;
+    left: 100%;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+.clear::after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+header {
+    height: 50px;
+}
+
+.page .header {
+    overflow: hidden;
+}
+.header {
+    background-color: #41bee1;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 999;
+}
+
+header.topTitle .register {
+    float: right;
+    height: 50px;
+    line-height: 50px;
+    margin-top: 0;
+    text-align: center;
+    width: 3em;
+}
+.register {
+    margin-top: 18px;
+}
+
+header.topTitle .head_title_small {
+    color: #fff;
+    display: inline-block;
+}
+a {
+    text-decoration: none;
+}
+
+header.topTitle .leftBtn {
+    background: url("../imgs/header_log.png") no-repeat scroll 10px 15px / 13px 22px rgba(0, 0, 0, 0);
+    float: left;
+    overflow: hidden;
+    text-align: center;
+    width: 3em;
+}
+
+header.topTitle .leftBtn a {
+    display: block;
+    height: 50px;
+}
+
+
+header.topTitle .arrowIcon {
+    float: left;
+    line-height: 3.8em;
+    transform: rotate(0deg);
+}
+.arrowIcon {
+    display: inline-block;
+    height: 1.1em;
+    margin-left: 1.2em;
+    margin-top: 1.2em;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    transform: rotate(135deg);
+    transition: -moz-transform 1s ease 0s;
+    vertical-align: middle;
+    width: 1.1em;
+}
+
+header.topTitle .arrowIcon i {
+    border: 0 none;
+}
+.arrowIcon i {
+    border: 3px solid #3182d1;
+    display: block;
+    height: 2em;
+    left: 0;
+    position: absolute;
+    text-indent: -9999px;
+    top: 0;
+    width: 1em;
+}
+
+header.topTitle .login {
+    height: 50px;
+    line-height: 50px;
+    margin: 0 3em;
+    text-align: center;
+}
+
+header.topTitle .head_title {
+    color: #fff;
+    display: inline-block;
+    font-size: 20px;
+}
+
+.margin1em {
+    margin: 1em;
+}
+
+.main .phone_num {
+    border: 1px solid #dddddd;
+    color: #585858;
+    font-family: 微软雅黑;
+    font-size: 16px;
+    height: 38px;
+    line-height: 38px;
+    padding-left: 5px;
+    width: 98%;
+}
+.mt5 {
+    margin-top: 5px;
+}
+input {
+    outline: 0 none;
+}
+
+.main .phone_num {
+    border: 1px solid #dddddd;
+    color: #585858;
+    font-family: 微软雅黑;
+    font-size: 16px;
+    height: 38px;
+    line-height: 38px;
+    padding-left: 5px;
+    width: 98%;
+}
+.mt20 {
+    margin-top: 20px;
+}
+
+.main .btn_login {
+    background: none repeat scroll 0 0 #46a0d1;
+    border-radius: 0.2em;
+    color: #fff;
+    display: inline-block;
+    font-size: 16px;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.main .btn_login {
+    color: #fff;
+    font-size: 16px;
+    line-height: 40px;
+    text-align: center;
+}
+
+.other_login .password {
+    color: #585858;
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    height: 33px;
+    line-height: 33px;
+    text-decoration: underline !important;
+}
+
+
+
+
+

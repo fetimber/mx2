@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 122
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/370/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system
+END
+SysUserMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/280/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/SysUserMapper.xml
+END
+MsgValidateRecordMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/211/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/MsgValidateRecordMapper.xml
+END
+MessageRecordMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/211/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/MessageRecordMapper.xml
+END
+SysMenuMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/201/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/SysMenuMapper.xml
+END
+SysUserRoleMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/212/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/SysUserRoleMapper.xml
+END
+WechatAutoHistoryMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/132/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/WechatAutoHistoryMapper.xml
+END
+SysAccountMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/320/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/SysAccountMapper.xml
+END
+SysMenuRoleMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/200/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/SysMenuRoleMapper.xml
+END
+WeChatMessageRecordMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/370/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/WeChatMessageRecordMapper.xml
+END
+SysRoleMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/257/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/SysRoleMapper.xml
+END
+WechatAutoMapper.xml
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/133/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/config/mappers/system/WechatAutoMapper.xml
+END

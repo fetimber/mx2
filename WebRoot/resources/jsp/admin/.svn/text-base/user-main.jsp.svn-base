@@ -1,0 +1,84 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+   <base href="<%=basePath %>" />
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <link rel="stylesheet" type="text/css" href="resources/css/style.css"></link>
+   <script type="text/javascript" src="resources/js/jquery.min.js"></script>
+   <script type="text/javascript" src="resources/js/highchart/highcharts.js"></script>
+   <script type="text/javascript" src="resources/js/report.js"></script>
+   
+   <script type="text/javascript">
+     var data_array = new Array();
+     var xAxis = new Array();
+     $(function() {   
+		<s:iterator value="info.list" var="item" status="st">
+			data_array.push(<s:property value="#item.amount" />);
+			xAxis.push('<s:property value="#item.realName" />');
+		</s:iterator>
+
+		var pricedata = [{name:'佣金',data:data_array}];
+		// 图表信息填充
+		canvasReport('MainAnalysis','',xAxis,'金额（元）','',pricedata,2);
+	  	
+		
+	 });
+   
+   function customer(){
+      window.location.href = "admin/customer!view";
+   }
+   
+   function agent(){
+      window.location.href = "admin/agent!view";
+   }
+   
+   function finace(){
+      window.location.href = "admin/finace!view";
+   }
+   
+   </script>
+</head>
+
+<body>
+<div style="padding:20px;">
+  <div class="part1" style="margin-top:20px;"> 
+    <!--今日报备-->
+    <div class="module1" onclick="customer();" > <img src="resources/images/icon_hyk_1.png" class="bg_img1"/>
+      <p class="module1_txt1">今日报备</p>
+      <p class="module1_txt_01"><s:property value="info.todayRef"/></p>
+      <p class="module1_txt3"><span class="module1_txt4">总客户数：</span><span class="module1_txt5"><s:property value="info.refTotal"/>人</span></p>
+    </div>
+    <!--今日注册-->
+    <div class="module2" onclick="agent();" > <img src="resources/images/icon_hyk_2.png" class="bg_img1"/>
+      <p class="module1_txt1">今日注册</p>
+      <p class="module1_txt_01"><s:property value="info.todayReg"/></p>
+      <p class="module1_txt3"><span class="module1_txt4">总经纪人数：</span><span class="module1_txt5"><s:property value="info.regTotal"/>人</span></p>
+    </div>
+    <!--今日结佣-->
+    <div class="module3" onclick="finace();" > <img src="resources/images/icon_hyk_4.png" class="bg_img1"/>
+      <p class="module1_txt1">今日结佣</p>
+      <p class="module1_txt_01"><s:property value="info.todayBal"/></p>
+      <p class="module1_txt3"><span class="module1_txt4">总结佣金：</span><span class="module1_txt5"><s:property value="info.balTotal"/>元</span></p>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="part2" style="margin-top:40px;">
+    <div class="p1_tpc"><img src="resources/images/icon_form.png" width="16" height="16" />&nbsp;&nbsp;佣金TOP10经纪人柱图</div>
+    <div class="contain_all" style="height:420px;">
+      <div id="MainAnalysis" class="contain" style="padding:20px 0;">
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

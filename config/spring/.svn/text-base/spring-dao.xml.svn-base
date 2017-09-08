@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/tx
+     	   http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+           
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.SysUserMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.common.OperateRecordMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.houses.HousesProjectMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.houses.HousesConfigMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.SysAccountMapper" />
+		</bean>
+		
+	    <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.agent.AccountRecordMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.agent.AgentUserMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.common.ConfigMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.common.FilesMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.common.AreaMapper" />
+		</bean>
+		
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.customer.CustomerChoiceMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.customer.CustomerRuleMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.customer.CustomerLevelMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.customer.CustomerApplicationMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.customer.CustomeRecordMapper" />
+		</bean>
+		
+	   <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.call.CallTeamMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.call.CallUserMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.SysRoleMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.WechatAutoHistoryMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.WechatAutoMapper" />
+		</bean>
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.money.MoneyApplicationMapper" />
+		</bean>
+		
+	    <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.money.MoneyBalanceMapper" />
+		</bean>
+		
+	    <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.money.MoneyDetailMapper" />
+		</bean>
+		
+	    <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.cash.CashApplicationMapper" />
+		</bean>
+		
+	    <bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.cash.CashBalanceMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.cash.CashDetailMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.common.ProvinceMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.common.CityMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.SysMenuMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.SysMenuRoleMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.customer.CustomerMoneyMapper" />
+		</bean>
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.MessageRecordMapper" />
+		</bean>
+		
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.MsgValidateRecordMapper" />
+		</bean>
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.SysUserRoleMapper" />
+		</bean>
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.WeChatMessageRecordMapper" />
+		</bean>
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.system.WeChatMessageRecordMapper" />
+		</bean>
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.agent.StoreAgentMapper" />
+		</bean>
+		<bean class="org.mybatis.spring.mapper.MapperFactoryBean">
+		   <property name="mapperInterface" value="net.huimin.yk.web.dao.agent.StoreMapper" />
+		</bean>
+		
+		
+</beans>

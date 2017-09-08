@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.call.CallUserMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.call.CallUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="team_id" property="teamId" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="customer_decimal" property="customerDecimal" jdbcType="INTEGER" />
+    <association property="userInfo"  column="user_id"   select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+    <association property="teamInfo"  column="team_id"   select="net.huimin.yk.web.dao.call.CallTeamMapper.selectByPrimaryKey" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, team_id, user_id, customer_decimal
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_call_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM T_CALL_USER
+  	  WHERE 1 = 1 and team_id = #{user.teamId,jdbcType=INTEGER}		
+  </select>
+  
+   <select id="queryUsersByTeamId" parameterType="map" resultMap="BaseResultMap">
+  	  SELECT 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  FROM T_CALL_USER
+	  WHERE 1 = 1 and team_id = #{user.teamId,jdbcType=INTEGER}	
+  	  <![CDATA[ORDER BY id  DESC LIMIT  #{_page.start,jdbcType=INTEGER} , #{_page.offset,jdbcType=INTEGER} ]]>  	   
+  </select>
+  
+  
+ <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select call1.id,call1.team_id,call1.user_id,call1.customer_decimal
+    from t_call_user call1, t_sys_user user
+    where call1.user_id = user.id
+    and  call1.user_id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="queryCallUserByTeamId" parameterType="net.huimin.yk.web.model.call.CallUser" resultMap="BaseResultMap">
+  	  select 'true' as QUERYID,
+	  <include refid="Base_Column_List" />
+	  FROM t_call_user 
+      where 1 = 1 
+       <if test="teamId != null" >
+         and team_id = #{teamId,jdbcType=INTEGER}
+      </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_call_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.call.CallUser" >
+    insert into t_call_user (id, team_id, user_id, 
+      customer_decimal)
+    values (#{id,jdbcType=INTEGER}, #{teamId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{customerDecimal,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.call.CallUser" >
+    insert into t_call_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="teamId != null" >
+        team_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="customerDecimal != null" >
+        customer_decimal,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="teamId != null" >
+        #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="customerDecimal != null" >
+        #{customerDecimal,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.call.CallUser" >
+    update t_call_user
+    <set >
+      <if test="teamId != null" >
+        team_id = #{teamId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="customerDecimal != null" >
+        customer_decimal = #{customerDecimal,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.call.CallUser" >
+    update t_call_user
+    set team_id = #{teamId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      customer_decimal = #{customerDecimal,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

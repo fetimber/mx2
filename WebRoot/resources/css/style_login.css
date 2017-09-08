@@ -1,0 +1,210 @@
+@charset "utf-8";
+/* CSS Document */
+
+/***************** 全局样式-start *****************/
+html {
+	width:100%;
+}
+body {
+	margin:0;
+	padding:0;
+	background:#fff;
+	font-size:14px;
+	width:100%;
+	height:100%;
+	font-family:"微软雅黑";
+	color:#555;
+}
+body, button, input, select, textarea {
+	font: Tahoma, Helvetica, Arial, sans-serif;
+	font-family:"微软雅黑";
+}
+div, form, img, ul, ol, li, dl, dt, dd, p {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+img {
+	vertical-align:middle;
+}
+input {
+	margin:0;
+	padding:1px;
+}
+li {
+	list-style-type:none;
+}
+h1, h2, h3, h4, h5, h6 {
+	margin:0;
+	padding:0;
+}
+a {
+	text-decoration:none;
+	color:#666;
+}
+a:hover {
+	color:#000;
+}
+.clear {
+	clear:both;
+	line-height:0px;
+	margin:0px;
+	padding:0px;
+	height:0px;
+	font-size:0px;
+}
+/***************** 全局样式-end *****************/
+/***************** 登录-start*****************/
+.login_bgb {
+	background: url(../images/login_bgb.png) no-repeat center center;
+	width:auto;
+	height:auto;
+}
+.logo {
+	height:44px;
+	margin-top:10px;
+	text-align:center;
+	padding-top:6px;
+    color:#fff;
+	font-size:20px;
+
+}
+
+.login_logo {
+	margin-top:80px;
+	height:60px;
+	text-align:center;
+}
+.login_contain {
+	background:url(../images/login-bg.png) no-repeat;
+	width:551px;
+	height:366px;
+	margin:20px auto;
+}
+.login_contain p {
+	margin:0 auto;
+	width:430px;
+}
+.login_input0 {
+	width:430px;
+	height:45px;
+	border:1px solid #a6a6a6;
+	line-height:43px;
+	font-size:16px;
+}
+.login_input0:hover {
+	border:1px solid #20609e
+}
+.login_input1 {
+	background:url(../images/ico-username.png) no-repeat left top;
+	width:380px;
+	height:43px;
+	padding-left:50px;
+	margin-bottom:20px;
+	margin-top:140px;
+}
+.login_input2 {
+	background:url(../images/ico-password.png) no-repeat left top;
+	width:380px;
+	height:43px;
+	padding-left:50px;
+	margin-bottom:20px;
+}
+.btn_login {
+	width:430px;
+	height:45px;
+	background:#20609e;
+	color:#fff;
+	font-size:18px;
+	border:0;
+	cursor:pointer;
+}
+.btn_login:hover {
+	background:#003d79;
+}
+/***************** 登录-end*****************/
+/***************** left-start *****************/
+
+.left {
+	background:#20609e;
+}
+.nav {
+	background:#20609e;
+	width:100%;
+}
+.nav li span {
+	color:#fff;
+	line-height:44px;
+	height:44px;
+	border-bottom:1px solid #002447;
+	display:block;
+	cursor:pointer;
+	background:url(../images/nav_arrow.png) no-repeat right top #003971;
+	text-indent:14px;
+}
+.nav li li a {
+	color:#ccc;
+	line-height:45px;
+	text-indent:46px;
+	display:block;
+}
+.nav li li a:hover {
+	background:#548fc7;
+	cursor:pointer;
+}
+.nav li span img {
+	margin-right:12px;
+}
+.nav_now a {
+	background:#1a4d7e;
+	color:#fff!important;
+	border-left:4px solid #ff671c;
+	text-indent:42px!important;
+}
+/***************** left-end *****************/
+/***************** top-start *****************/
+.top {
+	background:url(../images/top_bg.png) no-repeat #003253 left top;
+	height:60px;
+	line-height:60px;
+	width:100%;
+	
+}
+
+
+
+.top_tpc {
+	margin-left:20px;
+	float:left;
+	margin-top:13px;
+}
+.top_r {
+	float:right;
+	width:530px;
+}
+.exit {
+	color:#ff671c!important;
+}
+.top_pwd {
+	float:left;
+	margin-right:30px;
+	color:#cccccc;
+}
+.top_pwd:hover{
+	color:#fff;
+}
+.top_pwd img {
+	vertical-align:middle;
+	margin-top:-2px;
+	margin-right:10px;
+}
+/***************** top-end *****************/
+/***************** copy-start *****************/
+.copy {
+	background:#f3f3f3;
+	line-height:40px;
+	text-indent:20px;
+	border-top:1px solid #e0e0e0;
+	cursor:pointer;
+}
+/***************** copy-end *****************/

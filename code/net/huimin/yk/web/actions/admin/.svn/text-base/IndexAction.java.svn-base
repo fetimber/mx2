@@ -1,0 +1,26 @@
+package net.huimin.yk.web.actions.admin;
+
+import org.apache.struts2.convention.annotation.Result;
+import org.apache.struts2.convention.annotation.Results;
+
+import net.huimin.common.mvc.AbstractAction;
+
+@Results({@Result(name="index",location="index.jsp")})
+public class IndexAction extends AbstractAction{
+
+	public String execute() {
+		return "index";
+	}
+	
+	public String left() {
+		return "left";
+	}
+
+	public String header() {
+		return "header";
+	}
+	
+	public String bottom() {
+		return "bottom";
+	}
+}

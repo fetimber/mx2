@@ -1,0 +1,239 @@
+K 25
+svn:wc:ra_dav:version-url
+V 128
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/550/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin
+END
+user-view.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/351/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/user-view.jsp
+END
+config-setting-menu.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/232/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/config-setting-menu.jsp
+END
+index-header.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/526/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/index-header.jsp
+END
+agent-view.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/518/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-view.jsp
+END
+agent-store-add.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-store-add.jsp
+END
+customer-view.old.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/customer-view.old.jsp
+END
+agent-check-picture.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/232/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-check-picture.jsp
+END
+customer-view.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/customer-view.jsp
+END
+house-add.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/house-add.jsp
+END
+config-setting-auto.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/244/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/config-setting-auto.jsp
+END
+user-role.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/257/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/user-role.jsp
+END
+agent-superior.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/550/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-superior.jsp
+END
+finace-view.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/526/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/finace-view.jsp
+END
+user-main.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/221/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/user-main.jsp
+END
+team-user.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/205/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/team-user.jsp
+END
+agent-check.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/505/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-check.jsp
+END
+finace-cash-check.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/505/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/finace-cash-check.jsp
+END
+agent-subordinate.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/550/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-subordinate.jsp
+END
+index-bottom.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/258/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/index-bottom.jsp
+END
+config-red.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/264/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/config-red.jsp
+END
+finace-money-check.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 151
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/505/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/finace-money-check.jsp
+END
+house-config-edit.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 150
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/298/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/house-config-edit.jsp
+END
+config-frozen.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/224/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/config-frozen.jsp
+END
+agent-history.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/526/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-history.jsp
+END
+area.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/327/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/area.jsp
+END
+team-user-new.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/257/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/team-user-new.jsp
+END
+house-config.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/298/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/house-config.jsp
+END
+index.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/505/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/index.jsp
+END
+team-view.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/257/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/team-view.jsp
+END
+house-edit.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/513/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/house-edit.jsp
+END
+config-setting-base.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/232/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/config-setting-base.jsp
+END
+agent-detail.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/505/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-detail.jsp
+END
+agent-store.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/agent-store.jsp
+END
+customer-track.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/538/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/customer-track.jsp
+END
+user-role-auth.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/232/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/user-role-auth.jsp
+END
+customer-appeal.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/328/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/customer-appeal.jsp
+END
+house.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 138
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/387/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/house.jsp
+END
+viewmain.html
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/121/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/viewmain.html
+END
+index-left.jsp
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/svn/%E5%9E%A0%E5%9D%A4%E6%88%BF%E5%B0%8F%E5%B8%85/!svn/ver/550/trunk/%E6%BA%90%E4%BB%A3%E7%A0%81/yk/WebRoot/resources/jsp/admin/index-left.jsp
+END

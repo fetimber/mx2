@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.customer.CustomerChoiceMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.customer.CustomerChoice" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="rule_id" property="ruleId" jdbcType="INTEGER" />
+    <result column="choice_name" property="choiceName" jdbcType="VARCHAR" />
+    <result column="choice_content" property="choiceContent" jdbcType="VARCHAR" />
+    <result column="choice_score" property="choiceScore" jdbcType="DECIMAL" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, rule_id, choice_name, choice_content, choice_score
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_choice
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+   <select id="selectByRuleId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_customer_choice 
+    where 1=1
+     <if test="null != _parameter">
+    	AND rule_id = #{_parameter,jdbcType=INTEGER}
+     </if>
+     order by choice_score asc
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_customer_choice
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.customer.CustomerChoice" >
+    insert into t_customer_choice (id, rule_id, choice_name, 
+      choice_content, choice_score)
+    values (#{id,jdbcType=INTEGER}, #{ruleId,jdbcType=INTEGER}, #{choiceName,jdbcType=VARCHAR}, 
+      #{choiceContent,jdbcType=VARCHAR}, #{choiceScore,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.customer.CustomerChoice" >
+    insert into t_customer_choice
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="ruleId != null" >
+        rule_id,
+      </if>
+      <if test="choiceName != null" >
+        choice_name,
+      </if>
+      <if test="choiceContent != null" >
+        choice_content,
+      </if>
+      <if test="choiceScore != null" >
+        choice_score,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="ruleId != null" >
+        #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="choiceName != null" >
+        #{choiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="choiceContent != null" >
+        #{choiceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="choiceScore != null" >
+        #{choiceScore,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.customer.CustomerChoice" >
+    update t_customer_choice
+    <set >
+      <if test="ruleId != null" >
+        rule_id = #{ruleId,jdbcType=INTEGER},
+      </if>
+      <if test="choiceName != null" >
+        choice_name = #{choiceName,jdbcType=VARCHAR},
+      </if>
+      <if test="choiceContent != null" >
+        choice_content = #{choiceContent,jdbcType=VARCHAR},
+      </if>
+      <if test="choiceScore != null" >
+        choice_score = #{choiceScore,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.customer.CustomerChoice" >
+    update t_customer_choice
+    set rule_id = #{ruleId,jdbcType=INTEGER},
+      choice_name = #{choiceName,jdbcType=VARCHAR},
+      choice_content = #{choiceContent,jdbcType=VARCHAR},
+      choice_score = #{choiceScore,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

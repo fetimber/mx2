@@ -1,0 +1,439 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.bq.RoomCheckinfoMapper">
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.bq.RoomCheckinfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="check_roomid" property="checkRoomId" jdbcType="VARCHAR" />
+    <result column="check_userid" property="checkUserId" jdbcType="VARCHAR" />
+    <result column="check_date" property="checkDate" jdbcType="TIMESTAMP" />
+    <result column="check_Metope01" property="checkMetope01"  jdbcType="VARCHAR" />
+    <result column="check_Metope02" property="checkMetope02"  jdbcType="VARCHAR"/>
+    <result column="check_Ground01" property="checkGround01"  jdbcType="VARCHAR"/>
+    <result column="check_Ground02" property="checkGround02"  jdbcType="VARCHAR"/>
+	<result column="check_Ground03" property="checkGround03"  jdbcType="VARCHAR"/>
+	<result column="check_Desk01" property="checkDesk01"  jdbcType="VARCHAR"/>
+	<result column="check_Desk02" property="checkDesk02"  jdbcType="VARCHAR"/>
+	<result column="check_Bed01" property="checkBed01"  jdbcType="VARCHAR"/>
+	<result column="check_Bed02" property="checkBed02"  jdbcType="VARCHAR"/>
+	<result column="check_Balcony01" property="checkBalcony01"  jdbcType="VARCHAR"/>
+	<result column="check_Balcony02" property="checkBalcony02"  jdbcType="VARCHAR"/>
+	<result column="check_WashGargle01" property="checkWashGargle01"  jdbcType="VARCHAR"/>
+	<result column="check_WashGargle02" property="checkWashGargle02"  jdbcType="VARCHAR"/>
+	<result column="check_WashGargle03" property="checkWashGargle03"  jdbcType="VARCHAR"/>
+	<result column="check_Toilet01" property="checkToilet01"  jdbcType="VARCHAR"/>
+	<result column="check_Toilet02" property="checkToilet02"  jdbcType="VARCHAR"/>
+	<result column="check_Toilet03" property="checkToilet03"  jdbcType="VARCHAR"/>
+	<result column="check_Power01" property="checkPower01"  jdbcType="VARCHAR"/>
+	<result column="check_Power02" property="checkPower02"  jdbcType="VARCHAR"/>
+	<result column="check_Power03" property="checkPower03"  jdbcType="VARCHAR"/>
+	<result column="check_Other01" property="checkOther01"  jdbcType="VARCHAR"/>
+	<result column="check_Other02" property="checkOther02"  jdbcType="VARCHAR"/>
+	<result column="check_Other03" property="checkOther03"  jdbcType="VARCHAR"/>
+	<result column="check_Other04" property="checkOther04"  jdbcType="VARCHAR"/>
+	<result column="check_Other05" property="checkOther05"  jdbcType="VARCHAR"/>
+	<result column="check_Pic01" property="checkPic01"  jdbcType="VARCHAR"/>
+	<result column="check_Pic02" property="checkPic02"  jdbcType="VARCHAR"/>
+	<result column="check_Pic03" property="checkPic03"  jdbcType="VARCHAR"/>
+	<result column="check_Pic04" property="checkPic04"  jdbcType="VARCHAR"/>
+	<result column="check_Pic05" property="checkPic05"  jdbcType="VARCHAR"/>	
+	<result column="check_remark" property="checkRemark"  jdbcType="VARCHAR"/>
+	<result column="check_result" property="checkResult"  jdbcType="VARCHAR"/>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, check_roomid, check_userid, check_date, check_Metope01, check_Metope02, check_Ground01, check_Ground02,check_Ground03,
+	check_Desk01,check_Desk02,check_Bed01,check_Bed02,check_Balcony01,check_Balcony02,
+	check_WashGargle01,check_WashGargle02,check_WashGargle03,check_Toilet01,check_Toilet02,check_Toilet03,
+	check_Power01,check_Power02,check_Power03,check_Other01,check_Other02,check_Other03,check_Other04,check_Other05,
+	check_Pic01,check_Pic02,check_Pic03,check_Pic04,check_Pic05,check_remark,check_result
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_room_checkinfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_room_checkinfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="net.huimin.yk.web.model.bq.RoomCheckinfo" >
+    insert into t_room_checkinfo (id, building_no, floor_no, 
+      room_no, room_name, room_type, is_used)
+    values (#{id,jdbcType=INTEGER}, #{buildingNo,jdbcType=VARCHAR}, 
+      #{floorNo,jdbcType=VARCHAR}, #{roomNo,jdbcType=VARCHAR}, #{roomName,jdbcType=VARCHAR}, 
+      #{roomType,jdbcType=VARCHAR},  #{isUsed,jdbcType=VARCHAR})
+      <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+      </selectKey>
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.bq.RoomCheckinfo" >
+    insert into t_room_checkinfo
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+       <if test="checkRoomId != null" >
+        check_roomid,
+      </if>
+      <if test="checkUserId != null" >
+        check_userid,
+      </if>
+      <if test="checkDate != null" >
+        check_date,
+      </if>
+      <if test="checkMetope01 != null" >
+        check_Metope01,
+      </if>
+      <if test="checkMetope02 != null" >
+        check_Metope02,
+      </if>
+      <if test="checkGround01 != null" >
+        check_Ground01,
+      </if>
+	  <if test="checkGround02 != null" >
+        check_Ground02,
+      </if>
+	  <if test="checkGround03 != null" >
+        check_Ground03,
+      </if>
+	  <if test="checkDesk01 != null" >
+        check_Desk01,
+      </if>
+	  <if test="checkDesk02 != null" >
+        check_Desk02,
+      </if>
+	  <if test="checkBed01 != null" >
+        check_Bed01,
+      </if>
+	  <if test="checkBed02 != null" >
+        check_Bed02,
+      </if> 
+	  <if test="checkBalcony01 != null" >
+        check_Balcony01,
+      </if>
+	  <if test="checkBalcony02 != null" >
+        check_Balcony02,
+      </if>
+	  <if test="checkWashGargle01 != null" >
+        check_WashGargle01,
+      </if>
+	  <if test="checkWashGargle02 != null" >
+        check_WashGargle02,
+      </if>
+	   <if test="checkWashGargle03 != null" >
+        check_WashGargle03,
+      </if>
+	  <if test="checkToilet01 != null" >
+        check_Toilet01,
+      </if>
+	   <if test="checkToilet02 != null" >
+        check_Toilet02,
+      </if>     
+	  <if test="checkToilet03 != null" >
+        check_Toilet03,
+      </if>
+	  <if test="checkPower01 != null" >
+        check_Power01,
+      </if>
+	  <if test="checkPower02 != null" >
+        check_Power02,
+      </if>
+	  <if test="checkPower03 != null" >
+        check_Power03,
+      </if>
+	  <if test="checkOther01 != null" >
+        check_Other01,
+      </if>
+	  <if test="checkOther02 != null" >
+        check_Other02,
+      </if>
+	  <if test="checkOther03 != null" >
+        check_Other03,
+      </if>
+	  <if test="checkOther04 != null" >
+        check_Other04,
+      </if>
+	  <if test="checkOther05 != null" >
+        check_Other05,
+      </if>
+	  <if test="checkPic01 != null" >
+        check_Pic01,
+      </if>
+	  <if test="checkPic02 != null" >
+        check_Pic02,
+      </if>
+	   <if test="checkPic03 != null" >
+        check_Pic03,
+      </if>
+      <if test="checkPic04 != null" >
+        check_Pic04,
+      </if>
+      <if test="checkPic05 != null" >
+        check_Pic05,
+      </if>
+     <if test="checkRemark != null" >
+        check_remark,
+      </if>
+      <if test="checkResult != null" >
+        check_result,
+      </if> 
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+       <if test="checkRoomId != null" >
+        #{checkRoomId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUserId != null" >
+        #{checkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null" >
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkMetope01 != null" >
+        #{checkMetope01,jdbcType=VARCHAR},
+      </if>
+      <if test="checkMetope02 != null" >
+         #{checkMetope02,jdbcType=VARCHAR},
+      </if>
+      <if test="checkGround01 != null" >
+        #{checkGround01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkGround02 != null" >
+        #{checkGround02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkGround03 != null" >
+        #{checkGround03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkDesk01 != null" >
+        #{checkDesk01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkDesk02 != null" >
+        #{checkDesk02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkBed01 != null" >
+        #{checkBed01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkBed02 != null" >
+        #{checkBed02,jdbcType=VARCHAR},
+      </if> 
+	  <if test="checkBalcony01 != null" >
+        #{checkBalcony01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkBalcony02 != null" >
+        #{checkBalcony02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkWashGargle01 != null" >
+        #{checkWashGargle01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkWashGargle02 != null" >
+        #{checkWashGargle02,jdbcType=VARCHAR},
+      </if>
+	   <if test="checkWashGargle03 != null" >
+        #{checkWashGargle03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkToilet01 != null" >
+         #{checkToilet01,jdbcType=VARCHAR},
+      </if>
+	   <if test="checkToilet02 != null" >
+         #{checkToilet02,jdbcType=VARCHAR},
+      </if>     
+	  <if test="checkToilet03 != null" >
+        #{checkToilet03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower01 != null" >
+        #{checkPower01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower02 != null" >
+        #{checkPower02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower03 != null" >
+        #{checkPower03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther01 != null" >
+        #{checkOther01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther02 != null" >
+        #{checkOther02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther03 != null" >
+        #{checkOther03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther04 != null" >
+        #{checkOther04,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther05 != null" >
+        #{checkOther05,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPic01 != null" >
+        #{checkPic01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPic02 != null" >
+         #{checkPic02,jdbcType=VARCHAR},
+      </if>
+	   <if test="checkPic03 != null" >
+        #{checkPic03,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPic04 != null" >
+        #{checkPic04,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPic05 != null" >
+        #{checkPic05,jdbcType=VARCHAR},
+      </if>
+      <if test="checkRemark != null" >
+        #{checkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="checkResult != null" >
+        #{checkResult,jdbcType=VARCHAR},
+      </if> 
+    </trim>
+    <selectKey resultType="int" keyProperty="id">
+         SELECT LAST_INSERT_ID()
+    </selectKey>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.bq.RoomCheckinfo" >
+    update t_floor_room	
+    <set>
+      <if test="checkRoomId != null" >
+        check_roomid = #{checkRoomId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkUserId != null" >
+        check_userid = #{checkUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null" >
+        check_date = #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="checkMetope01 != null" >
+        check_Metope01 = #{checkMetope01,jdbcType=VARCHAR},
+      </if>
+      <if test="checkMetope02 != null" >
+        check_Metope02 = #{checkMetope02,jdbcType=VARCHAR},
+      </if>
+      <if test="checkGround01 != null" >
+        check_Ground01 = #{checkGround01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkGround02 != null" >
+        check_Ground02 = #{checkGround02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkGround03 != null" >
+        check_Ground03 = #{checkGround03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkDesk01 != null" >
+        check_Desk01 = #{checkDesk01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkDesk02 != null" >
+        check_Desk02 = #{checkDesk02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkBed01 != null" >
+        check_Bed01 = #{checkBed01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkBed02 != null" >
+        check_Bed02 = #{checkBed02,jdbcType=VARCHAR},
+      </if> 
+	  <if test="checkBalcony01 != null" >
+        check_Balcony01 = #{checkBalcony01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkBalcony02 != null" >
+        check_Balcony02 = #{checkBalcony02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkWashGargle01 != null" >
+        check_WashGargle01 = #{checkWashGargle01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkWashGargle02 != null" >
+        check_WashGargle02 = #{checkWashGargle02,jdbcType=VARCHAR},
+      </if>
+	   <if test="checkWashGargle03 != null" >
+        check_WashGargle03 = #{checkWashGargle03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkToilet01 != null" >
+        check_Toilet01 = #{checkToilet01,jdbcType=VARCHAR},
+      </if>
+	   <if test="checkToilet02 != null" >
+        check_Toilet02 = #{checkToilet02,jdbcType=VARCHAR},
+      </if>     
+	  <if test="checkToilet03 != null" >
+        check_Toilet03 = #{checkToilet03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower01 != null" >
+        operat_type = #{checkPower01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower02 != null" >
+        operat_type = #{checkPower02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower03 != null" >
+        operat_type = #{checkPower03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower01 != null" >
+        check_Power01 = #{checkPower01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower01 != null" >
+        check_Power02 = #{checkPower01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPower01 != null" >
+        check_Power03 = #{checkPower01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther01 != null" >
+        check_Other01 = #{checkOther01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther02 != null" >
+        check_Other02 = #{checkOther02,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther03 != null" >
+        check_Other03 = #{checkOther03,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther04 != null" >
+        check_Other04 = #{checkOther04,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkOther05 != null" >
+        check_Other05 = #{checkOther05,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPic01 != null" >
+        check_Pic01 = #{checkPic01,jdbcType=VARCHAR},
+      </if>
+	  <if test="checkPic02 != null" >
+        check_Pic02 = #{checkPic02,jdbcType=VARCHAR},
+      </if>
+	   <if test="checkPic03 != null" >
+        check_Pic03 = #{checkPic03,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPic04 != null" >
+        check_Pic04 = #{checkPic03,jdbcType=VARCHAR},
+      </if>
+      <if test="checkPic05 != null" >
+        check_Pic05 = #{checkPic05,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.bq.RoomCheckinfo" >
+    update t_floor_room
+    set building_no = #{buildingNo,jdbcType=VARCHAR},
+      floor_no = #{floorNo,jdbcType=VARCHAR},
+      room_no = #{roomNo,jdbcType=VARCHAR},
+      room_name = #{roomName,jdbcType=VARCHAR},
+      room_type = #{roomType,jdbcType=VARCHAR},
+      is_used = #{isUsed,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+
+ <select id="queryCountByConditions" parameterType="map" resultType="int">
+  	  SELECT COUNT(*) FROM T_ROOM_CHECKINFO
+  	  <where>
+	    <if test="null != room">
+	        <if test="null != room.checkRoomId">
+	           check_roomid =  #{room.checkRoomId,jdbcType=VARCHAR}
+	        </if>
+	    </if>
+  	</where>
+  </select>
+  <select id="queryHousesByConditions" parameterType="map" resultMap="BaseResultMap">
+  	  SELECT * FROM T_ROOM_CHECKINFO
+  	  <where>
+	    <if test="null != room">
+	        <if test="null != room.checkRoomId">
+	           check_roomid =  #{room.checkRoomId,jdbcType=VARCHAR}
+	        </if>
+	    </if> 
+	   ORDER BY CHECK_DATE DESC
+  	</where>
+	    
+    <![CDATA[ LIMIT  #{_page.start,jdbcType=INTEGER}, #{_page.offset,jdbcType=INTEGER} ]]> 
+  </select>
+
+</mapper>

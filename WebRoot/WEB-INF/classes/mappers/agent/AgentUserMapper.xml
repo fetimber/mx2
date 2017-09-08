@@ -1,0 +1,594 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.agent.AgentUserMapper" >
+  <resultMap id="BaseResultMap" type="net.huimin.yk.web.model.agent.AgentUser" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="refer_id" property="referId" jdbcType="INTEGER" />
+    <result column="refer_number" property="referNumber" jdbcType="VARCHAR" />
+    <result column="account_id" property="accountId" jdbcType="INTEGER" />
+    <result column="real_name_validate" property="realNameValidate" jdbcType="INTEGER" />
+    <result column="phone_decimal" property="phoneDecimal" jdbcType="VARCHAR" />
+    <result column="idt_num" property="idtNum" jdbcType="VARCHAR" />
+    <result column="idt_fileid" property="idtFileid" jdbcType="INTEGER" />
+    <result column="card_fileid" property="cardFileid" jdbcType="INTEGER" />
+    <result column="bank_name" property="bankName" jdbcType="VARCHAR" />
+    <result column="bank_account" property="bankAccount" jdbcType="VARCHAR" />
+    <result column="company" property="company" jdbcType="VARCHAR" />
+    <result column="work_area" property="workArea" jdbcType="VARCHAR" />
+    <result column="work_space" property="workSpace" jdbcType="VARCHAR" />
+    <result column="wechat_id" property="wechatId" jdbcType="VARCHAR" />
+    <result column="customer_count" property="customerCount" jdbcType="DECIMAL" />
+    <result column="customer_newmessage" property="customerNewmessage" jdbcType="DECIMAL" />
+    <result column="refer_count" property="referCount" jdbcType="DECIMAL" />
+    <result column="money_total" property="moneyTotal" jdbcType="DECIMAL" />   
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="check_remark" property="checkRemark" jdbcType="VARCHAR" />
+    <result column="auto_login" property="autoLogin" jdbcType="INTEGER" />
+    
+    <result column="arrived_count" property="arrivedCount" jdbcType="DECIMAL" />
+	<result column="sign_count" property="signCount" jdbcType="DECIMAL" />
+	<result column="deal_time" property="dealTime" jdbcType="TIMESTAMP" />
+	<result column="deal_content" property="dealContent" jdbcType="VARCHAR" />
+	<result column="agent_person" property="agentPerson" jdbcType="VARCHAR" />
+	<result column="person_phone" property="personPhone" jdbcType="VARCHAR" />
+	<result column="next_time" property="nextTime" jdbcType="TIMESTAMP" />
+	<result column="agent_group" property="agentGroup" jdbcType="VARCHAR" />
+	<result column="source" property="source" jdbcType="INTEGER" />        
+    <association property="user" column="user_id" select="net.huimin.yk.web.dao.system.SysUserMapper.selectByPrimaryKey" />
+    <association property="account" column="account_id" select="net.huimin.yk.web.dao.system.SysAccountMapper.selectByPrimaryKey" />
+    <association property="idtFileInfo" column="idt_fileid" select="net.huimin.yk.web.dao.common.FilesMapper.selectByPrimaryKey" />
+    <association property="cardFileInfo" column="card_fileid" select="net.huimin.yk.web.dao.common.FilesMapper.selectByPrimaryKey" />
+    <association property="records" column="user_id" select="net.huimin.yk.web.dao.customer.CustomeRecordMapper.selectAgentRecords" />
+    <association property="messageTotal" column="id" select="net.huimin.yk.web.dao.customer.CustomeRecordMapper.selectNewTotalCount" />
+    
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, refer_id , refer_number, account_id, real_name_validate, phone_decimal, idt_num, idt_fileid,card_fileid,bank_name, bank_account, wechat_id, 
+    company, work_area ,work_space , customer_count, customer_newmessage, refer_count,money_total , user_id, auto_login,check_remark,
+    arrived_count,sign_count,deal_time,deal_content,agent_person,person_phone,next_time,agent_group,source
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_agent_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectByAccontId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_agent_user
+    where account_id = #{id,jdbcType=INTEGER}
+  </select>
+      <select id="selectByReferId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_agent_user
+    where refer_id = #{id,jdbcType=INTEGER}
+    order by  id desc
+  </select>
+  
+  <select id="selectByConditions" resultMap="BaseResultMap" parameterType="net.huimin.yk.web.model.agent.AgentUser" >
+    select 'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from t_agent_user
+   <where>
+	   <if test="null != phoneDecimal and phoneDecimal != ''" >
+	    	AND phone_decimal = #{phoneDecimal,jdbcType=INTEGER}
+	    </if>
+	    <if test="null != userId" >
+	    	AND user_id = #{userId,jdbcType=INTEGER}
+	    </if>
+	    <if test="null != wechatId" >
+	    	AND wechat_id = #{wechatId,jdbcType=INTEGER}
+	    </if>
+	    <if test="null != realNameValidate" >
+	    	AND real_name_validate = #{realNameValidate,jdbcType=INTEGER}
+	    </if>
+   </where>
+  </select>
+  <select id="queryCountByConditions" parameterType="net.huimin.yk.web.model.agent.AgentQueryParameter" resultType="int">
+  	   select count(1) from T_AGENT_USER au left join t_sys_user su on au.user_id = su.id
+  	    <where>
+  	    	<if test="null != keyword and keyword != ''">
+  	    		or au.work_space like '%${keyword}%'
+  	    		or au.work_area like '%${keyword}%'
+  	    		or au.phone_decimal like '%${keyword}%'
+  	    		or au.agent_person like '%${keyword}%'
+  	    	</if>
+  	    	<if test="null != signCountMin">
+  	    		and au.sign_count >= #{signCountMin}
+  	    	</if>
+  	    	<if test="null != signCountMax">
+  	    		<![CDATA[and au.sign_count <= #{signCountMax}]]>
+  	    	</if>
+  	    	<if test="null != reportCountMin">
+  	    		and au.customer_count >= #{reportCountMin}
+  	    	</if>
+  	    	<if test="null != reportCountMax">
+  	    		<![CDATA[and au.customer_count <= #{reportCountMax}]]>
+  	    	</if>
+  	    	<if test="null != visitCountMin">
+  	    		and au.arrived_count >= #{visitCountMin}
+  	    	</if>
+  	    	<if test="null != visitCountMax">
+  	    		<![CDATA[and au.arrived_count <= #{visitCountMax}]]>
+  	    	</if>
+  	    	<if test="null != lastProcessTimeStart">
+  	    		and au.deal_time >= #{lastProcessTimeStart}
+  	    	</if>
+  	    	<if test="null != lastProcessTimeEnd">
+  	    		<![CDATA[and au.deal_time <= DATE_ADD(#{lastProcessTimeEnd},INTERVAL 1 DAY)]]>
+  	    	</if>
+  	    	<if test="null != nextVisitTimeStart">
+  	    		and au.next_time >= #{nextVisitTimeStart}
+  	    	</if>
+  	    	<if test="null != nextVisitTimeEnd">
+  	    		<![CDATA[and au.next_time <= DATE_ADD(#{nextVisitTimeEnd},INTERVAL 1 DAY)]]>
+  	    	</if>
+  	    </where>
+  </select>
+   <select id="queryAgentByConditions" parameterType="net.huimin.yk.web.model.agent.AgentQueryParameter" resultMap="BaseResultMap">
+  	    select * from T_AGENT_USER au left join t_sys_user su on au.user_id = su.id
+  	    <where>
+  	    	<if test="null != keyword and keyword != ''">
+  	    		or au.work_space like '%${keyword}%'
+  	    		or au.work_area like '%${keyword}%'
+  	    		or au.phone_decimal like '%${keyword}%'
+  	    		or au.agent_person like '%${keyword}%'
+  	    	</if>
+  	    	<if test="null != signCountMin">
+  	    		and au.sign_count >= #{signCountMin}
+  	    	</if>
+  	    	<if test="null != signCountMax">
+  	    		<![CDATA[and au.sign_count <= #{signCountMax}]]>
+  	    	</if>
+  	    	<if test="null != reportCountMin">
+  	    		and au.customer_count >= #{reportCountMin}
+  	    	</if>
+  	    	<if test="null != reportCountMax">
+  	    		<![CDATA[and au.customer_count <= #{reportCountMax}]]>
+  	    	</if>
+  	    	<if test="null != visitCountMin">
+  	    		and au.arrived_count >= #{visitCountMin}
+  	    	</if>
+  	    	<if test="null != visitCountMax">
+  	    		<![CDATA[and au.arrived_count <= #{visitCountMax}]]>
+  	    	</if>
+  	    	<if test="null != lastProcessTimeStart">
+  	    		and au.deal_time >= #{lastProcessTimeStart}
+  	    	</if>
+  	    	<if test="null != lastProcessTimeEnd">
+  	    		<![CDATA[and au.deal_time <= DATE_ADD(#{lastProcessTimeEnd},INTERVAL 1 DAY)]]>
+  	    	</if>
+  	    	<if test="null != nextVisitTimeStart">
+  	    		and au.next_time >= #{nextVisitTimeStart}
+  	    	</if>
+  	    	<if test="null != nextVisitTimeEnd">
+  	    		<![CDATA[and au.next_time <= DATE_ADD(#{nextVisitTimeEnd},INTERVAL 1 DAY)]]>
+  	    	</if>
+  	    </where>
+  	    <if test="null != order">
+  	    	order by
+  	    	<choose >
+  	    		<when test="order == 0">au.id</when>
+  	    		<when test="order == 1">au.sign_count</when>
+  	    		<when test="order == 2">au.customer_count</when>
+  	    		<when test="order == 3">au.arrived_count</when>
+  	    		<when test="order == 4">au.deal_time</when>
+  	    		<when test="order == 5">au.next_time</when>
+  	    	</choose>
+  	    	desc
+  	    </if>
+  	    <if test="null != page">
+  	    	limit #{page.start}, #{page.offset}
+  	    </if>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from t_agent_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="net.huimin.yk.web.model.agent.AgentUser" >
+    insert into t_agent_user (refer_id, refer_number,account_id, 
+      real_name_validate, phone_decimal,idt_num , idt_fileid ,card_fileid, bank_name , bank_account, company,
+      work_area,work_space,customer_newmessage,refer_count,money_total,
+      wechat_id, customer_count, user_id, auto_login,check_remark,
+      arrived_count,sign_count,deal_time,deal_content,agent_person,person_phone,next_time,agent_group,source)
+    values (#{referId,jdbcType=INTEGER}, #{referNumber,jdbcType=VARCHAR}, #{accountId,jdbcType=INTEGER}, 
+      #{realNameValidate,jdbcType=INTEGER}, #{phoneDecimal,jdbcType=VARCHAR}, #{idtNum,jdbcType=VARCHAR},#{idtFileid,jdbcType=INTEGER},#{cardFileid,jdbcType=INTEGER},
+      #{bankName,jdbcType=VARCHAR},#{bankAccount,jdbcType=VARCHAR},#{company,jdbcType=VARCHAR},
+      #{workArea,jdbcType=VARCHAR},#{workSpace,jdbcType=VARCHAR},#{customerNewmessage,jdbcType=DECIMAL},#{referCount,jdbcType=DECIMAL},#{moneyTotal,jdbcType=DECIMAL},
+      #{wechatId,jdbcType=VARCHAR}, #{customerCount,jdbcType=DECIMAL}, #{userId,jdbcType=INTEGER}, #{autoLogin,jdbcType=INTEGER} , #{checkRemark,jdbcType=VARCHAR},
+      #{arrivedCount,jdbcType=DECIMAL}, #{signCount,jdbcType=DECIMAL}, #{dealTime,jdbcType=TIMESTAMP}, #{dealContent,jdbcType=VARCHAR} , 
+      #{agentPerson,jdbcType=VARCHAR},#{personPhone,jdbcType=VARCHAR},#{nextTime,jdbcType=TIMESTAMP},#{agentGroup,jdbcType=VARCHAR},#{source,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.huimin.yk.web.model.agent.AgentUser" >
+    insert into t_agent_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="referId != null" >
+        refer_id,
+      </if>
+      <if test="referNumber != null" >
+        refer_number,
+      </if>
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="realNameValidate != null" >
+        real_name_validate,
+      </if>
+      <if test="phoneDecimal != null" >
+        phone_decimal,
+      </if>
+      <if test="idtNum != null" >
+        idt_num,
+      </if>
+      <if test="idtFileid != null" >
+        idt_fileid,
+      </if>
+       <if test="cardFileid != null" >
+        card_fileid,
+      </if>
+      <if test="bankName != null" >
+        bank_name,
+      </if>   
+      <if test="bankAccount != null" >
+        bank_account,
+      </if>
+      <if test="company != null" >
+        company
+      </if>
+      <if test="workArea != null" >
+        work_area
+      </if>
+      <if test="workSpace != null" >
+        work_space
+      </if>
+      <if test="customerNewmessage != null" >
+        customer_newmessage
+      </if>
+      <if test="referCount != null" >
+        refer_count
+      </if>
+      <if test="moneyTotal != null" >
+        money_total
+      </if>
+      <if test="checkRemark != null" >
+        check_remark
+      </if>
+      <if test="wechatId != null" >
+        wechat_id,
+      </if>
+      <if test="customerCount != null" >
+        customer_count,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="autoLogin != null" >
+        auto_login,
+      </if>
+      <if test="arrivedCount != null" >
+        arrived_count,
+      </if>
+      <if test="signCount != null" >
+        sign_count,
+      </if>
+      <if test="dealTime != null" >
+        deal_time,
+      </if>
+      <if test="dealContent != null" >
+        customer_count,
+      </if>
+      <if test="agentPerson != null" >
+        agent_person,
+      </if>
+       <if test="personPhone != null" >
+        person_phone,
+      </if>
+      <if test="nextTime != null" >
+        next_time,
+      </if>
+       <if test="agentGroup != null" >
+        agent_group,
+      </if>
+      <if test="null != source">
+      	source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="referId != null" >
+        #{referId,jdbcType=INTEGER},
+      </if>
+      <if test="referNumber != null" >
+        #{referNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="accountId != null" >
+        #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="realNameValidate != null" >
+        #{realNameValidate,jdbcType=INTEGER},
+      </if>
+      <if test="phoneDecimal != null" >
+        #{phoneDecimal,jdbcType=VARCHAR},
+      </if>
+      <if test="idtNum != null" >
+        #{idtNum,jdbcType=VARCHAR},
+      </if>
+      <if test="idtFileid != null" >
+        #{idtFileid,jdbcType=INTEGER},
+      </if>
+      <if test="cardFileid != null" >
+        #{cardFileid,jdbcType=INTEGER},
+      </if>
+      <if test="bankName != null" >
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="company != null" >
+        #{company,jdbcType=VARCHAR},
+      </if>
+       <if test="workArea != null" >
+        #{workArea,jdbcType=VARCHAR},
+      </if>
+       <if test="workSpace != null" >
+        #{workSpace,jdbcType=VARCHAR},
+      </if>
+       <if test="customerNewmessage != null" >
+        #{customerNewmessage,jdbcType=DECIMAL},
+      </if>
+       <if test="referCount != null" >
+        #{referCount,jdbcType=DECIMAL},
+      </if>
+       <if test="moneyTotal != null" >
+        #{moneyTotal,jdbcType=DECIMAL},
+      </if>
+       <if test="checkRemark != null" >
+        #{checkRemark,jdbcType=VARCHAR},
+      </if>   
+      <if test="wechatId != null" >
+        #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCount != null" >
+        #{customerCount,jdbcType=DECIMAL},
+      </if>
+       <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="autoLogin != null" >
+        #{autoLogin,jdbcType=INTEGER},
+      </if>
+      <if test="arrivedCount != null" >
+        #{arrivedCount,jdbcType=DECIMAL},
+      </if>
+      <if test="signCount != null" >
+        #{signCount,jdbcType=DECIMAL},
+      </if>
+      <if test="dealTime != null" >
+        #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealContent != null" >
+        #{dealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="agentPerson != null" >
+        #{agentPerson,jdbcType=VARCHAR},
+      </if>
+       <if test="personPhone != null" >
+        #{personPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="nextTime != null" >
+        #{nextTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="agentGroup != null" >
+        #{agentGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="null != source">
+      	#{source,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="net.huimin.yk.web.model.agent.AgentUser" >
+    update t_agent_user
+    <set >
+      <if test="referId != null" >
+        refer_id = #{referId,jdbcType=INTEGER},
+      </if>
+      <if test="accountId != null" >
+        account_id = #{accountId,jdbcType=INTEGER},
+      </if>
+      <if test="referNumber != null" >
+        refer_number = #{referNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="realNameValidate != null" >
+        real_name_validate = #{realNameValidate,jdbcType=INTEGER},
+      </if>
+      <if test="phoneDecimal != null" >
+        phone_decimal = #{phoneDecimal,jdbcType=VARCHAR},
+      </if>
+      <if test="idtNum != null" >
+        idt_num = #{idtNum,jdbcType=VARCHAR},
+      </if>
+      <if test="idtFileid != null" >
+        idt_fileid = #{idtFileid,jdbcType=INTEGER},
+      </if>
+        <if test="cardFileid != null" >
+        card_fileid = #{cardFileid,jdbcType=INTEGER},
+      </if>
+       <if test="bankName != null" >
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankAccount != null" >
+        bank_account = #{bankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="workArea != null" >
+        work_area = #{workArea,jdbcType=VARCHAR},
+      </if>
+      <if test="workSpace != null" >
+        work_space = #{workSpace,jdbcType=VARCHAR},
+      </if>
+      <if test="customerNewmessage != null" >
+        customer_newmessage = #{customerNewmessage,jdbcType=DECIMAL},
+      </if>
+      <if test="referCount != null" >
+        refer_count = #{referCount,jdbcType=DECIMAL},
+      </if>
+      <if test="moneyTotal != null" >
+        money_total = #{moneyTotal,jdbcType=DECIMAL},
+      </if>
+      <if test="checkRemark != null" >
+        check_remark = #{checkRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="wechatId != null" >
+        wechat_id = #{wechatId,jdbcType=VARCHAR},
+      </if>
+      <if test="customerCount != null" >
+        customer_count = #{customerCount,jdbcType=DECIMAL},
+      </if>
+       <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="autoLogin != null" >
+        auto_login = #{autoLogin,jdbcType=INTEGER},
+      </if>
+       <if test="arrivedCount != null" >
+        arrived_count = #{arrivedCount,jdbcType=DECIMAL},
+      </if>
+      <if test="signCount != null" >
+        sign_count = #{signCount,jdbcType=DECIMAL},
+      </if>
+      <if test="dealTime != null" >
+        deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dealContent != null" >
+        deal_content = #{dealContent,jdbcType=VARCHAR},
+      </if>
+      <if test="agentPerson != null" >
+        agent_person = #{agentPerson,jdbcType=VARCHAR},
+      </if>
+       <if test="personPhone != null" >
+        person_phone = #{personPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="nextTime != null" >
+        next_time = #{nextTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="agentGroup != null" >
+        agent_group = #{agentGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="null != source">
+      	source = #{source,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.huimin.yk.web.model.agent.AgentUser" >
+    update t_agent_user
+    set refer_id = #{referId,jdbcType=INTEGER},
+      refer_number = #{referNumber,jdbcType=VARCHAR},
+      account_id = #{accountId,jdbcType=INTEGER},
+      real_name_validate = #{realNameValidate,jdbcType=INTEGER},
+      phone_decimal = #{phoneDecimal,jdbcType=VARCHAR},
+      idt_num = #{idtNum,jdbcType=VARCHAR},
+      bank_account = #{bankAccount,jdbcType=VARCHAR},
+      company = #{company,jdbcType=VARCHAR},
+      wechat_id = #{wechatId,jdbcType=VARCHAR},
+      customer_count = #{customerCount,jdbcType=DECIMAL},
+      user_id = #{userId,jdbcType=INTEGER},
+      auto_login = #{autoLogin,jdbcType=INTEGER},
+      arrived_count = #{arrivedCount,jdbcType=DECIMAL},
+      sign_count = #{signCount,jdbcType=DECIMAL},
+      deal_time = #{dealTime,jdbcType=TIMESTAMP},
+      deal_content = #{dealContent,jdbcType=VARCHAR},
+      agent_person = #{agentPerson,jdbcType=VARCHAR},
+      person_phone = #{personPhone,jdbcType=VARCHAR},
+      next_time = #{nextTime,jdbcType=TIMESTAMP},
+      agent_group = #{agentGroup,jdbcType=VARCHAR},
+      source = #{source,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="querySuperiorCountByConditions" parameterType="net.huimin.yk.web.model.agent.AgentQueryParameter" resultType="int">
+  	  select count(1) from T_AGENT_USER au left join t_sys_user su on au.user_id = su.id 
+  	   where 
+  	        1 = 1   
+  	    	<if test="null != keyword and keyword != ''">
+  	    	   and
+  	    	   (
+  	    		au.work_space like '%${keyword}%'
+  	    		or au.work_area like '%${keyword}%'
+  	    		or au.phone_decimal like '%${keyword}%'
+  	    		or au.agent_person like '%${keyword}%'
+  	    		or su.real_name like '%${keyword}%'
+  	    	   )
+  	    	</if>
+  	       and exists (select 1 from t_store_agent  sa where sa.store_id = au.id and sa.status = 4)
+  </select>
+   <select id="querySuperiorByConditions" parameterType="net.huimin.yk.web.model.agent.AgentQueryParameter" resultMap="BaseResultMap">
+        select * from T_AGENT_USER au left join t_sys_user su on au.user_id = su.id 
+  	    where 
+  	        1 = 1   
+  	    	<if test="null != keyword and keyword != ''">
+  	    	   and
+  	    	   (
+  	    		au.work_space like '%${keyword}%'
+  	    		or au.work_area like '%${keyword}%'
+  	    		or au.phone_decimal like '%${keyword}%'
+  	    		or au.agent_person like '%${keyword}%'
+  	    		or su.real_name like '%${keyword}%'
+  	    	   )
+  	    	</if>
+  	        and exists (select 1 from t_store_agent  sa where sa.store_id = au.id and sa.status = 4)
+  	        order by  au.id desc
+  	    <if test="null != page">
+  	    	limit #{page.start}, #{page.offset}
+  	    </if>  
+  </select>
+  
+  <select id="querySubordinateCountByConditions" parameterType="net.huimin.yk.web.model.agent.AgentQueryParameter" resultType="int">
+  	  select count(1) from T_AGENT_USER au left join t_sys_user su on au.user_id = su.id 
+  	    where 
+  	        1 = 1   
+  	    	<if test="null != keyword and keyword != ''">
+  	    	   and
+  	    	   (
+  	    		au.work_space like '%${keyword}%'
+  	    		or au.work_area like '%${keyword}%'
+  	    		or au.phone_decimal like '%${keyword}%'
+  	    		or au.agent_person like '%${keyword}%'
+  	    		or su.real_name like '%${keyword}%'
+  	    	   )
+  	    	</if>
+  	       and exists (select 1 from t_store_agent  sa where sa.store_id = au.id and sa.status = 4 and sa.store_id = #{signCountMin})	
+  </select>
+   <select id="querySubordinateByConditions" parameterType="net.huimin.yk.web.model.agent.AgentQueryParameter" resultMap="BaseResultMap">
+  	  select * from T_AGENT_USER au left join t_sys_user su on au.user_id = su.id 
+  	    where 
+  	        1 = 1   
+  	    	<if test="null != keyword and keyword != ''">
+  	    	   and
+  	    	   (
+  	    	    au.work_space like '%${keyword}%'
+  	    		or au.work_area like '%${keyword}%'
+  	    		or au.phone_decimal like '%${keyword}%'
+  	    		or au.agent_person like '%${keyword}%'
+  	    		or su.real_name like '%${keyword}%'
+  	    	   )
+  	    	</if>
+  	       and exists (select 1 from t_store_agent  sa where sa.agent_id = au.id and sa.status = 4 and sa.store_id = #{signCountMin}) 
+  	       order by  au.id desc
+  	    <if test="null != page">
+  	    	limit #{page.start}, #{page.offset}
+  	    </if>  	   
+  </select>
+  
+  
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.huimin.yk.web.dao.sea.SeaTotalMapper" >
+  <select id="queryHonorTotal" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultType="map">
+  				SELECT u.unit_name,t.honor_type,IFNULL(t.c,0) as c FROM t_sea_govunit u LEFT JOIN 
+				(
+				SELECT
+					COUNT(*) as c,
+					h.honor_type,
+					h.in_unit
+				FROM
+					t_sea_honor h 
+				
+				where h.in_unit != 0
+					and h.check_flag = '1'
+				<if test="null != honorTimeStart">
+  	    			<![CDATA[and h.honor_time >= #{honorTimeStart}]]>
+	  	    	</if>
+	  	    	<if test="null != honorTimeEnd">
+	  	    		<![CDATA[and h.honor_time <= #{honorTimeEnd}]]>
+	  	    	</if>
+				GROUP BY
+					h.in_unit,
+					h.honor_type
+				) as t on t.in_unit = u.id
+  </select>
+  
+  <select id="queryHonorUnitTotal" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultType="map">
+  				select count(*) as c,honor_unit as unit_name,honor_type 
+
+				from t_sea_honor_unit h 
+				where h.check_flag = '1'
+				<if test="null != honorTimeStart">
+  	    			<![CDATA[and h.honor_time >= #{honorTimeStart}]]>
+	  	    	</if>
+	  	    	<if test="null != honorTimeEnd">
+	  	    		<![CDATA[and h.honor_time <= #{honorTimeEnd}]]>
+	  	    	</if>
+	  	    	group by honor_unit,honor_type
+  </select>
+  
+  
+  <select id="queryWorkerPoorTotal" parameterType="net.huimin.yk.web.model.sea.SeaQueryParameter" resultType="map">
+  				SELECT u.unit_name,t.honor_type,IFNULL(t.c,0) as c FROM t_sea_govunit u LEFT JOIN 
+				(
+				SELECT
+					COUNT(*) as c,
+					h.poor_level as honor_type,
+					h.in_unit
+				FROM
+					t_sea_worker_poor h 
+				where h.in_unit != 0
+					and h.check_flag = '1'
+				<if test="null != honorTimeStart">
+  	    			<![CDATA[and h.create_time >= #{honorTimeStart}]]>
+	  	    	</if>
+	  	    	<if test="null != honorTimeEnd">
+	  	    		<![CDATA[and h.create_time <= #{honorTimeEnd}]]>
+	  	    	</if>
+	  	    	GROUP BY
+					h.poor_level,
+					h.in_unit
+				) as t on t.in_unit = u.id
+  </select>
+</mapper>
